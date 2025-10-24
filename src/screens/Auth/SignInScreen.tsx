@@ -17,28 +17,18 @@ import { LinearGradient } from 'expo-linear-gradient';
 import AuthService from '../../services/AuthService';
 import Colors from '../../constants/colors';
 
-export default function SignUpScreen({ navigation }: any) {
+export default function SignInScreen({ navigation }: any) {
   const [formData, setFormData] = useState({
-    fullName: '',
     email: '',
     password: '',
-    confirmPassword: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const validateForm = (): boolean => {
     const newErrors: { [key: string]: string } = {};
-
-    // Validate name
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Name is required';
-    } else if (formData.fullName.trim().length < 2) {
-      newErrors.fullName = 'Name must be at least 2 characters';
-    }
 
     // Validate email
     if (!formData.email.trim()) {
@@ -50,30 +40,13 @@ export default function SignUpScreen({ navigation }: any) {
     // Validate password
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Password must contain uppercase, lowercase, and number';
-    }
-
-    // Validate confirm password
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
-
-    // Validate terms
-    if (!acceptedTerms) {
-      Alert.alert('Terms Required', 'Please accept the terms and conditions');
-      return false;
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSignUp = async () => {
+  const handleSignIn = async () => {
     if (!validateForm()) {
       return;
     }
@@ -81,32 +54,45 @@ export default function SignUpScreen({ navigation }: any) {
     try {
       setLoading(true);
       
-      const result = await AuthService.signUp(
+      const result = await AuthService.signIn(
         formData.email,
-        formData.password,
-        formData.fullName
+        formData.password
       );
 
       if (result.success) {
-        Alert.alert(
-          'Success!',
-          'Your account has been created successfully. A wallet has been generated for you.',
-          [
-            {
-              text: 'Get Started',
-              onPress: () => navigation.replace('MainTabs'),
-            },
-          ]
-        );
+        // Navigate to main app
+        navigation.replace('MainTabs');
       } else {
-        Alert.alert('Sign Up Failed', result.message);
+        Alert.alert('Sign In Failed', result.message);
       }
     } catch (error) {
       Alert.alert('Error', 'An unexpected error occurred. Please try again.');
-      console.error('Sign up error:', error);
+      console.error('Sign in error:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!formData.email.trim()) {
+      Alert.alert('Email Required', 'Please enter your email address first');
+      return;
+    }
+
+    Alert.alert(
+      'Reset Password',
+      'Are you sure you want to reset your password?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Reset',
+          onPress: async () => {
+            const result = await AuthService.resetPassword(formData.email);
+            Alert.alert('Password Reset', result.message);
+          },
+        },
+      ]
+    );
   };
 
   const updateFormData = (field: string, value: string) => {
@@ -141,35 +127,16 @@ export default function SignUpScreen({ navigation }: any) {
               <Ionicons name="arrow-back" size={24} color="white" />
             </TouchableOpacity>
             <View style={styles.headerContent}>
-              <Ionicons name="person-add" size={60} color="white" />
-              <Text style={styles.headerTitle}>Create Account</Text>
+              <Ionicons name="log-in" size={60} color="white" />
+              <Text style={styles.headerTitle}>Welcome Back</Text>
               <Text style={styles.headerSubtitle}>
-                Join Digital Kurdistan today
+                Sign in to continue to Digital Kurdistan
               </Text>
             </View>
           </LinearGradient>
 
           {/* Form */}
           <View style={styles.formContainer}>
-            {/* Full Name */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Full Name</Text>
-              <View style={[styles.inputContainer, errors.fullName && styles.inputError]}>
-                <Ionicons name="person-outline" size={20} color={Colors.textGray} />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter your full name"
-                  placeholderTextColor={Colors.textGray}
-                  value={formData.fullName}
-                  onChangeText={(text) => updateFormData('fullName', text)}
-                  autoCapitalize="words"
-                />
-              </View>
-              {errors.fullName ? (
-                <Text style={styles.errorText}>{errors.fullName}</Text>
-              ) : null}
-            </View>
-
             {/* Email */}
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Email Address</Text>
@@ -198,7 +165,7 @@ export default function SignUpScreen({ navigation }: any) {
                 <Ionicons name="lock-closed-outline" size={20} color={Colors.textGray} />
                 <TextInput
                   style={styles.input}
-                  placeholder="Create a password"
+                  placeholder="Enter your password"
                   placeholderTextColor={Colors.textGray}
                   value={formData.password}
                   onChangeText={(text) => updateFormData('password', text)}
@@ -216,68 +183,38 @@ export default function SignUpScreen({ navigation }: any) {
               {errors.password ? (
                 <Text style={styles.errorText}>{errors.password}</Text>
               ) : null}
-              <Text style={styles.hint}>
-                Must be 8+ characters with uppercase, lowercase, and number
-              </Text>
             </View>
 
-            {/* Confirm Password */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Confirm Password</Text>
-              <View style={[styles.inputContainer, errors.confirmPassword && styles.inputError]}>
-                <Ionicons name="lock-closed-outline" size={20} color={Colors.textGray} />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Confirm your password"
-                  placeholderTextColor={Colors.textGray}
-                  value={formData.confirmPassword}
-                  onChangeText={(text) => updateFormData('confirmPassword', text)}
-                  secureTextEntry={!showConfirmPassword}
-                  autoCapitalize="none"
-                />
-                <TouchableOpacity
-                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  <Ionicons
-                    name={showConfirmPassword ? 'eye-outline' : 'eye-off-outline'}
-                    size={20}
-                    color={Colors.textGray}
-                  />
-                </TouchableOpacity>
-              </View>
-              {errors.confirmPassword ? (
-                <Text style={styles.errorText}>{errors.confirmPassword}</Text>
-              ) : null}
+            {/* Remember Me & Forgot Password */}
+            <View style={styles.optionsContainer}>
+              <TouchableOpacity
+                style={styles.rememberMeContainer}
+                onPress={() => setRememberMe(!rememberMe)}
+                activeOpacity={0.7}
+              >
+                <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                  {rememberMe && (
+                    <Ionicons name="checkmark" size={14} color="white" />
+                  )}
+                </View>
+                <Text style={styles.rememberMeText}>Remember me</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={handleForgotPassword}>
+                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+              </TouchableOpacity>
             </View>
 
-            {/* Terms & Conditions */}
+            {/* Sign In Button */}
             <TouchableOpacity
-              style={styles.checkboxContainer}
-              onPress={() => setAcceptedTerms(!acceptedTerms)}
-              activeOpacity={0.7}
-            >
-              <View style={[styles.checkbox, acceptedTerms && styles.checkboxChecked]}>
-                {acceptedTerms && (
-                  <Ionicons name="checkmark" size={16} color="white" />
-                )}
-              </View>
-              <Text style={styles.checkboxText}>
-                I agree to the{' '}
-                <Text style={styles.linkText}>Terms & Conditions</Text> and{' '}
-                <Text style={styles.linkText}>Privacy Policy</Text>
-              </Text>
-            </TouchableOpacity>
-
-            {/* Sign Up Button */}
-            <TouchableOpacity
-              style={[styles.signUpButton, loading && styles.signUpButtonDisabled]}
-              onPress={handleSignUp}
+              style={[styles.signInButton, loading && styles.signInButtonDisabled]}
+              onPress={handleSignIn}
               disabled={loading}
               activeOpacity={0.8}
             >
               <LinearGradient
                 colors={[Colors.primary, Colors.coral]}
-                style={styles.signUpButtonGradient}
+                style={styles.signInButtonGradient}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
               >
@@ -285,46 +222,48 @@ export default function SignUpScreen({ navigation }: any) {
                   <ActivityIndicator color="white" />
                 ) : (
                   <>
-                    <Text style={styles.signUpButtonText}>Create Account</Text>
+                    <Text style={styles.signInButtonText}>Sign In</Text>
                     <Ionicons name="arrow-forward" size={20} color="white" />
                   </>
                 )}
               </LinearGradient>
             </TouchableOpacity>
 
-            {/* Sign In Link */}
-            <View style={styles.signInContainer}>
-              <Text style={styles.signInText}>Already have an account? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-                <Text style={styles.signInLink}>Sign In</Text>
+            {/* Sign Up Link */}
+            <View style={styles.signUpContainer}>
+              <Text style={styles.signUpText}>Don't have an account? </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                <Text style={styles.signUpLink}>Sign Up</Text>
               </TouchableOpacity>
             </View>
 
-            {/* Features */}
-            <View style={styles.featuresContainer}>
-              <Text style={styles.featuresTitle}>What you'll get:</Text>
-              <View style={styles.featureItem}>
-                <Ionicons name="wallet" size={20} color={Colors.primary} />
-                <Text style={styles.featureText}>
-                  Secure blockchain wallet (HEZ & PEZ)
-                </Text>
-              </View>
-              <View style={styles.featureItem}>
-                <Ionicons name="shield-checkmark" size={20} color={Colors.primary} />
-                <Text style={styles.featureText}>
-                  Digital citizenship (Hemwelatî)
-                </Text>
-              </View>
-              <View style={styles.featureItem}>
-                <Ionicons name="people" size={20} color={Colors.primary} />
-                <Text style={styles.featureText}>
-                  Governance participation & voting
-                </Text>
-              </View>
-              <View style={styles.featureItem}>
-                <Ionicons name="star" size={20} color={Colors.primary} />
-                <Text style={styles.featureText}>
-                  Rewards & referral program
+            {/* Divider */}
+            <View style={styles.divider}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>OR</Text>
+              <View style={styles.dividerLine} />
+            </View>
+
+            {/* Social Sign In */}
+            <View style={styles.socialContainer}>
+              <TouchableOpacity style={styles.socialButton}>
+                <Ionicons name="logo-google" size={24} color="#DB4437" />
+                <Text style={styles.socialButtonText}>Google</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.socialButton}>
+                <Ionicons name="logo-apple" size={24} color="#000" />
+                <Text style={styles.socialButtonText}>Apple</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Security Notice */}
+            <View style={styles.securityNotice}>
+              <Ionicons name="shield-checkmark" size={24} color={Colors.success} />
+              <View style={styles.securityContent}>
+                <Text style={styles.securityTitle}>Secure Sign In</Text>
+                <Text style={styles.securityText}>
+                  Your credentials are encrypted and your wallet keys are stored
+                  securely on your device.
                 </Text>
               </View>
             </View>
@@ -377,6 +316,7 @@ const styles = StyleSheet.create({
   headerSubtitle: {
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.9)',
+    textAlign: 'center',
   },
   formContainer: {
     paddingHorizontal: 24,
@@ -415,43 +355,40 @@ const styles = StyleSheet.create({
     color: Colors.error,
     marginTop: 6,
   },
-  hint: {
-    fontSize: 12,
-    color: Colors.textGray,
-    marginTop: 6,
-  },
-  checkboxContainer: {
+  optionsContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginTop: 8,
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 24,
   },
+  rememberMeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   checkbox: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
+    width: 20,
+    height: 20,
+    borderRadius: 5,
     borderWidth: 2,
     borderColor: Colors.border,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
-    marginTop: 2,
+    marginRight: 8,
   },
   checkboxChecked: {
     backgroundColor: Colors.primary,
     borderColor: Colors.primary,
   },
-  checkboxText: {
-    flex: 1,
+  rememberMeText: {
     fontSize: 14,
     color: Colors.textDark,
-    lineHeight: 20,
   },
-  linkText: {
-    color: Colors.primary,
+  forgotPasswordText: {
+    fontSize: 14,
     fontWeight: '600',
+    color: Colors.primary,
   },
-  signUpButton: {
+  signInButton: {
     borderRadius: 12,
     overflow: 'hidden',
     shadowColor: '#000',
@@ -460,58 +397,95 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 6,
   },
-  signUpButtonDisabled: {
+  signInButtonDisabled: {
     opacity: 0.6,
   },
-  signUpButtonGradient: {
+  signInButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 16,
     gap: 8,
   },
-  signUpButtonText: {
+  signInButtonText: {
     fontSize: 18,
     fontWeight: '700',
     color: 'white',
   },
-  signInContainer: {
+  signUpContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 24,
   },
-  signInText: {
+  signUpText: {
     fontSize: 14,
     color: Colors.textGray,
   },
-  signInLink: {
+  signUpLink: {
     fontSize: 14,
     fontWeight: '600',
     color: Colors.primary,
   },
-  featuresContainer: {
-    marginTop: 32,
-    padding: 20,
-    backgroundColor: Colors.card,
-    borderRadius: 16,
-  },
-  featuresTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: Colors.textDark,
-    marginBottom: 16,
-  },
-  featureItem: {
+  divider: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginVertical: 32,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: Colors.border,
+  },
+  dividerText: {
+    fontSize: 14,
+    color: Colors.textGray,
+    marginHorizontal: 16,
+  },
+  socialContainer: {
+    flexDirection: 'row',
     gap: 12,
   },
-  featureText: {
+  socialButton: {
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.card,
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    gap: 8,
+  },
+  socialButtonText: {
     fontSize: 14,
+    fontWeight: '600',
     color: Colors.textDark,
+  },
+  securityNotice: {
+    flexDirection: 'row',
+    backgroundColor: Colors.success + '10',
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 32,
+    gap: 12,
+    borderWidth: 1,
+    borderColor: Colors.success + '30',
+  },
+  securityContent: {
+    flex: 1,
+  },
+  securityTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: Colors.textDark,
+    marginBottom: 4,
+  },
+  securityText: {
+    fontSize: 12,
+    color: Colors.textDark,
+    lineHeight: 18,
   },
 });
 

@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // Auth Screens
 import LanguageSelectionScreen from '../screens/Auth/LanguageSelectionScreen';
 import SignUpScreen from '../screens/Auth/SignUpScreen';
+import SignInScreen from '../screens/Auth/SignInScreen';
 
 // Main App
 import BottomTabNavigator from './BottomTabNavigator';
@@ -40,6 +41,7 @@ export default function RootNavigator() {
         {/* Auth Flow */}
         <Stack.Screen name="LanguageSelection" component={LanguageSelectionScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name="SignIn" component={SignInScreen} />
 
         {/* Main App */}
         <Stack.Screen name="MainTabs" component={BottomTabNavigator} />

@@ -30,10 +30,15 @@ const LANGUAGES: Language[] = [
 export default function LanguageSelectionScreen({ navigation }: any) {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
 
-  const handleContinue = () => {
+  const handleGetStarted = () => {
     // Save language preference and change i18n language
     i18n.changeLanguage(selectedLanguage);
     navigation.navigate('SignUp');
+  };
+
+  const handleSignIn = () => {
+    i18n.changeLanguage(selectedLanguage);
+    navigation.navigate('SignIn');
   };
 
   return (
@@ -84,14 +89,24 @@ export default function LanguageSelectionScreen({ navigation }: any) {
             </View>
           </View>
 
-          {/* Continue Button */}
-          <TouchableOpacity
-            style={styles.continueButton}
-            onPress={handleContinue}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.continueButtonText}>Get Started →</Text>
-          </TouchableOpacity>
+          {/* Action Buttons */}
+          <View style={styles.actionButtons}>
+            <TouchableOpacity
+              style={styles.signUpButton}
+              onPress={handleGetStarted}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.signUpButtonText}>Get Started</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              style={styles.signInButton}
+              onPress={handleSignIn}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.signInButtonText}>Already have an account? Sign In</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </LinearGradient>
     </SafeAreaView>
@@ -179,7 +194,10 @@ const styles = StyleSheet.create({
     color: Colors.coral,
     fontWeight: Typography.weights.semibold,
   },
-  continueButton: {
+  actionButtons: {
+    gap: Spacing.md,
+  },
+  signUpButton: {
     backgroundColor: 'rgba(212, 160, 23, 0.9)',
     borderRadius: BorderRadius.xxlarge,
     paddingVertical: Spacing.lg,
@@ -191,10 +209,24 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
   },
-  continueButtonText: {
+  signUpButtonText: {
     fontSize: Typography.sizes.large,
+    fontWeight: Typography.weights.bold,
+    color: '#FFFFFF',
+    textAlign: 'center',
+  },
+  signInButton: {
+    backgroundColor: 'transparent',
+    borderRadius: BorderRadius.xxlarge,
+    paddingVertical: Spacing.md,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.5)',
+  },
+  signInButtonText: {
+    fontSize: Typography.sizes.medium,
     fontWeight: Typography.weights.semibold,
     color: '#FFFFFF',
+    textAlign: 'center',
   },
 });
 
