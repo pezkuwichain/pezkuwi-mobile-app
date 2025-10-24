@@ -3,9 +3,19 @@
  * Handles all interactions with the PezkuwiChain blockchain via Polkadot.js
  */
 
-import { ApiPromise, WsProvider } from '@polkadot/api';
+import { Platform } from 'react-native';
 import { CURRENT_CHAIN_CONFIG, ASSET_IDS } from '../constants/blockchain';
 import { Balance, Transaction, Proposal } from '../types';
+
+// Only import Polkadot.js on native platforms (not web) to avoid import.meta issues
+let ApiPromise: any = null;
+let WsProvider: any = null;
+
+if (Platform.OS !== 'web') {
+  const polkadotApi = require('@polkadot/api');
+  ApiPromise = polkadotApi.ApiPromise;
+  WsProvider = polkadotApi.WsProvider;
+}
 
 class BlockchainService {
   private api: ApiPromise | null = null;
