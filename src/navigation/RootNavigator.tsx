@@ -17,6 +17,7 @@ import CitizenCardScreen from '../screens/Identity/CitizenCardScreen';
 import EducationScreen from '../screens/Education/EducationScreen';
 import BusinessScreen from '../screens/Business/BusinessScreen';
 import ExchangeScreen from '../screens/Exchange/ExchangeScreen';
+import ReferralScreen from '../screens/Referral/ReferralScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,7 @@ export default function RootNavigator() {
         <Stack.Screen name="Education" component={EducationScreen} />
         <Stack.Screen name="Business" component={BusinessScreen} />
         <Stack.Screen name="Exchange" component={ExchangeScreen} />
+        <Stack.Screen name="Referral" component={ReferralScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
