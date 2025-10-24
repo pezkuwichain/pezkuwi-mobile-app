@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import SendModal from '../../components/SendModal';
+import ReceiveModal from '../../components/ReceiveModal';
 import {
   View,
   Text,
@@ -24,6 +26,9 @@ interface CoinRow {
 
 export default function WalletScreen({ navigation, route }: any) {
   const [withdrawalAddresses, setWithdrawalAddresses] = useState<{ [key: string]: string }>({});
+  const [sendModalVisible, setSendModalVisible] = useState(false);
+  const [receiveModalVisible, setReceiveModalVisible] = useState(false);
+  const [selectedToken, setSelectedToken] = useState<CoinRow | null>(null);
   const [totalReward] = useState('50000');
   const [trustScore] = useState('150000');
   const [totalReferral] = useState('500');
@@ -50,17 +55,14 @@ export default function WalletScreen({ navigation, route }: any) {
     },
   ];
 
-  const handleWithdraw = (symbol: string) => {
-    const address = withdrawalAddresses[symbol];
-    if (!address) {
-      alert('Please enter withdrawal address');
-      return;
-    }
-    alert(`Withdrawing ${symbol} to ${address}`);
+  const handleWithdraw = (coin: CoinRow) => {
+    setSelectedToken(coin);
+    setSendModalVisible(true);
   };
 
-  const handleDeposit = (symbol: string) => {
-    navigation.navigate('Receive', { token: symbol });
+  const handleDeposit = (coin: CoinRow) => {
+    setSelectedToken(coin);
+    setReceiveModalVisible(true);
   };
 
   return (
@@ -141,7 +143,7 @@ export default function WalletScreen({ navigation, route }: any) {
                 <View style={[styles.cell, { flex: 1.5, flexDirection: 'row', gap: 8 }]}>
                   <TouchableOpacity
                     style={styles.actionButton}
-                    onPress={() => handleWithdraw(coin.symbol)}
+                    onPress={() => handleWithdraw(coin)}
                   >
                     <View style={styles.withdrawButton}>
                       <Ionicons name="arrow-down" size={20} color="#FFFFFF" />
@@ -150,7 +152,7 @@ export default function WalletScreen({ navigation, route }: any) {
 
                   <TouchableOpacity
                     style={styles.actionButton}
-                    onPress={() => handleDeposit(coin.symbol)}
+                    onPress={() => handleDeposit(coin)}
                   >
                     <View style={styles.depositButton}>
                       <Ionicons name="arrow-up" size={20} color="#FFFFFF" />
@@ -223,6 +225,35 @@ export default function WalletScreen({ navigation, route }: any) {
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      {/* Send Modal */}
+      {selectedToken && (
+        <SendModal
+          visible={sendModalVisible}
+          onClose={() => setSendModalVisible(false)}
+          token={{
+            symbol: selectedToken.symbol,
+            name: selectedToken.name,
+            balance: selectedToken.amount,
+            icon: selectedToken.icon,
+            color: selectedToken.color,
+          }}
+        />
+      )}
+
+      {/* Receive Modal */}
+      {selectedToken && (
+        <ReceiveModal
+          visible={receiveModalVisible}
+          onClose={() => setReceiveModalVisible(false)}
+          token={{
+            symbol: selectedToken.symbol,
+            name: selectedToken.name,
+            icon: selectedToken.icon,
+            color: selectedToken.color,
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 }
