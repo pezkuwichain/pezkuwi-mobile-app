@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Image,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -62,102 +63,153 @@ export default function CitizenCardScreen({ navigation }: any) {
     return date.toLocaleDateString('en-GB');
   };
 
-  const expiryDate = new Date(citizen.approvedAt);
-  expiryDate.setFullYear(expiryDate.getFullYear() + 2); // 2 years validity
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color={Colors.textDark} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Digital Citizen</Text>
+        <Text style={styles.headerTitle}>Digital Hemwelatî</Text>
         <TouchableOpacity style={styles.shareButton}>
           <Ionicons name="share-outline" size={24} color={Colors.textDark} />
         </TouchableOpacity>
       </View>
 
-      <View style={styles.content}>
-        {/* Citizen Card */}
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Official Citizen Card */}
         <View style={styles.card}>
-          {/* Kurdish Flag Header */}
-          <LinearGradient
-            colors={['#CE1126', '#FFFFFF', '#007A3D']}
-            style={styles.flagHeader}
-            locations={[0, 0.5, 1]}
-          >
-            <View style={styles.sunContainer}>
-              <Ionicons name="sunny" size={60} color="#EAB308" />
-            </View>
-          </LinearGradient>
+          {/* Burgundy Header */}
+          <View style={styles.cardHeader}>
+            <Text style={styles.headerText1}>KOMARA KURDISTANÊ</Text>
+            <Text style={styles.headerText2}>HEMWELATÎ</Text>
+          </View>
 
-          {/* Card Content */}
-          <View style={styles.cardContent}>
-            {/* Photo and Title */}
+          {/* Main Content - White Background */}
+          <View style={styles.cardBody}>
+            {/* Photo and Info Section */}
             <View style={styles.topSection}>
+              {/* Photo */}
               <View style={styles.photoContainer}>
                 {citizen.photo ? (
                   <Image source={{ uri: citizen.photo }} style={styles.photo} />
                 ) : (
                   <View style={styles.photoPlaceholder}>
-                    <Ionicons name="person" size={60} color={Colors.textGray} />
+                    <Ionicons name="person" size={50} color="#999" />
                   </View>
                 )}
               </View>
 
-              <View style={styles.titleContainer}>
-                <Text style={styles.cardTitle}>KURDISTAN</Text>
-                <Text style={styles.cardSubtitle}>DIGITAL CITIZEN</Text>
+              {/* Info List */}
+              <View style={styles.infoList}>
+                <View style={styles.infoRow}>
+                  <Text style={styles.infoLabel}>NAVÊ/NAME:</Text>
+                  <Text style={styles.infoValue}>{citizen.fullName}</Text>
+                </View>
+
+                {citizen.fatherName && (
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>BAV/FATHER'S NAME:</Text>
+                    <Text style={styles.infoValue}>{citizen.fatherName}</Text>
+                  </View>
+                )}
+
+                {citizen.grandfatherName && (
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>DAPÎR/GRANDFATHER:</Text>
+                    <Text style={styles.infoValue}>{citizen.grandfatherName}</Text>
+                  </View>
+                )}
+
+                {citizen.greatGrandfatherName && (
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>DAPÎRA BIRA/G.GRANDFATHER:</Text>
+                    <Text style={styles.infoValue}>{citizen.greatGrandfatherName}</Text>
+                  </View>
+                )}
+
+                {citizen.motherName && (
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>DAYÊ/MOTHER:</Text>
+                    <Text style={styles.infoValue}>{citizen.motherName}</Text>
+                  </View>
+                )}
+
+                <View style={styles.infoRow}>
+                  <Text style={styles.infoLabel}>ZEWICÎNÊ/MARITAL STATUS:</Text>
+                  <Text style={styles.infoValue}>
+                    {citizen.maritalStatus === 'married' ? 'Married' : 'Single'}
+                  </Text>
+                </View>
+
+                {citizen.maritalStatus === 'married' && citizen.spouseName && (
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>HEVJÎN/SPOUSE:</Text>
+                    <Text style={styles.infoValue}>{citizen.spouseName}</Text>
+                  </View>
+                )}
+
+                {citizen.children && citizen.children.length > 0 && (
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>ZAROK/CHILDREN:</Text>
+                    <Text style={styles.infoValue}>{citizen.children.length}</Text>
+                  </View>
+                )}
               </View>
             </View>
 
-            {/* Citizen Info */}
-            <View style={styles.infoSection}>
-              <Text style={styles.citizenName}>{citizen.fullName.toUpperCase()}</Text>
+            {/* PEZ Sun Logo */}
+            <View style={styles.sunContainer}>
+              <Ionicons name="sunny" size={80} color="#D4A017" />
+            </View>
 
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Citizen ID</Text>
-                <Text style={styles.infoValue}>{citizen.citizenId}</Text>
+            {/* Region and Citizen ID */}
+            <View style={styles.middleSection}>
+              <View style={styles.regionRow}>
+                <Text style={styles.regionLabel}>HERÊMA/REGION:</Text>
+                <Text style={styles.regionValue}>{REGION_LABELS[citizen.region].en}</Text>
               </View>
 
-              <View style={styles.infoRow}>
-                <Text style={styles.infoLabel}>Region</Text>
-                <Text style={styles.infoValue}>
-                  {REGION_LABELS[citizen.region].en}
-                </Text>
-              </View>
-
-              <View style={styles.bottomRow}>
-                <View style={styles.dateColumn}>
-                  <Text style={styles.dateLabel}>Issue date</Text>
-                  <Text style={styles.dateValue}>{formatDate(citizen.approvedAt)}</Text>
-                  <Text style={styles.dateLabel}>Expiry date</Text>
-                  <Text style={styles.dateValue}>{formatDate(expiryDate.getTime())}</Text>
-                </View>
-
-                <View style={styles.qrContainer}>
-                  <QRCode value={citizen.qrCode} size={80} />
-                </View>
+              <View style={styles.citizenIdRow}>
+                <Text style={styles.citizenIdLabel}>JIMARA HEMWELATÎ/CITIZEN ID</Text>
+                <Text style={styles.citizenIdValue}>{citizen.citizenId}</Text>
               </View>
             </View>
           </View>
 
-          {/* Watermark */}
-          <View style={styles.watermark}>
-            <Ionicons name="shield-checkmark" size={120} color="rgba(0,0,0,0.03)" />
+          {/* Green Footer */}
+          <View style={styles.cardFooter}>
+            <View style={styles.footerLeft}>
+              <View style={styles.footerRow}>
+                <Text style={styles.footerLabel}>NASNAMA DIJÎTAL/DIGITAL ID</Text>
+                <Text style={styles.footerValue}>{citizen.citizenId.replace(/-/g, '')}</Text>
+              </View>
+
+              <View style={styles.footerRow}>
+                <Text style={styles.footerLabel}>JIMARA VEKIRAN/ACCOUNT#:</Text>
+                <Text style={styles.footerValue}>{citizen.qrCode.substring(0, 12)}</Text>
+              </View>
+
+              <View style={styles.footerRow}>
+                <Text style={styles.footerLabel}>DAXWAZ/ISSUED:</Text>
+                <Text style={styles.footerValue}>{formatDate(citizen.approvedAt)}</Text>
+              </View>
+            </View>
+
+            <View style={styles.footerRight}>
+              <QRCode value={citizen.qrCode} size={70} backgroundColor="transparent" color="#FFFFFF" />
+            </View>
           </View>
         </View>
 
         {/* Status Badge */}
         <View style={styles.statusBadge}>
           <Ionicons name="checkmark-circle" size={24} color={Colors.mint} />
-          <Text style={styles.statusText}>Verified Citizen</Text>
+          <Text style={styles.statusText}>Verified Kurdistan Citizen</Text>
         </View>
 
         {/* Info Text */}
         <Text style={styles.infoText}>
-          This digital citizenship card grants you access to Governance (Welati) and other
-          citizen-only features on PezkuwiChain.
+          This official digital citizenship card grants you full access to Governance (Welati) and all citizen-only features on PezkuwiChain.
         </Text>
 
         {/* Action Buttons */}
@@ -177,7 +229,7 @@ export default function CitizenCardScreen({ navigation }: any) {
             <Text style={styles.actionText}>Share</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -227,29 +279,39 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     ...Shadow.medium,
   },
-  flagHeader: {
-    height: 120,
-    justifyContent: 'center',
+  cardHeader: {
+    backgroundColor: '#8B1538', // Burgundy
+    paddingVertical: Spacing.xl,
     alignItems: 'center',
   },
-  sunContainer: {
-    position: 'absolute',
+  headerText1: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#D4A017', // Gold
+    letterSpacing: 1,
   },
-  cardContent: {
-    padding: Spacing.xl,
+  headerText2: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 2,
+    marginTop: 4,
+  },
+  cardBody: {
+    backgroundColor: '#FFFFFF',
+    padding: Spacing.lg,
   },
   topSection: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: Spacing.xl,
+    marginBottom: Spacing.md,
   },
   photoContainer: {
     width: 100,
     height: 100,
     borderRadius: 50,
     overflow: 'hidden',
-    backgroundColor: '#F0F0F0',
-    marginRight: Spacing.lg,
+    backgroundColor: '#D0D0D0',
+    marginRight: Spacing.md,
   },
   photo: {
     width: '100%',
@@ -260,75 +322,85 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '#D0D0D0',
   },
-  titleContainer: {
+  infoList: {
     flex: 1,
-  },
-  cardTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: Colors.textDark,
-    letterSpacing: 1,
-  },
-  cardSubtitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.textGray,
-    letterSpacing: 0.5,
-  },
-  infoSection: {
-    marginTop: Spacing.md,
-  },
-  citizenName: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: Colors.textDark,
-    marginBottom: Spacing.lg,
-    letterSpacing: 1,
   },
   infoRow: {
-    marginBottom: Spacing.md,
+    marginBottom: 6,
   },
   infoLabel: {
-    fontSize: Typography.sizes.small,
-    color: Colors.textGray,
-    marginBottom: 4,
+    fontSize: 9,
+    fontWeight: '600',
+    color: '#333',
+    letterSpacing: 0.3,
   },
   infoValue: {
-    fontSize: Typography.sizes.medium,
-    fontWeight: Typography.weights.semibold,
-    color: Colors.textDark,
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#000',
   },
-  bottomRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    marginTop: Spacing.xl,
+  sunContainer: {
+    alignItems: 'center',
+    marginVertical: Spacing.md,
   },
-  dateColumn: {
-    flex: 1,
-  },
-  dateLabel: {
-    fontSize: Typography.sizes.tiny,
-    color: Colors.textGray,
+  middleSection: {
     marginTop: Spacing.sm,
   },
-  dateValue: {
-    fontSize: Typography.sizes.small,
-    fontWeight: Typography.weights.medium,
-    color: Colors.textDark,
+  regionRow: {
+    marginBottom: Spacing.sm,
   },
-  qrContainer: {
-    padding: Spacing.sm,
-    backgroundColor: '#FFFFFF',
-    borderRadius: BorderRadius.small,
+  regionLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#333',
   },
-  watermark: {
-    position: 'absolute',
-    right: 20,
-    top: '50%',
-    transform: [{ translateY: -60 }],
+  regionValue: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#000',
+  },
+  citizenIdRow: {
+    marginTop: Spacing.sm,
+  },
+  citizenIdLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#333',
+  },
+  citizenIdValue: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#000',
+    letterSpacing: 1,
+  },
+  cardFooter: {
+    backgroundColor: '#007A3D', // Green
+    flexDirection: 'row',
+    padding: Spacing.lg,
+    justifyContent: 'space-between',
+  },
+  footerLeft: {
+    flex: 1,
+  },
+  footerRow: {
+    marginBottom: 6,
+  },
+  footerLabel: {
+    fontSize: 9,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    opacity: 0.9,
+  },
+  footerValue: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#D4A017', // Gold
+  },
+  footerRight: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   statusBadge: {
     flexDirection: 'row',
@@ -356,6 +428,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: Spacing.xl,
+    marginBottom: Spacing.xl,
   },
   actionButton: {
     alignItems: 'center',
