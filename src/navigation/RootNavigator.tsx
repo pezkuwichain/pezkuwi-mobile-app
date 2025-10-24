@@ -9,8 +9,11 @@ import SignUpScreen from '../screens/Auth/SignUpScreen';
 // Main App
 import BottomTabNavigator from './BottomTabNavigator';
 
+// Identity & KYC Screens
+import IdentityKYCFormScreen from '../screens/Identity/IdentityKYCFormScreen';
+import CitizenCardScreen from '../screens/Identity/CitizenCardScreen';
+
 // Additional Screens
-import IdentityScreen from '../screens/Identity/IdentityScreen';
 import EducationScreen from '../screens/Education/EducationScreen';
 import BusinessScreen from '../screens/Business/BusinessScreen';
 import ExchangeScreen from '../screens/Exchange/ExchangeScreen';
@@ -33,8 +36,11 @@ export default function RootNavigator() {
         {/* Main App */}
         <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
 
+        {/* Identity & KYC */}
+        <Stack.Screen name="IdentityKYCForm" component={IdentityKYCFormScreen} />
+        <Stack.Screen name="CitizenCard" component={CitizenCardScreen} />
+
         {/* Additional Screens */}
-        <Stack.Screen name="Identity" component={IdentityScreen} />
         <Stack.Screen name="Education" component={EducationScreen} />
         <Stack.Screen name="Business" component={BusinessScreen} />
         <Stack.Screen name="Exchange" component={ExchangeScreen} />
@@ -42,4 +48,3 @@ export default function RootNavigator() {
     </NavigationContainer>
   );
 }
-
