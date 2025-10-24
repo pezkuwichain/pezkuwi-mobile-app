@@ -18,6 +18,10 @@ import EducationScreen from '../screens/Education/EducationScreen';
 import BusinessScreen from '../screens/Business/BusinessScreen';
 import ExchangeScreen from '../screens/Exchange/ExchangeScreen';
 import ReferralScreen from '../screens/Referral/ReferralScreen';
+import QRScannerScreen from '../screens/Home/QRScannerScreen';
+import NotificationsScreen from '../screens/Home/NotificationsScreen';
+import RewardsScreen from '../screens/Rewards/RewardsScreen';
+import TrustScoreScreen from '../screens/Profile/TrustScoreScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +50,10 @@ export default function RootNavigator() {
         <Stack.Screen name="Business" component={BusinessScreen} />
         <Stack.Screen name="Exchange" component={ExchangeScreen} />
         <Stack.Screen name="Referral" component={ReferralScreen} />
+        <Stack.Screen name="QRScanner" component={QRScannerScreen} />
+        <Stack.Screen name="Notifications" component={NotificationsScreen} />
+        <Stack.Screen name="Rewards" component={RewardsScreen} />
+        <Stack.Screen name="TrustScore" component={TrustScoreScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,0 +1,106 @@
+{
+  "welcome": {
+    "title": "به پزکووی چین خوش آمدید",
+    "subtitle": "پلتفرم بلاکچین کردستان دیجیتال",
+    "selectLanguage": "زبان خود را انتخاب کنید"
+  },
+  "auth": {
+    "signUp": "ثبت نام",
+    "signIn": "ورود",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "confirmPassword": "تأیید رمز عبور",
+    "fullName": "نام کامل",
+    "agreeToTerms": "شرایط و ضوابط را می‌پذیرم",
+    "createAccount": "ایجاد حساب",
+    "alreadyHaveAccount": "قبلاً حساب دارید؟",
+    "dontHaveAccount": "حساب ندارید؟"
+  },
+  "home": {
+    "title": "خانه",
+    "totalBalance": "موجودی کل",
+    "trustScore": "امتیاز اعتماد",
+    "quickActions": "اقدامات سریع"
+  },
+  "quickActions": {
+    "send": "ارسال",
+    "receive": "دریافت",
+    "vote": "رأی",
+    "proposals": "پیشنهادات",
+    "identity": "هویت",
+    "certificates": "گواهینامه‌ها",
+    "exchange": "تبادل",
+    "rewards": "پاداش‌ها",
+    "trust": "اعتماد"
+  },
+  "wallet": {
+    "title": "کیف پول",
+    "send": "ارسال",
+    "receive": "دریافت",
+    "withdraw": "برداشت",
+    "deposit": "واریز",
+    "transactionHistory": "تاریخچه تراکنش‌ها"
+  },
+  "governance": {
+    "title": "حکومت",
+    "vote": "رأی",
+    "proposals": "پیشنهادات",
+    "ministries": "وزارتخانه‌ها",
+    "parliament": "پارلمان"
+  },
+  "identity": {
+    "title": "هویت",
+    "kyc": "تأیید هویت",
+    "citizenCard": "کارت شهروندی",
+    "verified": "تأیید شده"
+  },
+  "education": {
+    "title": "آموزش",
+    "certificates": "گواهینامه‌ها",
+    "learningPaths": "مسیرهای یادگیری"
+  },
+  "referral": {
+    "title": "برنامه معرفی",
+    "yourCode": "کد معرفی شما",
+    "totalReferrals": "کل معرفی‌ها",
+    "activeReferrals": "معرفی‌های فعال",
+    "totalRewards": "کل پاداش‌ها",
+    "pendingRewards": "پاداش‌های در انتظار"
+  },
+  "business": {
+    "title": "مرکز کسب‌وکار",
+    "merchantCenter": "مرکز پرداخت بازرگانی",
+    "generateQR": "ایجاد QR",
+    "createInvoice": "ایجاد فاکتور",
+    "analytics": "تحلیل‌ها"
+  },
+  "exchange": {
+    "title": "صرافی",
+    "swap": "تبادل توکن‌ها",
+    "from": "از",
+    "to": "به",
+    "rate": "نرخ",
+    "slippage": "تحمل لغزش"
+  },
+  "profile": {
+    "title": "پروفایل",
+    "settings": "تنظیمات",
+    "security": "امنیت",
+    "preferences": "ترجیحات",
+    "support": "پشتیبانی"
+  },
+  "common": {
+    "continue": "ادامه",
+    "cancel": "لغو",
+    "confirm": "تأیید",
+    "save": "ذخیره",
+    "close": "بستن",
+    "copy": "کپی",
+    "share": "اشتراک",
+    "done": "انجام شد",
+    "loading": "در حال بارگذاری...",
+    "error": "خطا",
+    "success": "موفق"
+  }
+}
+

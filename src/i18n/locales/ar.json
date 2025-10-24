@@ -1,0 +1,106 @@
+{
+  "welcome": {
+    "title": "مرحباً بك في بيزكووي تشين",
+    "subtitle": "منصة البلوكتشين لكردستان الرقمية",
+    "selectLanguage": "اختر لغتك"
+  },
+  "auth": {
+    "signUp": "التسجيل",
+    "signIn": "تسجيل الدخول",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "fullName": "الاسم الكامل",
+    "agreeToTerms": "أوافق على الشروط والأحكام",
+    "createAccount": "إنشاء حساب",
+    "alreadyHaveAccount": "هل لديك حساب بالفعل؟",
+    "dontHaveAccount": "ليس لديك حساب؟"
+  },
+  "home": {
+    "title": "الرئيسية",
+    "totalBalance": "الرصيد الإجمالي",
+    "trustScore": "نقاط الثقة",
+    "quickActions": "الإجراءات السريعة"
+  },
+  "quickActions": {
+    "send": "إرسال",
+    "receive": "استقبال",
+    "vote": "تصويت",
+    "proposals": "المقترحات",
+    "identity": "الهوية",
+    "certificates": "الشهادات",
+    "exchange": "التبادل",
+    "rewards": "المكافآت",
+    "trust": "الثقة"
+  },
+  "wallet": {
+    "title": "المحفظة",
+    "send": "إرسال",
+    "receive": "استقبال",
+    "withdraw": "سحب",
+    "deposit": "إيداع",
+    "transactionHistory": "سجل المعاملات"
+  },
+  "governance": {
+    "title": "الحوكمة",
+    "vote": "تصويت",
+    "proposals": "المقترحات",
+    "ministries": "الوزارات",
+    "parliament": "البرلمان"
+  },
+  "identity": {
+    "title": "الهوية",
+    "kyc": "التحقق من الهوية",
+    "citizenCard": "بطاقة المواطن",
+    "verified": "تم التحقق"
+  },
+  "education": {
+    "title": "التعليم",
+    "certificates": "الشهادات",
+    "learningPaths": "مسارات التعلم"
+  },
+  "referral": {
+    "title": "برنامج الإحالة",
+    "yourCode": "رمز الإحالة الخاص بك",
+    "totalReferrals": "إجمالي الإحالات",
+    "activeReferrals": "الإحالات النشطة",
+    "totalRewards": "إجمالي المكافآت",
+    "pendingRewards": "المكافآت المعلقة"
+  },
+  "business": {
+    "title": "مركز الأعمال",
+    "merchantCenter": "مركز الدفع التجاري",
+    "generateQR": "إنشاء QR",
+    "createInvoice": "إنشاء فاتورة",
+    "analytics": "التحليلات"
+  },
+  "exchange": {
+    "title": "التبادل",
+    "swap": "تبديل الرموز",
+    "from": "من",
+    "to": "إلى",
+    "rate": "السعر",
+    "slippage": "تحمل الانزلاق"
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "security": "الأمان",
+    "preferences": "التفضيلات",
+    "support": "الدعم"
+  },
+  "common": {
+    "continue": "متابعة",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "save": "حفظ",
+    "close": "إغلاق",
+    "copy": "نسخ",
+    "share": "مشاركة",
+    "done": "تم",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجح"
+  }
+}
+

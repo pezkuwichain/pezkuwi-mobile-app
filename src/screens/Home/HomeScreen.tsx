@@ -61,14 +61,14 @@ export default function HomeScreen({ navigation }: any) {
       label: 'Send',
       icon: 'arrow-forward',
       color: Colors.coral,
-      onPress: () => navigation.navigate('Send', { token: 'HEZ' }),
+      onPress: () => navigation.navigate('Wallet', { action: 'send' }),
     },
     {
       id: 'receive',
       label: 'Receive',
       icon: 'arrow-down',
       color: Colors.blue,
-      onPress: () => navigation.navigate('Receive', { token: 'HEZ' }),
+      onPress: () => navigation.navigate('Wallet', { action: 'receive' }),
     },
     {
       id: 'vote',
@@ -110,14 +110,14 @@ export default function HomeScreen({ navigation }: any) {
       label: 'Rewards',
       icon: 'star',
       color: Colors.lavender,
-      onPress: () => navigation.navigate('Wallet'),
+      onPress: () => navigation.navigate('Rewards'),
     },
     {
       id: 'trust',
       label: 'Trust',
       icon: 'heart',
       color: Colors.emerald,
-      onPress: () => navigation.navigate('Profile'),
+      onPress: () => navigation.navigate('TrustScore'),
     },
   ];
 

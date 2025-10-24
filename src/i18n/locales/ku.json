@@ -1,0 +1,106 @@
+{
+  "welcome": {
+    "title": "بەخێربێیت بۆ پێزکووی چەین",
+    "subtitle": "پلاتفۆرمی بلۆکچەینی کوردستانی دیجیتاڵ",
+    "selectLanguage": "زمانەکەت هەڵبژێرە"
+  },
+  "auth": {
+    "signUp": "تۆمارکردن",
+    "signIn": "چوونەژوورەوە",
+    "email": "ئیمەیڵ",
+    "password": "وشەی نهێنی",
+    "confirmPassword": "دڵنیاکردنەوەی وشەی نهێنی",
+    "fullName": "ناوی تەواو",
+    "agreeToTerms": "ڕازیم بە مەرج و ڕێساکان",
+    "createAccount": "دروستکردنی هەژمار",
+    "alreadyHaveAccount": "پێشتر هەژمارت هەیە؟",
+    "dontHaveAccount": "هەژمارت نییە؟"
+  },
+  "home": {
+    "title": "سەرەکی",
+    "totalBalance": "کۆی گشتی",
+    "trustScore": "خاڵی متمانە",
+    "quickActions": "کردارە خێراکان"
+  },
+  "quickActions": {
+    "send": "ناردن",
+    "receive": "وەرگرتن",
+    "vote": "دەنگدان",
+    "proposals": "پێشنیارەکان",
+    "identity": "ناسنامە",
+    "certificates": "بڕوانامەکان",
+    "exchange": "گۆڕین",
+    "rewards": "خەڵاتەکان",
+    "trust": "متمانە"
+  },
+  "wallet": {
+    "title": "جزدان",
+    "send": "ناردن",
+    "receive": "وەرگرتن",
+    "withdraw": "دەرهێنان",
+    "deposit": "خستنەژوور",
+    "transactionHistory": "مێژووی مامەڵەکان"
+  },
+  "governance": {
+    "title": "وەلاتی",
+    "vote": "دەنگدان",
+    "proposals": "پێشنیارەکان",
+    "ministries": "وەزارەتەکان",
+    "parliament": "پەرلەمان"
+  },
+  "identity": {
+    "title": "ناسنامە",
+    "kyc": "پشتڕاستکردنەوەی ناسنامە",
+    "citizenCard": "کارتی هەموەڵاتی",
+    "verified": "پشتڕاستکراوە"
+  },
+  "education": {
+    "title": "پەروەردە",
+    "certificates": "بڕوانامەکان",
+    "learningPaths": "ڕێگاکانی فێربوون"
+  },
+  "referral": {
+    "title": "بەرنامەی ئاماژەپێدان",
+    "yourCode": "کۆدی ئاماژەپێدانی تۆ",
+    "totalReferrals": "کۆی ئاماژەپێدانەکان",
+    "activeReferrals": "ئاماژەپێدانە چالاکەکان",
+    "totalRewards": "کۆی خەڵاتەکان",
+    "pendingRewards": "خەڵاتە چاوەڕوانەکان"
+  },
+  "business": {
+    "title": "ناوەندی بازرگانی",
+    "merchantCenter": "ناوەندی پارەدانی بازرگان",
+    "generateQR": "دروستکردنی QR",
+    "createInvoice": "دروستکردنی وەسڵ",
+    "analytics": "شیکاری"
+  },
+  "exchange": {
+    "title": "گۆڕین",
+    "swap": "گۆڕینی تۆکنەکان",
+    "from": "لە",
+    "to": "بۆ",
+    "rate": "نرخ",
+    "slippage": "ڕێگەپێدانی خلیسکان"
+  },
+  "profile": {
+    "title": "پرۆفایل",
+    "settings": "ڕێکخستنەکان",
+    "security": "پاراستن",
+    "preferences": "هەڵبژاردنەکان",
+    "support": "پشتگیری"
+  },
+  "common": {
+    "continue": "بەردەوامبوون",
+    "cancel": "هەڵوەشاندنەوە",
+    "confirm": "دڵنیاکردنەوە",
+    "save": "پاشەکەوتکردن",
+    "close": "داخستن",
+    "copy": "کۆپیکردن",
+    "share": "هاوبەشکردن",
+    "done": "تەواو",
+    "loading": "بارکردن...",
+    "error": "هەڵە",
+    "success": "سەرکەوتوو"
+  }
+}
+

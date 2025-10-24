@@ -10,6 +10,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '../../constants/colors';
 import { Typography, Spacing, BorderRadius } from '../../constants/theme';
+import i18n from '../../i18n';
 
 interface Language {
   code: string;
@@ -30,8 +31,8 @@ export default function LanguageSelectionScreen({ navigation }: any) {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
 
   const handleContinue = () => {
-    // Save language preference
-    // TODO: Implement i18n language switching
+    // Save language preference and change i18n language
+    i18n.changeLanguage(selectedLanguage);
     navigation.navigate('SignUp');
   };
 

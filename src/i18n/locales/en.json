@@ -1,0 +1,106 @@
+{
+  "welcome": {
+    "title": "Welcome to PezkuwiChain",
+    "subtitle": "Digital Kurdistan's Blockchain Platform",
+    "selectLanguage": "Select Your Language"
+  },
+  "auth": {
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "fullName": "Full Name",
+    "agreeToTerms": "I agree to Terms & Conditions",
+    "createAccount": "Create Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?"
+  },
+  "home": {
+    "title": "Home",
+    "totalBalance": "Total Balance",
+    "trustScore": "Trust Score",
+    "quickActions": "Quick Actions"
+  },
+  "quickActions": {
+    "send": "Send",
+    "receive": "Receive",
+    "vote": "Vote",
+    "proposals": "Proposals",
+    "identity": "Identity",
+    "certificates": "Certificates",
+    "exchange": "Exchange",
+    "rewards": "Rewards",
+    "trust": "Trust"
+  },
+  "wallet": {
+    "title": "Wallet",
+    "send": "Send",
+    "receive": "Receive",
+    "withdraw": "Withdraw",
+    "deposit": "Deposit",
+    "transactionHistory": "Transaction History"
+  },
+  "governance": {
+    "title": "Governance",
+    "vote": "Vote",
+    "proposals": "Proposals",
+    "ministries": "Ministries",
+    "parliament": "Parliament"
+  },
+  "identity": {
+    "title": "Identity",
+    "kyc": "KYC Verification",
+    "citizenCard": "Citizen Card",
+    "verified": "Verified"
+  },
+  "education": {
+    "title": "Education",
+    "certificates": "Certificates",
+    "learningPaths": "Learning Paths"
+  },
+  "referral": {
+    "title": "Referral Program",
+    "yourCode": "Your Referral Code",
+    "totalReferrals": "Total Referrals",
+    "activeReferrals": "Active Referrals",
+    "totalRewards": "Total Rewards",
+    "pendingRewards": "Pending Rewards"
+  },
+  "business": {
+    "title": "Business Hub",
+    "merchantCenter": "Merchant Payment Center",
+    "generateQR": "Generate QR",
+    "createInvoice": "Create Invoice",
+    "analytics": "Analytics"
+  },
+  "exchange": {
+    "title": "Exchange",
+    "swap": "Swap Tokens",
+    "from": "From",
+    "to": "To",
+    "rate": "Rate",
+    "slippage": "Slippage Tolerance"
+  },
+  "profile": {
+    "title": "Profile",
+    "settings": "Settings",
+    "security": "Security",
+    "preferences": "Preferences",
+    "support": "Support"
+  },
+  "common": {
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "close": "Close",
+    "copy": "Copy",
+    "share": "Share",
+    "done": "Done",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  }
+}
+

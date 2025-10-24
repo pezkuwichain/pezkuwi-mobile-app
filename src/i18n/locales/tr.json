@@ -1,0 +1,106 @@
+{
+  "welcome": {
+    "title": "PezkuwiChain'e Hoş Geldiniz",
+    "subtitle": "Dijital Kürdistan'ın Blockchain Platformu",
+    "selectLanguage": "Dilinizi Seçin"
+  },
+  "auth": {
+    "signUp": "Kayıt Ol",
+    "signIn": "Giriş Yap",
+    "email": "E-posta",
+    "password": "Şifre",
+    "confirmPassword": "Şifreyi Onayla",
+    "fullName": "Ad Soyad",
+    "agreeToTerms": "Şartlar ve Koşulları kabul ediyorum",
+    "createAccount": "Hesap Oluştur",
+    "alreadyHaveAccount": "Zaten hesabınız var mı?",
+    "dontHaveAccount": "Hesabınız yok mu?"
+  },
+  "home": {
+    "title": "Ana Sayfa",
+    "totalBalance": "Toplam Bakiye",
+    "trustScore": "Güven Puanı",
+    "quickActions": "Hızlı İşlemler"
+  },
+  "quickActions": {
+    "send": "Gönder",
+    "receive": "Al",
+    "vote": "Oy Ver",
+    "proposals": "Teklifler",
+    "identity": "Kimlik",
+    "certificates": "Sertifikalar",
+    "exchange": "Değiş Tokuş",
+    "rewards": "Ödüller",
+    "trust": "Güven"
+  },
+  "wallet": {
+    "title": "Cüzdan",
+    "send": "Gönder",
+    "receive": "Al",
+    "withdraw": "Çek",
+    "deposit": "Yatır",
+    "transactionHistory": "İşlem Geçmişi"
+  },
+  "governance": {
+    "title": "Yönetişim",
+    "vote": "Oy Ver",
+    "proposals": "Teklifler",
+    "ministries": "Bakanlıklar",
+    "parliament": "Parlamento"
+  },
+  "identity": {
+    "title": "Kimlik",
+    "kyc": "KYC Doğrulama",
+    "citizenCard": "Vatandaşlık Kartı",
+    "verified": "Doğrulandı"
+  },
+  "education": {
+    "title": "Eğitim",
+    "certificates": "Sertifikalar",
+    "learningPaths": "Öğrenme Yolları"
+  },
+  "referral": {
+    "title": "Tavsiye Programı",
+    "yourCode": "Tavsiye Kodunuz",
+    "totalReferrals": "Toplam Tavsiyeler",
+    "activeReferrals": "Aktif Tavsiyeler",
+    "totalRewards": "Toplam Ödüller",
+    "pendingRewards": "Bekleyen Ödüller"
+  },
+  "business": {
+    "title": "İş Merkezi",
+    "merchantCenter": "Ticari Ödeme Merkezi",
+    "generateQR": "QR Oluştur",
+    "createInvoice": "Fatura Oluştur",
+    "analytics": "Analitik"
+  },
+  "exchange": {
+    "title": "Borsa",
+    "swap": "Token Değiştir",
+    "from": "Gönderen",
+    "to": "Alan",
+    "rate": "Oran",
+    "slippage": "Kayma Toleransı"
+  },
+  "profile": {
+    "title": "Profil",
+    "settings": "Ayarlar",
+    "security": "Güvenlik",
+    "preferences": "Tercihler",
+    "support": "Destek"
+  },
+  "common": {
+    "continue": "Devam Et",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "save": "Kaydet",
+    "close": "Kapat",
+    "copy": "Kopyala",
+    "share": "Paylaş",
+    "done": "Tamam",
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı"
+  }
+}
+
