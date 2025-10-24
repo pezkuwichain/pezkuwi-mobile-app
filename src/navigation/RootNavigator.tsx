@@ -48,3 +48,5 @@ export default function RootNavigator() {
     </NavigationContainer>
   );
 }
+
+// Add Ministries screen to imports and stack

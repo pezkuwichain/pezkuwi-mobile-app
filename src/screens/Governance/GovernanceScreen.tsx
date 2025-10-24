@@ -13,13 +13,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../constants/colors';
 import { Typography, Spacing, BorderRadius, Shadow } from '../../constants/theme';
 
-interface Ministry {
+interface GovernanceService {
   id: string;
   name: string;
   nameKu: string;
   icon: keyof typeof Ionicons.glyphMap;
   color: string;
   description: string;
+  route?: string;
 }
 
 export default function GovernanceScreen({ navigation }: any) {
@@ -48,7 +49,8 @@ export default function GovernanceScreen({ navigation }: any) {
     }
   };
 
-  const ministries: Ministry[] = [
+  // Main governance services (not ministries)
+  const services: GovernanceService[] = [
     {
       id: 'presidency',
       name: 'Presidency',
@@ -63,7 +65,7 @@ export default function GovernanceScreen({ navigation }: any) {
       nameKu: 'Meclîs',
       icon: 'people',
       color: '#3498DB',
-      description: 'Legislative Assembly',
+      description: 'Legislative Assembly - 201 MPs',
     },
     {
       id: 'ministries',
@@ -71,7 +73,8 @@ export default function GovernanceScreen({ navigation }: any) {
       nameKu: 'Wezaretî',
       icon: 'briefcase',
       color: '#9B59B6',
-      description: 'Cabinet Ministries',
+      description: 'All Cabinet Ministries',
+      route: 'Ministries',
     },
     {
       id: 'voting',
@@ -79,95 +82,23 @@ export default function GovernanceScreen({ navigation }: any) {
       nameKu: 'Dengdan',
       icon: 'checkmark-circle',
       color: '#1ABC9C',
-      description: 'Proposals & Voting',
+      description: 'Proposals & Democratic Voting',
     },
     {
-      id: 'finance',
-      name: 'Finance',
-      nameKu: 'Maliye',
-      icon: 'cash',
-      color: '#F39C12',
-      description: 'Treasury & Budget',
-    },
-    {
-      id: 'justice',
-      name: 'Justice',
-      nameKu: 'Adalet',
-      icon: 'scale',
-      color: '#34495E',
-      description: 'Legal System',
-    },
-    {
-      id: 'health',
-      name: 'Health',
-      nameKu: 'Tenduristî',
-      icon: 'medical',
-      color: '#E91E63',
-      description: 'Healthcare Services',
-    },
-    {
-      id: 'education',
-      name: 'Education',
-      nameKu: 'Perwerde',
-      icon: 'school',
-      color: '#5C6BC0',
-      description: 'Education System',
-    },
-    {
-      id: 'commerce',
-      name: 'Commerce',
-      nameKu: 'Bazirganî',
-      icon: 'cart',
+      id: 'p2p',
+      name: 'P2P Services',
+      nameKu: 'Karûbarên P2P',
+      icon: 'people-circle',
       color: '#26A69A',
-      description: 'Trade & Business',
+      description: 'Peer-to-Peer Transactions',
     },
     {
-      id: 'media',
-      name: 'Media',
-      nameKu: 'Medya',
-      icon: 'newspaper',
+      id: 'b2b',
+      name: 'B2B Services',
+      nameKu: 'Karûbarên B2B',
+      icon: 'business-outline',
       color: '#FF9800',
-      description: 'Press & Communications',
-    },
-    {
-      id: 'culture',
-      name: 'Culture & Arts',
-      nameKu: 'Çand û Huner',
-      icon: 'color-palette',
-      color: '#EC407A',
-      description: 'Cultural Heritage',
-    },
-    {
-      id: 'tourism',
-      name: 'Tourism',
-      nameKu: 'Gerîyan',
-      icon: 'airplane',
-      color: '#00ACC1',
-      description: 'Tourism Development',
-    },
-    {
-      id: 'foreign',
-      name: 'Foreign Affairs',
-      nameKu: 'Karûbarên Derve',
-      icon: 'globe',
-      color: '#7E57C2',
-      description: 'International Relations',
-    },
-    {
-      id: 'interior',
-      name: 'Interior',
-      nameKu: 'Karûbarên Navxwe',
-      icon: 'shield',
-      color: '#8D6E63',
-      description: 'Internal Security',
-    },
-    {
-      id: 'defense',
-      name: 'Defense',
-      nameKu: 'Bergiranî',
-      icon: 'shield-checkmark',
-      color: '#455A64',
-      description: 'National Defense',
+      description: 'Business-to-Business Platform',
     },
     {
       id: 'digital',
@@ -175,7 +106,7 @@ export default function GovernanceScreen({ navigation }: any) {
       nameKu: 'Binyata Dîjîtal',
       icon: 'server',
       color: '#26C6DA',
-      description: 'Technology & Innovation',
+      description: 'Technology & Innovation Hub',
     },
     {
       id: 'citizenship',
@@ -183,19 +114,43 @@ export default function GovernanceScreen({ navigation }: any) {
       nameKu: 'Karûbarên Hemwelatî',
       icon: 'card',
       color: '#66BB6A',
-      description: 'Identity & Registration',
+      description: 'Identity & Registration Services',
     },
     {
-      id: 'agriculture',
-      name: 'Agriculture',
-      nameKu: 'Çandinî',
-      icon: 'leaf',
-      color: '#8BC34A',
-      description: 'Farming & Food Security',
+      id: 'treasury',
+      name: 'Public Treasury',
+      nameKu: 'Xizêneya Giştî',
+      icon: 'wallet',
+      color: '#F39C12',
+      description: 'National Budget & Spending',
+    },
+    {
+      id: 'judiciary',
+      name: 'Judiciary',
+      nameKu: 'Dadwerî',
+      icon: 'scale',
+      color: '#34495E',
+      description: 'Court System & Justice',
+    },
+    {
+      id: 'elections',
+      name: 'Elections',
+      nameKu: 'Hilbijartinî',
+      icon: 'ballot',
+      color: '#5C6BC0',
+      description: 'Electoral Commission',
+    },
+    {
+      id: 'ombudsman',
+      name: 'Ombudsman',
+      nameKu: 'Parêzerê Mafan',
+      icon: 'shield-checkmark',
+      color: '#EC407A',
+      description: 'Citizens Rights Protection',
     },
   ];
 
-  const handleMinistryPress = (ministry: Ministry) => {
+  const handleServicePress = (service: GovernanceService) => {
     if (!isHemwelati) {
       Alert.alert(
         'Access Restricted',
@@ -211,10 +166,16 @@ export default function GovernanceScreen({ navigation }: any) {
       return;
     }
 
-    // Navigate to ministry detail screen
+    // Navigate to specific route if available
+    if (service.route) {
+      navigation.navigate(service.route);
+      return;
+    }
+
+    // Show placeholder for other services
     Alert.alert(
-      ministry.name,
-      `${ministry.nameKu}\n\n${ministry.description}\n\nThis feature is under development.`,
+      service.name,
+      `${service.nameKu}\n\n${service.description}\n\nThis feature is under development.`,
       [{ text: 'OK' }]
     );
   };
@@ -274,20 +235,20 @@ export default function GovernanceScreen({ navigation }: any) {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Ministries Grid */}
+        {/* Services Grid */}
         <View style={styles.grid}>
-          {ministries.map((ministry) => (
+          {services.map((service) => (
             <TouchableOpacity
-              key={ministry.id}
-              style={styles.ministryCard}
-              onPress={() => handleMinistryPress(ministry)}
+              key={service.id}
+              style={styles.serviceCard}
+              onPress={() => handleServicePress(service)}
               activeOpacity={0.7}
             >
-              <View style={[styles.iconContainer, { backgroundColor: ministry.color }]}>
-                <Ionicons name={ministry.icon} size={32} color="#FFFFFF" />
+              <View style={[styles.iconContainer, { backgroundColor: service.color }]}>
+                <Ionicons name={service.icon} size={32} color="#FFFFFF" />
               </View>
-              <Text style={styles.ministryName}>{ministry.name}</Text>
-              <Text style={styles.ministryNameKu}>{ministry.nameKu}</Text>
+              <Text style={styles.serviceName}>{service.name}</Text>
+              <Text style={styles.serviceNameKu}>{service.nameKu}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -406,7 +367,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     padding: Spacing.md,
   },
-  ministryCard: {
+  serviceCard: {
     width: '31%',
     marginHorizontal: '1%',
     marginBottom: Spacing.lg,
@@ -424,14 +385,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: Spacing.sm,
   },
-  ministryName: {
+  serviceName: {
     fontSize: Typography.sizes.xs,
     fontWeight: Typography.weights.semibold,
     color: Colors.textDark,
     textAlign: 'center',
     marginBottom: Spacing.xs,
   },
-  ministryNameKu: {
+  serviceNameKu: {
     fontSize: Typography.sizes.xs,
     color: Colors.textLight,
     textAlign: 'center',
