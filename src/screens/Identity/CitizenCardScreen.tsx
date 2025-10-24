@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
 import Colors from '../../constants/colors';
@@ -102,55 +101,55 @@ export default function CitizenCardScreen({ navigation }: any) {
               {/* Info List */}
               <View style={styles.infoList}>
                 <View style={styles.infoRow}>
-                  <Text style={styles.infoLabel}>NAVÊ/NAME:</Text>
+                  <Text style={styles.infoLabel}>NAV/NAME</Text>
                   <Text style={styles.infoValue}>{citizen.fullName}</Text>
                 </View>
 
                 {citizen.fatherName && (
                   <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>BAV/FATHER'S NAME:</Text>
+                    <Text style={styles.infoLabel}>BAV/FATHER</Text>
                     <Text style={styles.infoValue}>{citizen.fatherName}</Text>
                   </View>
                 )}
 
                 {citizen.grandfatherName && (
                   <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>DAPÎR/GRANDFATHER:</Text>
+                    <Text style={styles.infoLabel}>DAPÎR/GRANDFATHER</Text>
                     <Text style={styles.infoValue}>{citizen.grandfatherName}</Text>
                   </View>
                 )}
 
                 {citizen.greatGrandfatherName && (
                   <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>DAPÎRA BIRA/G.GRANDFATHER:</Text>
+                    <Text style={styles.infoLabel}>DAPÎRA BIRA/G.GRANDFATHER</Text>
                     <Text style={styles.infoValue}>{citizen.greatGrandfatherName}</Text>
                   </View>
                 )}
 
                 {citizen.motherName && (
                   <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>DAYÊ/MOTHER:</Text>
+                    <Text style={styles.infoLabel}>DAY/MOTHER</Text>
                     <Text style={styles.infoValue}>{citizen.motherName}</Text>
                   </View>
                 )}
 
                 <View style={styles.infoRow}>
-                  <Text style={styles.infoLabel}>ZEWICÎNÊ/MARITAL STATUS:</Text>
+                  <Text style={styles.infoLabel}>ZEWICÎN/MARITAL</Text>
                   <Text style={styles.infoValue}>
-                    {citizen.maritalStatus === 'married' ? 'Married' : 'Single'}
+                    {citizen.maritalStatus === 'married' ? 'Zewicî' : 'Nezewicî'}
                   </Text>
                 </View>
 
                 {citizen.maritalStatus === 'married' && citizen.spouseName && (
                   <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>HEVJÎN/SPOUSE:</Text>
+                    <Text style={styles.infoLabel}>HEVJÎN/SPOUSE</Text>
                     <Text style={styles.infoValue}>{citizen.spouseName}</Text>
                   </View>
                 )}
 
                 {citizen.children && citizen.children.length > 0 && (
                   <View style={styles.infoRow}>
-                    <Text style={styles.infoLabel}>ZAROK/CHILDREN:</Text>
+                    <Text style={styles.infoLabel}>ZAROK/CHILDREN</Text>
                     <Text style={styles.infoValue}>{citizen.children.length}</Text>
                   </View>
                 )}
@@ -165,7 +164,7 @@ export default function CitizenCardScreen({ navigation }: any) {
             {/* Region and Citizen ID */}
             <View style={styles.middleSection}>
               <View style={styles.regionRow}>
-                <Text style={styles.regionLabel}>HERÊMA/REGION:</Text>
+                <Text style={styles.regionLabel}>HEREM/REGION</Text>
                 <Text style={styles.regionValue}>{REGION_LABELS[citizen.region].en}</Text>
               </View>
 
@@ -185,12 +184,12 @@ export default function CitizenCardScreen({ navigation }: any) {
               </View>
 
               <View style={styles.footerRow}>
-                <Text style={styles.footerLabel}>JIMARA VEKIRAN/ACCOUNT#:</Text>
+                <Text style={styles.footerLabel}>JIMARA VEKIRAN/ACCOUNT#</Text>
                 <Text style={styles.footerValue}>{citizen.qrCode.substring(0, 12)}</Text>
               </View>
 
               <View style={styles.footerRow}>
-                <Text style={styles.footerLabel}>DAXWAZ/ISSUED:</Text>
+                <Text style={styles.footerLabel}>DAXWAZ/ISSUED</Text>
                 <Text style={styles.footerValue}>{formatDate(citizen.approvedAt)}</Text>
               </View>
             </View>
