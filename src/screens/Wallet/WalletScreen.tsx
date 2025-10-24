@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   ScrollView,
   TextInput,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/colors';
@@ -17,7 +18,7 @@ interface CoinRow {
   name: string;
   amount: string;
   network: string;
-  icon: string;
+  icon: any;
   color: string;
 }
 
@@ -36,7 +37,7 @@ export default function WalletScreen({ navigation, route }: any) {
       name: 'PezkuwiChain',
       amount: '100',
       network: 'op',
-      icon: '💎',
+      icon: require('../../../assets/tokens/pez.png'),
       color: '#E8C896',
     },
     {
@@ -44,7 +45,7 @@ export default function WalletScreen({ navigation, route }: any) {
       name: 'Hemwelatî',
       amount: '100',
       network: 'op',
-      icon: '🔷',
+      icon: require('../../../assets/tokens/hez.png'),
       color: '#98D8C8',
     },
   ];
@@ -109,7 +110,7 @@ export default function WalletScreen({ navigation, route }: any) {
               <View key={coin.symbol} style={styles.tableRow}>
                 {/* Coin */}
                 <View style={[styles.cell, { flex: 1 }]}>
-                  <Text style={styles.coinIcon}>{coin.icon}</Text>
+                  <Image source={coin.icon} style={styles.coinIcon} />
                   <Text style={styles.coinSymbol}>{coin.symbol}</Text>
                 </View>
 
@@ -340,7 +341,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   coinIcon: {
-    fontSize: 20,
+    width: 32,
+    height: 32,
+    marginBottom: 4,
   },
   coinSymbol: {
     fontSize: 12,
