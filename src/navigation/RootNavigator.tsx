@@ -22,6 +22,9 @@ import QRScannerScreen from '../screens/Home/QRScannerScreen';
 import NotificationsScreen from '../screens/Home/NotificationsScreen';
 import RewardsScreen from '../screens/Rewards/RewardsScreen';
 import TrustScoreScreen from '../screens/Profile/TrustScoreScreen';
+import WalletOnboardingScreen from '../screens/Wallet/WalletOnboardingScreen';
+import CreateWalletScreen from '../screens/Wallet/CreateWalletScreen';
+import ImportWalletScreen from '../screens/Wallet/ImportWalletScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +57,9 @@ export default function RootNavigator() {
         <Stack.Screen name="Notifications" component={NotificationsScreen} />
         <Stack.Screen name="Rewards" component={RewardsScreen} />
         <Stack.Screen name="TrustScore" component={TrustScoreScreen} />
+        <Stack.Screen name="WalletOnboarding" component={WalletOnboardingScreen} />
+        <Stack.Screen name="CreateWallet" component={CreateWalletScreen} />
+        <Stack.Screen name="ImportWallet" component={ImportWalletScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
