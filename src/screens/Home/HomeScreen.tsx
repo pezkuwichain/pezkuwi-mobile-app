@@ -133,17 +133,25 @@ export default function HomeScreen({ navigation }: any) {
         >
           <View style={styles.headerTop}>
             {/* Profile Avatar */}
-            <View style={styles.profileSection}>
+            <TouchableOpacity 
+              style={styles.profileSection}
+              onPress={() => navigation.navigate('Profile')}
+              activeOpacity={0.7}
+            >
               <View style={styles.avatar}>
                 <Ionicons name="person" size={24} color="#FFFFFF" />
               </View>
               
               {/* Trust Score Badge */}
-              <View style={styles.trustBadge}>
+              <TouchableOpacity 
+                style={styles.trustBadge}
+                onPress={() => navigation.navigate('TrustScore')}
+                activeOpacity={0.7}
+              >
                 <Ionicons name="star" size={12} color="#FFFFFF" />
                 <Text style={styles.trustScore}>{trustScore}</Text>
-              </View>
-            </View>
+              </TouchableOpacity>
+            </TouchableOpacity>
 
             {/* Action Icons */}
             <View style={styles.headerActions}>
@@ -154,7 +162,10 @@ export default function HomeScreen({ navigation }: any) {
                 <Ionicons name="qr-code-outline" size={24} color="#FFFFFF" />
               </TouchableOpacity>
               
-              <TouchableOpacity style={styles.headerIcon}>
+              <TouchableOpacity 
+                style={styles.headerIcon}
+                onPress={() => navigation.navigate('Notifications')}
+              >
                 <Ionicons name="notifications-outline" size={24} color="#FFFFFF" />
               </TouchableOpacity>
               
@@ -170,21 +181,33 @@ export default function HomeScreen({ navigation }: any) {
 
         {/* Balance Card */}
         <View style={styles.balanceCardContainer}>
-          <View style={styles.balanceCard}>
+          <TouchableOpacity 
+            style={styles.balanceCard}
+            onPress={() => navigation.navigate('Wallet')}
+            activeOpacity={0.8}
+          >
             <View style={styles.balanceRow}>
-              <View style={styles.balanceItem}>
+              <TouchableOpacity 
+                style={styles.balanceItem}
+                onPress={() => navigation.navigate('Wallet', { tab: 'HEZ' })}
+                activeOpacity={0.7}
+              >
                 <Text style={styles.balanceLabel}>HEZ Balance</Text>
                 <Text style={styles.balanceAmount}>{balance?.hez || '0'}</Text>
                 <View style={styles.underline} />
-              </View>
+              </TouchableOpacity>
               
-              <View style={styles.balanceItem}>
+              <TouchableOpacity 
+                style={styles.balanceItem}
+                onPress={() => navigation.navigate('Wallet', { tab: 'PEZ' })}
+                activeOpacity={0.7}
+              >
                 <Text style={styles.balanceLabel}>PEZ Balance</Text>
                 <Text style={styles.balanceAmountSecondary}>{balance?.pez || '0'}</Text>
                 <View style={[styles.underline, { backgroundColor: Colors.peach }]} />
-              </View>
+              </TouchableOpacity>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
         {/* Quick Actions */}
