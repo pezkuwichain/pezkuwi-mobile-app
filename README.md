@@ -198,12 +198,23 @@ MIT License - see LICENSE file for details
 
 Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) first.
 
-## 📞 Contact
+## 📞 Contact & Social Media
 
-- **Website**: https://www.pezkuwichain.io
-- **Email**: dev@pezkuwichain.io
+### Official Links
+
+- **Website**: https://pezkuwichain.org
 - **GitHub**: https://github.com/pezkuwichain
-- **Twitter**: @pezkuwichain
+- **Documentation**: https://docs.pezkuwichain.org
+- **Email**: info@pezkuwichain.io
+
+### Social Media
+
+- **Twitter/X**: https://x.com/PezkuwiChain (Kurdistan Tech Ministry)
+- **YouTube**: https://www.youtube.com/@SatoshiQazi (DKSpezkuwichain_Kurdistan)
+- **Telegram Bot**: https://t.me/pezkuwichainbot
+- **Telegram Channel**: https://t.me/PezkuwiApp
+- **Discord**: DKSPezkuwichain (Username: kurdistan_tech_ministry)
+- **Facebook**: Satoshi Qazi Muhammed
 
 ## 🙏 Acknowledgments
 
