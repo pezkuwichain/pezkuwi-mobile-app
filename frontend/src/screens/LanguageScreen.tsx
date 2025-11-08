@@ -67,7 +67,7 @@ export default function LanguageScreen({ navigation }: any) {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.continueButton}
-          onPress={() => alert('Selected: ' + selected)}
+          onPress={handleContinue}
         >
           <Text style={styles.continueText}>Continue</Text>
           <Ionicons name="arrow-forward" size={20} color="#FFF" />
