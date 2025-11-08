@@ -126,15 +126,18 @@ backend:
 
   - task: "Supabase Authentication - Sign In"
     implemented: true
-    working: "NA"
+    working: false
     file: "backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented /api/auth/signin endpoint with Supabase. Returns user profile data along with access and refresh tokens."
+      - working: false
+        agent: "testing"
+        comment: "Cannot test signin due to signup failure. Signin depends on successful user creation which is blocked by Supabase configuration issues. Same RLS and schema problems affect this endpoint."
 
   - task: "Get User Profile"
     implemented: true
