@@ -13,27 +13,22 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { usePolkadot } from '../../contexts/PolkadotContext';
 
 export default function WalletSetupScreen({ navigation }: any) {
-  const { connectWallet, setSelectedAccount } = usePolkadot();
+  const { saveAccount } = usePolkadot();
   const [walletAddress, setWalletAddress] = useState('');
+  const [walletName, setWalletName] = useState('My Wallet');
 
-  const handleConnectWithAddress = () => {
+  const handleConnectWithAddress = async () => {
     if (!walletAddress.trim()) {
       Alert.alert('Error', 'Please enter a valid wallet address');
       return;
     }
 
-    // Set the account manually
-    setSelectedAccount({
+    // Save the account
+    await saveAccount({
       address: walletAddress.trim(),
-      name: 'My Wallet',
+      name: walletName.trim() || 'My Wallet',
     });
 
-    navigation.navigate('MainTabs');
-  };
-
-  const handleConnectWithExtension = async () => {
-    await connectWallet();
-    // After successful connection, navigate to main app
     navigation.navigate('MainTabs');
   };
 
@@ -49,29 +44,37 @@ export default function WalletSetupScreen({ navigation }: any) {
             <Ionicons name="wallet" size={80} color="#FFF" />
             <Text style={styles.title}>Connect Your Wallet</Text>
             <Text style={styles.subtitle}>
-              View your PezkuwiChain assets and transactions
+              Enter your PezkuwiChain wallet address to get started
             </Text>
           </View>
 
-          {/* Option 1: Enter Address */}
+          {/* Main Card */}
           <View style={styles.card}>
             <View style={styles.optionHeader}>
               <Ionicons name="key" size={32} color="#F08080" />
-              <Text style={styles.optionTitle}>Enter Wallet Address</Text>
+              <Text style={styles.optionTitle}>Wallet Details</Text>
             </View>
             
-            <Text style={styles.optionDescription}>
-              Enter your wallet address to view balances and transactions
-            </Text>
-
+            <Text style={styles.label}>Wallet Name (optional)</Text>
             <TextInput
               style={styles.input}
+              placeholder="My Wallet"
+              value={walletName}
+              onChangeText={setWalletName}
+              placeholderTextColor="#999"
+            />
+
+            <Text style={styles.label}>Wallet Address</Text>
+            <TextInput
+              style={[styles.input, styles.addressInput]}
               placeholder="5GrwvaEF5zXb26Fz9rcQpDWS..."
               value={walletAddress}
               onChangeText={setWalletAddress}
               placeholderTextColor="#999"
               autoCapitalize="none"
               autoCorrect={false}
+              multiline
+              numberOfLines={2}
             />
 
             <TouchableOpacity
@@ -85,27 +88,16 @@ export default function WalletSetupScreen({ navigation }: any) {
             <View style={styles.infoBox}>
               <Ionicons name="information-circle" size={20} color="#7DD3C0" />
               <Text style={styles.infoText}>
-                Read-only mode. To send transactions, you'll be guided to SubWallet.
+                Your wallet address is only stored locally on your device. We never access your private keys.
               </Text>
             </View>
           </View>
-
-          {/* Option 2: Connect with Extension (Web only) */}
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={handleConnectWithExtension}
-          >
-            <Ionicons name="extension-puzzle" size={24} color="#FFF" />
-            <Text style={styles.secondaryButtonText}>
-              Connect Polkadot.js Extension
-            </Text>
-          </TouchableOpacity>
 
           {/* Footer */}
           <View style={styles.footer}>
             <Ionicons name="shield-checkmark" size={20} color="#FFF" />
             <Text style={styles.footerText}>
-              Your keys stay secure. We never access private keys.
+              All blockchain data fetched securely via backend API
             </Text>
           </View>
         </View>
@@ -159,18 +151,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    marginBottom: 12,
+    marginBottom: 20,
   },
   optionTitle: {
     fontSize: 20,
     fontWeight: '700',
     color: '#333',
   },
-  optionDescription: {
+  label: {
     fontSize: 14,
+    fontWeight: '600',
     color: '#666',
-    marginBottom: 16,
-    lineHeight: 20,
+    marginBottom: 8,
+    marginTop: 12,
   },
   input: {
     backgroundColor: '#F5F5F5',
@@ -178,7 +171,10 @@ const styles = StyleSheet.create({
     padding: 16,
     fontSize: 14,
     color: '#333',
-    marginBottom: 16,
+  },
+  addressInput: {
+    minHeight: 60,
+    textAlignVertical: 'top',
   },
   primaryButton: {
     backgroundColor: '#F08080',
@@ -188,6 +184,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
+    marginTop: 20,
   },
   primaryButtonText: {
     color: '#FFF',
@@ -199,7 +196,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 12,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: 8,
     marginTop: 16,
     borderWidth: 1,
@@ -210,22 +207,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#5DBEA3',
     lineHeight: 16,
-  },
-  secondaryButton: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 12,
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.3)',
-  },
-  secondaryButtonText: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: '600',
   },
   footer: {
     flexDirection: 'row',
