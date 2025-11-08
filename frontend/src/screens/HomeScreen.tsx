@@ -263,7 +263,7 @@ function WalletTab() {
             <View style={styles.tokenItemLeft}>
               <View style={styles.tokenIconContainer}>
                 <Image
-                  source={{ uri: 'https://customer-assets.emergentagent.com/job_mobile-wallet-app-3/artifacts/sxd0qsv2_usdt_logo.jpg' }}
+                  source={{ uri: 'https://customer-assets.emergentagent.com/job_digital-kurdistan/artifacts/kjrxv1gd_USDT%28hez%29logo.png' }}
                   style={styles.tokenIcon}
                 />
                 <Image
@@ -286,7 +286,7 @@ function WalletTab() {
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
-                source={{ uri: 'https://cryptologos.cc/logos/polkadot-new-dot-logo.png' }}
+                source={{ uri: 'https://customer-assets.emergentagent.com/job_digital-kurdistan/artifacts/06k2kt5u_dot.png' }}
                 style={styles.tokenIcon}
               />
               <View>
@@ -304,7 +304,7 @@ function WalletTab() {
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
-                source={{ uri: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png' }}
+                source={{ uri: 'https://customer-assets.emergentagent.com/job_digital-kurdistan/artifacts/7obzx4ca_bitcoin.png' }}
                 style={styles.tokenIcon}
               />
               <View>
@@ -322,7 +322,7 @@ function WalletTab() {
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
-                source={{ uri: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' }}
+                source={{ uri: 'https://customer-assets.emergentagent.com/job_digital-kurdistan/artifacts/l927j96q_etherium.png' }}
                 style={styles.tokenIcon}
               />
               <View>
