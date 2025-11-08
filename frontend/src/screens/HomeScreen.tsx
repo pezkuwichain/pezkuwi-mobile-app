@@ -17,7 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
 
-function HomeTab() {
+function HomeTab({ navigation }: any) {
   const { user } = useAuth();
   const insets = useSafeAreaInsets();
   const [profileImage, setProfileImage] = useState<string | null>(null);
