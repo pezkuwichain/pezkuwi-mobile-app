@@ -12,9 +12,9 @@ import type { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 export const NETWORK_ENDPOINTS = {
   local: 'ws://127.0.0.1:9944',
   testnet: 'wss://testnet.pezkuwichain.io',
+  beta: 'wss://beta.pezkuwichain.io',
   mainnet: 'wss://mainnet.pezkuwichain.io',
   staging: 'wss://staging.pezkuwichain.io',
-  beta: 'wss://beta-rpc.pezkuwi.art',
 };
 
 // ========================================
