@@ -240,4 +240,7 @@ const styles = StyleSheet.create({
     color: '#EE2A35',
     fontWeight: '600',
   },
+  authButtonDisabled: {
+    opacity: 0.6,
+  },
 });
