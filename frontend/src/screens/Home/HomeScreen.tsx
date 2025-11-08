@@ -48,12 +48,6 @@ export default function HomeScreen({ navigation }: any) {
       setLoading(false);
     }
   };
-        hezUsd: '45,234',
-        pezUsd: '123,456',
-        governancePower: '2.5',
-      });
-    }
-  };
 
   const quickActions: QuickAction[] = [
     {
@@ -186,27 +180,34 @@ export default function HomeScreen({ navigation }: any) {
             onPress={() => navigation.navigate('Wallet')}
             activeOpacity={0.8}
           >
-            <View style={styles.balanceRow}>
-              <TouchableOpacity 
-                style={styles.balanceItem}
-                onPress={() => navigation.navigate('Wallet', { tab: 'HEZ' })}
-                activeOpacity={0.7}
-              >
-                <Text style={styles.balanceLabel}>HEZ Balance</Text>
-                <Text style={styles.balanceAmount}>{balance?.hez || '0'}</Text>
-                <View style={styles.underline} />
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={styles.balanceItem}
-                onPress={() => navigation.navigate('Wallet', { tab: 'PEZ' })}
-                activeOpacity={0.7}
-              >
-                <Text style={styles.balanceLabel}>PEZ Balance</Text>
-                <Text style={styles.balanceAmountSecondary}>{balance?.pez || '0'}</Text>
-                <View style={[styles.underline, { backgroundColor: Colors.peach }]} />
-              </TouchableOpacity>
-            </View>
+            {loading ? (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color={Colors.coral} />
+                <Text style={styles.loadingText}>Loading balance...</Text>
+              </View>
+            ) : (
+              <View style={styles.balanceRow}>
+                <TouchableOpacity 
+                  style={styles.balanceItem}
+                  onPress={() => navigation.navigate('Wallet', { tab: 'HEZ' })}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.balanceLabel}>HEZ Balance</Text>
+                  <Text style={styles.balanceAmount}>{balance?.hez || '0.0000'}</Text>
+                  <View style={styles.underline} />
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                  style={styles.balanceItem}
+                  onPress={() => navigation.navigate('Wallet', { tab: 'PEZ' })}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.balanceLabel}>PEZ Balance</Text>
+                  <Text style={styles.balanceAmountSecondary}>{balance?.pez || '0.0000'}</Text>
+                  <View style={[styles.underline, { backgroundColor: Colors.peach }]} />
+                </TouchableOpacity>
+              </View>
+            )}
           </TouchableOpacity>
         </View>
 
