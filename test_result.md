@@ -111,15 +111,18 @@ user_problem_statement: |
 backend:
   - task: "Supabase Authentication - Sign Up"
     implemented: true
-    working: "NA"
+    working: false
     file: "backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented /api/auth/signup endpoint with Supabase integration. Creates user in Supabase Auth and stores profile data in users table with first_name, last_name, phone, referral_code, language, tiki_count, trust_score."
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL: Supabase configuration issues prevent signup. Auth user creation works, but profile data insertion fails with RLS policy violation. Backend using anon key instead of service role key. Users table may be missing required columns (first_name, last_name, etc.). Error: 'Could not find the first_name column of users in the schema cache' (PGRST204). Requires service role key for server-side operations or proper RLS policy configuration."
 
   - task: "Supabase Authentication - Sign In"
     implemented: true
