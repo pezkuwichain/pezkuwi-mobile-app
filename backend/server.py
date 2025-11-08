@@ -235,7 +235,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configure logging
+# Configure logging - Move before logger usage
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
