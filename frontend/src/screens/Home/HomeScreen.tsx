@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
-  Image,
+  ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../constants/colors';
 import { Typography, Spacing, BorderRadius, Shadow, IconSizes } from '../../constants/theme';
-import { blockchainService } from '../../services/blockchain';
-import { Balance } from '../../types';
+import { usePolkadot } from '../../contexts/PolkadotContext';
+import pezkuwiAPI from '../../services/api';
 
 interface QuickAction {
   id: string;
@@ -24,30 +24,30 @@ interface QuickAction {
 }
 
 export default function HomeScreen({ navigation }: any) {
-  const [balance, setBalance] = useState<Balance | null>(null);
+  const { selectedAccount } = usePolkadot();
+  const [balance, setBalance] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [trustScore] = useState(750);
 
   useEffect(() => {
-    loadBalance();
-  }, []);
+    if (selectedAccount) {
+      loadBalance();
+    }
+  }, [selectedAccount]);
 
   const loadBalance = async () => {
     try {
-      // Try to connect to blockchain
-      const connected = await blockchainService.connect();
-      if (connected) {
-        const bal = await blockchainService.getBalances(
-          '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'
-        );
-        setBalance(bal);
+      setLoading(true);
+      if (selectedAccount?.address) {
+        const balanceData = await pezkuwiAPI.getBalance(selectedAccount.address);
+        setBalance(balanceData);
       }
     } catch (error) {
-      console.log('Using mock data');
-      // Use mock data
-      setBalance({
-        hez: '45,750.5',
-        pez: '1,234,567',
-        hezStaked: '30,000',
+      console.error('Error loading balance:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
         hezUsd: '45,234',
         pezUsd: '123,456',
         governancePower: '2.5',
