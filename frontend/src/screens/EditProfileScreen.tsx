@@ -36,7 +36,6 @@ export default function EditProfileScreen({ navigation }: any) {
         setFirstName(data.first_name || '');
         setLastName(data.last_name || '');
         setPhone(data.phone || '');
-        setWalletAddress(data.wallet_address || '');
       }
     } catch (error) {
       console.error('Error loading user data:', error);
