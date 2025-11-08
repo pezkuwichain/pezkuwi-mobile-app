@@ -168,7 +168,7 @@ function WalletTab() {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.walletScrollContent}>
         {/* Header */}
-        <View style={styles.walletHeader}>
+        <View style={[styles.walletHeader, { paddingTop: insets.top + 16 }]}>
           <Text style={styles.walletTitle}>My Wallet</Text>
           <TouchableOpacity onPress={fetchBalance} style={styles.refreshButton}>
             <Ionicons name="refresh" size={20} color="#EE2A35" />
