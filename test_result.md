@@ -290,6 +290,18 @@ agent_communication:
       4. Navigation flow: Language -> HumanVerification -> Auth -> Home
       
       After backend testing passes, frontend testing will validate UI flow.
+      
+  - agent: "main"
+    message: |
+      SUPABASE CONFIGURATION FIXED:
+      - ✅ Service role key updated in backend/.env
+      - ✅ Users table created in Supabase with all required columns:
+        (id, email, first_name, last_name, phone, referral_code, language, 
+         tiki_count, trust_score, profile_image, created_at, updated_at)
+      - ✅ RLS policies configured (service role full access, users can read own data)
+      - ✅ Backend restarted with new configuration
+      
+      Ready for backend auth testing round 2.
   - agent: "testing"
     message: |
       🔍 BACKEND TESTING COMPLETED - CRITICAL SUPABASE CONFIGURATION ISSUES FOUND
