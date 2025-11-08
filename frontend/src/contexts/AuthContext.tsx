@@ -52,7 +52,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const response = await fetch('http://localhost:8001/api/auth/signin', {
+      const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+      const response = await fetch(`${backendUrl}/api/auth/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
