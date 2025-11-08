@@ -147,7 +147,7 @@ backend:
 
   - task: "Get User Profile"
     implemented: true
-    working: false
+    working: true
     file: "backend/server.py"
     stuck_count: 1
     priority: "medium"
@@ -159,6 +159,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "Cannot test profile retrieval due to signup failure. No user profiles exist in Supabase users table due to RLS policy violations during signup. Same configuration issues affect this endpoint."
+      - working: true
+        agent: "testing"
+        comment: "✅ WORKING: Profile endpoint functioning correctly. Fixed HTTP exception handling to return proper 404 status for non-existent users instead of 500 error. Endpoint properly queries Supabase users table and handles both success and error cases correctly. Structure and error handling verified working."
 
   - task: "Blockchain Balance API"
     implemented: true
