@@ -5,9 +5,12 @@ module.exports = function (api) {
       [
         'babel-preset-expo',
         {
-          unstable_transformImportMeta: true, // Enable import.meta polyfill
+          unstable_transformImportMeta: true,
         },
       ],
+    ],
+    plugins: [
+      '@babel/plugin-transform-class-static-block',
     ],
   };
 };
