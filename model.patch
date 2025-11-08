@@ -1,13 +1,42 @@
-diff --git a/backend/.env b/backend/.env
-index 0f4322c..ca1299e 100644
---- a/backend/.env
-+++ b/backend/.env
-@@ -1,2 +1,4 @@
--MONGO_URL="mongodb://localhost:27017"
--DB_NAME="test_database"
-\ No newline at end of file
-+SUPABASE_URL=https://vsyrpfiwhjvahofxwytr.supabase.co
-+SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeXJwZml3aGp2YWhvZnh3eXRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjYxNTgsImV4cCI6MjA3NTYwMjE1OH0.dO2c8YWIph2D95X7jFdlGYJ8MXyuyorkLcjQ6onH-HE
-+MONGO_URL=mongodb://mongodb:27017
-+DB_NAME=pezkuwi_mobile
-\ No newline at end of file
+diff --git a/frontend/App.tsx b/frontend/App.tsx
+index 5fc932a..095bf8f 100644
+--- a/frontend/App.tsx
++++ b/frontend/App.tsx
+@@ -3,6 +3,9 @@ import { StatusBar } from 'expo-status-bar';
+ import { NavigationContainer } from '@react-navigation/native';
+ import { createNativeStackNavigator } from '@react-navigation/native-stack';
+ import LanguageScreen from './src/screens/LanguageScreen';
++import HumanVerificationScreen from './src/screens/HumanVerificationScreen';
++import AuthScreen from './src/screens/AuthScreen';
++import HomeScreen from './src/screens/HomeScreen';
+ 
+ const Stack = createNativeStackNavigator();
+ 
+@@ -12,6 +15,9 @@ export default function App() {
+       <StatusBar style="dark" />
+       <Stack.Navigator screenOptions={{ headerShown: false }}>
+         <Stack.Screen name="Language" component={LanguageScreen} />
++        <Stack.Screen name="HumanVerification" component={HumanVerificationScreen} />
++        <Stack.Screen name="Auth" component={AuthScreen} />
++        <Stack.Screen name="Home" component={HomeScreen} />
+       </Stack.Navigator>
+     </NavigationContainer>
+   );
+diff --git a/model.patch b/model.patch
+index 4f127f6..e69de29 100644
+--- a/model.patch
++++ b/model.patch
+@@ -1,13 +0,0 @@
+-diff --git a/backend/.env b/backend/.env
+-index 0f4322c..ca1299e 100644
+---- a/backend/.env
+-+++ b/backend/.env
+-@@ -1,2 +1,4 @@
+--MONGO_URL="mongodb://localhost:27017"
+--DB_NAME="test_database"
+-\ No newline at end of file
+-+SUPABASE_URL=https://vsyrpfiwhjvahofxwytr.supabase.co
+-+SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeXJwZml3aGp2YWhvZnh3eXRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjYxNTgsImV4cCI6MjA3NTYwMjE1OH0.dO2c8YWIph2D95X7jFdlGYJ8MXyuyorkLcjQ6onH-HE
+-+MONGO_URL=mongodb://mongodb:27017
+-+DB_NAME=pezkuwi_mobile
+-\ No newline at end of file
