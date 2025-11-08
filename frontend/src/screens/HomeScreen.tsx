@@ -129,6 +129,9 @@ function WalletTab() {
   const fetchBalance = async () => {
     try {
       const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 sec timeout
+      
       const response = await fetch(`${backendUrl}/api/blockchain/balance`, {
         method: 'POST',
         headers: {
@@ -137,20 +140,23 @@ function WalletTab() {
         body: JSON.stringify({
           address: TEST_WALLET,
         }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (response.ok) {
         const data = await response.json();
         setHezBalance(parseFloat(data.hez).toFixed(2));
         setPezBalance(parseFloat(data.pez).toFixed(2));
       } else {
-        setHezBalance('Error');
-        setPezBalance('Error');
+        setHezBalance('0.00');
+        setPezBalance('0.00');
       }
     } catch (error) {
       console.error('Balance fetch error:', error);
-      setHezBalance('Error');
-      setPezBalance('Error');
+      setHezBalance('0.00');
+      setPezBalance('0.00');
     } finally {
       setLoading(false);
     }
