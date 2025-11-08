@@ -48,7 +48,7 @@ function HomeTab() {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {/* Header */}
-        <View style={styles.header}>
+        <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
           <View style={styles.headerLeft}>
             <TouchableOpacity style={styles.profileImage} onPress={pickImage}>
               {profileImage ? (
