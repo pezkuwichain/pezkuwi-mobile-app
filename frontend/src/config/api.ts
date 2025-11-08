@@ -1,15 +1,20 @@
 // API Configuration
 // Single source of truth for backend URL
+import Constants from 'expo-constants';
 
 const getBackendUrl = (): string => {
-  const url = process.env.EXPO_PUBLIC_BACKEND_URL;
+  // Try expo-constants first, then process.env, then fallback
+  const url = Constants.expoConfig?.extra?.backendUrl || 
+              process.env.EXPO_PUBLIC_BACKEND_URL;
   
   if (!url) {
-    console.error('⚠️ EXPO_PUBLIC_BACKEND_URL not set! Using fallback.');
+    console.error('⚠️ Backend URL not found in expo-constants or env vars! Using fallback.');
     return 'http://localhost:8001';
   }
   
-  console.log('✅ Backend URL:', url);
+  console.log('✅ Backend URL loaded:', url);
+  console.log('📱 Source: expo-constants =', Constants.expoConfig?.extra?.backendUrl);
+  console.log('🔧 Source: process.env =', process.env.EXPO_PUBLIC_BACKEND_URL);
   return url;
 };
 
