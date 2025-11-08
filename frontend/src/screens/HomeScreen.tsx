@@ -92,10 +92,13 @@ function HomeTab() {
         <View style={styles.quickActionsContainer}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
           <View style={styles.actionsGrid}>
-            {QUICK_ACTIONS.map((action) => (
+            {QUICK_ACTIONS.map((action, index) => (
               <TouchableOpacity
                 key={action.id}
-                style={styles.actionCard}
+                style={[styles.actionCard, 
+                  (index % 4 === 0) && styles.actionCardFirst,
+                  (index % 4 === 3) && styles.actionCardLast
+                ]}
                 activeOpacity={0.7}
               >
                 <View style={[styles.actionIcon, { backgroundColor: action.color }]}>
