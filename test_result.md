@@ -141,15 +141,18 @@ backend:
 
   - task: "Get User Profile"
     implemented: true
-    working: "NA"
+    working: false
     file: "backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented /api/auth/user/{user_id} endpoint to fetch user profile from Supabase users table."
+      - working: false
+        agent: "testing"
+        comment: "Cannot test profile retrieval due to signup failure. No user profiles exist in Supabase users table due to RLS policy violations during signup. Same configuration issues affect this endpoint."
 
   - task: "Blockchain Balance API"
     implemented: true
