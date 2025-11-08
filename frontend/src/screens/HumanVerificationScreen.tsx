@@ -206,4 +206,24 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#FFF',
   },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  errorOverlay: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    backgroundColor: '#FEE2E2',
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#EE2A35',
+  },
+  errorText: {
+    color: '#991B1B',
+    fontSize: 14,
+  },
 });
