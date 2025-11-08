@@ -789,12 +789,29 @@ const styles = StyleSheet.create({
     margin: 16,
     marginTop: 0,
   },
+  tokensHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+    paddingHorizontal: 4,
+  },
   tokensTitle: {
     fontSize: 18,
     fontWeight: '700',
     color: '#1F2937',
-    marginBottom: 12,
-    paddingHorizontal: 4,
+  },
+  tokensHeaderActions: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  tokenHeaderButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: '#F3F4F6',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   tokenItem: {
     flexDirection: 'row',
