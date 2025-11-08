@@ -15,7 +15,10 @@ const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
 export default function HumanVerificationScreen({ navigation }: any) {
   const [loading, setLoading] = useState(true);
   const [verifying, setVerifying] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const webViewRef = useRef<WebView>(null);
+
+  console.log('HumanVerificationScreen mounted');
 
   const handleTurnstileToken = async (token: string) => {
     setVerifying(true);
