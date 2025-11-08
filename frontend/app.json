@@ -7,6 +7,9 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "extra": {
+      "backendUrl": "https://digital-kurdistan.preview.emergentagent.com"
+    },
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
