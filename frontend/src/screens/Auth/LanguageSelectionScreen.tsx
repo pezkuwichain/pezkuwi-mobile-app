@@ -32,7 +32,7 @@ export default function LanguageSelectionScreen({ navigation }: any) {
   const handleContinue = () => {
     // Save language preference
     // TODO: Implement i18n language switching
-    navigation.navigate('SignUp');
+    navigation.navigate('WalletSetup');
   };
 
   return (
