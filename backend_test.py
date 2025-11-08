@@ -299,11 +299,88 @@ class BackendTester:
             self.log_result("Blockchain Balance", False, f"Request failed: {str(e)}")
             return False
     
+    def diagnose_supabase_issue(self):
+        """Diagnose the Supabase configuration issue"""
+        print("\n🔍 Diagnosing Supabase Configuration...")
+        
+        try:
+            # Test direct Supabase connection
+            import os
+            from supabase import create_client
+            
+            # Load backend env
+            from dotenv import load_dotenv
+            from pathlib import Path
+            ROOT_DIR = Path("/app/backend")
+            load_dotenv(ROOT_DIR / '.env')
+            
+            SUPABASE_URL = os.environ.get('SUPABASE_URL')
+            SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
+            
+            supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+            
+            # Test auth signup
+            unique_id = str(uuid.uuid4())[:8]
+            test_email = f"diagtest{unique_id}@gmail.com"
+            
+            auth_response = supabase.auth.sign_up({
+                "email": test_email,
+                "password": "TestPassword123!"
+            })
+            
+            if auth_response.user:
+                self.log_result(
+                    "Supabase Auth Signup", 
+                    True, 
+                    f"Auth user created: {auth_response.user.id[:8]}..."
+                )
+                
+                # Test users table insert with minimal data
+                try:
+                    user_data = {"id": auth_response.user.id, "email": test_email}
+                    result = supabase.table("users").insert(user_data).execute()
+                    self.log_result(
+                        "Supabase Users Table Insert", 
+                        True, 
+                        "Successfully inserted user data"
+                    )
+                except Exception as e:
+                    error_msg = str(e)
+                    if "row-level security policy" in error_msg:
+                        self.log_result(
+                            "Supabase RLS Policy Issue", 
+                            False, 
+                            "Backend using anon key - needs service role key or RLS policy configuration",
+                            {"error": error_msg, "solution": "Use service role key for server-side operations"}
+                        )
+                    else:
+                        self.log_result(
+                            "Supabase Users Table Insert", 
+                            False, 
+                            f"Insert failed: {error_msg}"
+                        )
+            else:
+                self.log_result(
+                    "Supabase Auth Signup", 
+                    False, 
+                    "Auth signup failed"
+                )
+                
+        except Exception as e:
+            self.log_result(
+                "Supabase Diagnosis", 
+                False, 
+                f"Diagnosis failed: {str(e)}"
+            )
+
     def run_all_tests(self):
         """Run all backend tests"""
         print(f"🚀 Starting Backend API Tests")
         print(f"Backend URL: {BACKEND_URL}")
         print("=" * 60)
+        
+        # First diagnose the Supabase issue
+        self.diagnose_supabase_issue()
         
         # Test authentication flow
         signup_success = self.test_signup()
