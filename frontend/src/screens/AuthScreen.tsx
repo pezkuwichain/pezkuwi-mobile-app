@@ -138,10 +138,18 @@ export default function AuthScreen({ navigation }: any) {
               </View>
             )}
 
-            <TouchableOpacity style={styles.authButton} onPress={handleAuth}>
-              <Text style={styles.authButtonText}>
-                {isSignIn ? 'Sign In' : 'Create Account'}
-              </Text>
+            <TouchableOpacity 
+              style={[styles.authButton, loading && styles.authButtonDisabled]} 
+              onPress={handleAuth}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#FFF" />
+              ) : (
+                <Text style={styles.authButtonText}>
+                  {isSignIn ? 'Sign In' : 'Create Account'}
+                </Text>
+              )}
             </TouchableOpacity>
 
             <TouchableOpacity
