@@ -340,7 +340,7 @@ function WalletTab() {
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
-                source={{ uri: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' }}
+                source={{ uri: 'https://customer-assets.emergentagent.com/job_digital-kurdistan/artifacts/2k07ckau_BNB_logo.png' }}
                 style={styles.tokenIcon}
               />
               <View>
@@ -358,7 +358,7 @@ function WalletTab() {
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
-                source={{ uri: 'https://cryptologos.cc/logos/cardano-ada-logo.png' }}
+                source={{ uri: 'https://customer-assets.emergentagent.com/job_digital-kurdistan/artifacts/k5rl2t4g_ADAlogo.png' }}
                 style={styles.tokenIcon}
               />
               <View>
@@ -376,7 +376,7 @@ function WalletTab() {
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
-                source={{ uri: 'https://cryptologos.cc/logos/solana-sol-logo.png' }}
+                source={{ uri: 'https://customer-assets.emergentagent.com/job_digital-kurdistan/artifacts/ldg2spf2_SOLlogo.png' }}
                 style={styles.tokenIcon}
               />
               <View>
