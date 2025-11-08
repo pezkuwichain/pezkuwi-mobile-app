@@ -263,6 +263,49 @@ async def get_proposals():
         raise HTTPException(status_code=500, detail=str(e))
 
 # ========================================
+# TURNSTILE VERIFICATION ENDPOINT
+# ========================================
+
+@api_router.post("/verify-turnstile", response_model=TurnstileVerifyResponse)
+async def verify_turnstile(request: TurnstileVerifyRequest):
+    """
+    Verify Cloudflare Turnstile token
+    """
+    try:
+        import httpx
+        
+        # Verify with Cloudflare API
+        verify_url = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                verify_url,
+                json={
+                    "secret": TURNSTILE_SECRET_KEY,
+                    "response": request.token,
+                }
+            )
+            
+            result = response.json()
+            
+            if result.get("success"):
+                logger.info("✅ Turnstile verification successful")
+                return TurnstileVerifyResponse(
+                    success=True,
+                    message="Verification successful"
+                )
+            else:
+                logger.warning(f"⚠️ Turnstile verification failed: {result}")
+                return TurnstileVerifyResponse(
+                    success=False,
+                    message="Verification failed"
+                )
+                
+    except Exception as e:
+        logger.error(f"Error verifying turnstile: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ========================================
 # AUTHENTICATION API ENDPOINTS
 # ========================================
 
