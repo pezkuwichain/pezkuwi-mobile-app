@@ -9,10 +9,14 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function AuthScreen({ navigation }: any) {
+  const { signIn, signUp } = useAuth();
   const [isSignIn, setIsSignIn] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,10 +24,32 @@ export default function AuthScreen({ navigation }: any) {
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [referralCode, setReferralCode] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleAuth = () => {
-    // TODO: Backend integration
-    navigation.navigate('Home');
+  const handleAuth = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please fill in all required fields');
+      return;
+    }
+
+    if (!isSignIn && (!firstName || !lastName || !phone)) {
+      Alert.alert('Error', 'Please fill in all required fields');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      if (isSignIn) {
+        await signIn(email, password);
+      } else {
+        await signUp(email, password, firstName, lastName, phone, referralCode);
+      }
+      navigation.navigate('Home');
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'Authentication failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
