@@ -1,195 +1,96 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { Platform, Alert } from 'react-native';
-import { getCurrentEndpoint, WALLET_ERRORS } from '../lib/wallet';
-
-// Platform-aware imports
-let ApiPromise: any = null;
-let WsProvider: any = null;
-
-if (Platform.OS !== 'web') {
-  // Native: Use Polkadot.js
-  try {
-    const polkadotApi = require('@polkadot/api');
-    ApiPromise = polkadotApi.ApiPromise;
-    WsProvider = polkadotApi.WsProvider;
-    console.log('✅ Polkadot.js loaded (Native)');
-  } catch (error) {
-    console.warn('⚠️ Polkadot.js not available');
-  }
-} else {
-  // Web: Use Polkadot.js (will be imported normally)
-  const polkadotApi = require('@polkadot/api');
-  ApiPromise = polkadotApi.ApiPromise;
-  WsProvider = polkadotApi.WsProvider;
-}
+import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // ========================================
-// TYPES
+// TYPES - Simplified for backend proxy approach
 // ========================================
 
 export interface Account {
   address: string;
   name?: string;
-  source?: string;
 }
 
 interface PolkadotContextType {
-  api: any | null;
-  isApiReady: boolean;
+  // No API connection - using backend proxy instead
   accounts: Account[];
   selectedAccount: Account | null;
   setSelectedAccount: (account: Account | null) => void;
-  connectWallet: () => Promise<void>;
-  disconnectWallet: () => void;
+  saveAccount: (account: Account) => Promise<void>;
   error: string | null;
 }
 
 const PolkadotContext = createContext<PolkadotContextType | undefined>(undefined);
 
 // ========================================
-// PROVIDER
+// PROVIDER - Simplified localStorage only
 // ========================================
 
 interface PolkadotProviderProps {
   children: ReactNode;
-  endpoint?: string;
 }
 
-export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
-  children,
-  endpoint,
-}) => {
-  const [api, setApi] = useState<any | null>(null);
-  const [isApiReady, setIsApiReady] = useState(false);
+export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({ children }) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const rpcEndpoint = endpoint || getCurrentEndpoint();
-
-  // Initialize Polkadot API (Blockchain RPC connection)
+  // Load saved accounts from AsyncStorage
   useEffect(() => {
-    const initApi = async () => {
-      try {
-        if (!ApiPromise || !WsProvider) {
-          console.warn('⚠️ Polkadot.js not available');
-          setIsApiReady(false);
-          return;
-        }
+    loadAccounts();
+  }, []);
 
-        console.log('🔗 Connecting to PezkuwiChain:', rpcEndpoint);
-        
-        const provider = new WsProvider(rpcEndpoint);
-        const apiInstance = await ApiPromise.create({ provider });
-        
-        await apiInstance.isReady;
-        
-        setApi(apiInstance);
-        setIsApiReady(true);
-        setError(null);
-        
-        console.log('✅ Connected to PezkuwiChain');
-        
-        // Get chain info
-        const [chain, nodeName, nodeVersion] = await Promise.all([
-          apiInstance.rpc.system.chain(),
-          apiInstance.rpc.system.name(),
-          apiInstance.rpc.system.version(),
-        ]);
-        
-        console.log(`📡 Chain: ${chain}`);
-        console.log(`🖥️  Node: ${nodeName} v${nodeVersion}`);
-        
-      } catch (err: any) {
-        console.error('❌ Failed to connect to node:', err);
-        setError(`Failed to connect: ${rpcEndpoint}`);
-        setIsApiReady(false);
-      }
-    };
-
-    initApi();
-
-    return () => {
-      if (api) {
-        api.disconnect();
-      }
-    };
-  }, [rpcEndpoint]);
-
-  // Connect wallet
-  const connectWallet = async () => {
+  const loadAccounts = async () => {
     try {
-      setError(null);
-      
-      if (Platform.OS === 'web') {
-        // Web: Use Polkadot.js extension
-        const { web3Accounts, web3Enable } = await import('@polkadot/extension-dapp');
+      const savedAccounts = await AsyncStorage.getItem('pezkuwi_accounts');
+      if (savedAccounts) {
+        const parsedAccounts = JSON.parse(savedAccounts);
+        setAccounts(parsedAccounts);
         
-        const extensions = await web3Enable('PezkuwiChain');
-        
-        if (extensions.length === 0) {
-          Alert.alert(
-            'Extension Required',
-            'Please install Polkadot.js extension',
-            [{ text: 'OK' }]
-          );
-          return;
+        // Auto-select first account if available
+        if (parsedAccounts.length > 0) {
+          setSelectedAccount(parsedAccounts[0]);
         }
-        
-        console.log('✅ Polkadot.js extension enabled');
-        
-        const allAccounts = await web3Accounts();
-        
-        if (allAccounts.length === 0) {
-          Alert.alert(
-            'No Accounts',
-            'Please create an account in Polkadot.js extension',
-            [{ text: 'OK' }]
-          );
-          return;
-        }
-        
-        const mappedAccounts: Account[] = allAccounts.map(acc => ({
-          address: acc.address,
-          name: acc.meta.name,
-          source: acc.meta.source,
-        }));
-        
-        setAccounts(mappedAccounts);
-        setSelectedAccount(mappedAccounts[0]);
-        
-        console.log(`✅ Connected ${mappedAccounts.length} account(s)`);
-        
-      } else {
-        // Native: Show instruction
-        Alert.alert(
-          'Wallet Connection',
-          'Please enter your wallet address in the app to view your assets. For transactions, you will be guided to SubWallet.',
-          [{ text: 'OK' }]
-        );
       }
-      
-    } catch (err: any) {
-      console.error('❌ Wallet connection failed:', err);
-      setError(WALLET_ERRORS.CONNECTION_FAILED);
+    } catch (error) {
+      console.error('Error loading accounts:', error);
+      setError('Failed to load accounts');
     }
   };
 
-  // Disconnect wallet
-  const disconnectWallet = () => {
-    setAccounts([]);
-    setSelectedAccount(null);
-    console.log('🔌 Wallet disconnected');
+  // Save account to AsyncStorage
+  const saveAccount = async (account: Account) => {
+    try {
+      // Check if account already exists
+      const existingIndex = accounts.findIndex(acc => acc.address === account.address);
+      
+      let updatedAccounts: Account[];
+      if (existingIndex >= 0) {
+        // Update existing account
+        updatedAccounts = [...accounts];
+        updatedAccounts[existingIndex] = account;
+      } else {
+        // Add new account
+        updatedAccounts = [...accounts, account];
+      }
+      
+      setAccounts(updatedAccounts);
+      setSelectedAccount(account);
+      
+      await AsyncStorage.setItem('pezkuwi_accounts', JSON.stringify(updatedAccounts));
+      
+      console.log('✅ Account saved:', account.address);
+    } catch (error) {
+      console.error('Error saving account:', error);
+      setError('Failed to save account');
+    }
   };
 
   const value: PolkadotContextType = {
-    api,
-    isApiReady,
     accounts,
     selectedAccount,
     setSelectedAccount,
-    connectWallet,
-    disconnectWallet,
+    saveAccount,
     error,
   };
 
