@@ -14,7 +14,7 @@ import { usePolkadot } from '../../contexts/PolkadotContext';
 
 export default function WalletSetupScreen({ navigation }: any) {
   const { saveAccount } = usePolkadot();
-  const [walletAddress, setWalletAddress] = useState('');
+  const [walletAddress, setWalletAddress] = useState('5DFwqK698vL4gXHEcanaewnAqhxJ2rjhAogpSTHw3iwGDwd3');
   const [walletName, setWalletName] = useState('My Wallet');
 
   const handleConnectWithAddress = async () => {
