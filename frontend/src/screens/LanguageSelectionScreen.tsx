@@ -106,7 +106,8 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 20,
+    marginBottom: 30,
   },
   sunContainer: {
     width: 100,
