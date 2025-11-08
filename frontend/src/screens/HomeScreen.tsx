@@ -157,8 +157,9 @@ function WalletTab() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.walletScrollContent}>
+        {/* Header */}
         <View style={styles.walletHeader}>
           <Text style={styles.walletTitle}>My Wallet</Text>
           <TouchableOpacity onPress={fetchBalance} style={styles.refreshButton}>
@@ -166,50 +167,104 @@ function WalletTab() {
           </TouchableOpacity>
         </View>
         
-        {/* Balance Cards */}
-        <View style={styles.balanceCards}>
-          <View style={styles.balanceCard}>
-            <View style={styles.balanceCardHeader}>
-              <Image
-                source={{ uri: 'https://customer-assets.emergentagent.com/job_mobile-wallet-app-3/artifacts/izidxcrq_hez_logo_kurdistangunesi.png' }}
-                style={styles.tokenLogo}
-              />
-              <Text style={styles.tokenSymbol}>HEZ</Text>
-            </View>
-            <Text style={styles.balanceAmount}>{hezBalance}</Text>
-            <Text style={styles.balanceUsd}>Hemwelatî Token</Text>
+        {/* Balance Cards - Side by Side */}
+        <View style={styles.balanceRow}>
+          <View style={styles.balanceCardNew}>
+            <Image
+              source={{ uri: 'https://customer-assets.emergentagent.com/job_mobile-wallet-app-3/artifacts/izidxcrq_hez_logo_kurdistangunesi.png' }}
+              style={styles.tokenLogoNew}
+            />
+            <Text style={styles.tokenSymbolNew}>HEZ</Text>
+            <Text style={styles.balanceAmountNew}>{hezBalance}</Text>
+            <Text style={styles.tokenNameNew}>Hemwelatî Token</Text>
           </View>
 
-          <View style={styles.balanceCard}>
-            <View style={styles.balanceCardHeader}>
-              <Image
-                source={{ uri: 'https://customer-assets.emergentagent.com/job_mobile-wallet-app-3/artifacts/jjj4s5p3_pez_logo.jpg' }}
-                style={styles.tokenLogo}
-              />
-              <Text style={styles.tokenSymbol}>PEZ</Text>
-            </View>
-            <Text style={styles.balanceAmount}>{pezBalance}</Text>
-            <Text style={styles.balanceUsd}>Pezkuwî Token</Text>
+          <View style={styles.balanceCardNew}>
+            <Image
+              source={{ uri: 'https://customer-assets.emergentagent.com/job_mobile-wallet-app-3/artifacts/jjj4s5p3_pez_logo.jpg' }}
+              style={styles.tokenLogoNew}
+            />
+            <Text style={styles.tokenSymbolNew}>PEZ</Text>
+            <Text style={styles.balanceAmountNew}>{pezBalance}</Text>
+            <Text style={styles.tokenNameNew}>Pezkuwî Token</Text>
           </View>
         </View>
 
-        {/* Wallet Actions */}
-        <View style={styles.walletActions}>
-          <TouchableOpacity style={styles.walletActionButton}>
-            <Ionicons name="arrow-up" size={24} color="#FFF" />
-            <Text style={styles.walletActionText}>Send</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.walletActionButton}>
-            <Ionicons name="arrow-down" size={24} color="#FFF" />
-            <Text style={styles.walletActionText}>Receive</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.walletActionButton}>
-            <Ionicons name="swap-horizontal" size={24} color="#FFF" />
-            <Text style={styles.walletActionText}>Swap</Text>
-          </TouchableOpacity>
+        {/* Action Buttons Container */}
+        <View style={styles.actionsContainer}>
+          {/* First Row: Send, Receive, Swap, P2P */}
+          <View style={styles.actionsRow}>
+            <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#34D399'}]}>
+              <Ionicons name="arrow-up" size={24} color="#FFF" />
+              <Text style={styles.actionBtnText}>Send</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#3B82F6'}]}>
+              <Ionicons name="arrow-down" size={24} color="#FFF" />
+              <Text style={styles.actionBtnText}>Receive</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#8B5CF6'}]}>
+              <Ionicons name="swap-horizontal" size={24} color="#FFF" />
+              <Text style={styles.actionBtnText}>Swap</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#1F2937'}]}>
+              <Ionicons name="people" size={24} color="#FFF" />
+              <Text style={styles.actionBtnText}>P2P</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Second Row: Vote, DApps, Staking, Connect */}
+          <View style={styles.actionsRow}>
+            <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#EF4444'}]}>
+              <Ionicons name="megaphone" size={24} color="#FFF" />
+              <Text style={styles.actionBtnText}>Vote</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#F59E0B'}]}>
+              <Ionicons name="apps" size={24} color="#FFF" />
+              <Text style={styles.actionBtnText}>DApps</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#10B981'}]}>
+              <Ionicons name="leaf" size={24} color="#FFF" />
+              <Text style={styles.actionBtnText}>Staking</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#6366F1'}]}>
+              <Ionicons name="link" size={24} color="#FFF" />
+              <Text style={styles.actionBtnText}>Connect</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Tokens List */}
+        <View style={styles.tokensContainer}>
+          <Text style={styles.tokensTitle}>Tokens</Text>
+          
+          {/* USDT with PEZ badge */}
+          <View style={styles.tokenItem}>
+            <View style={styles.tokenItemLeft}>
+              <View style={styles.tokenIconContainer}>
+                <Image
+                  source={{ uri: 'https://customer-assets.emergentagent.com/job_mobile-wallet-app-3/artifacts/sxd0qsv2_usdt_logo.jpg' }}
+                  style={styles.tokenIcon}
+                />
+                <Image
+                  source={{ uri: 'https://customer-assets.emergentagent.com/job_mobile-wallet-app-3/artifacts/jjj4s5p3_pez_logo.jpg' }}
+                  style={styles.networkBadge}
+                />
+              </View>
+              <View>
+                <Text style={styles.tokenItemName}>USDT</Text>
+                <Text style={styles.tokenItemNetwork}>PEZ Network</Text>
+              </View>
+            </View>
+            <View style={styles.tokenItemRight}>
+              <Text style={styles.tokenItemBalance}>0</Text>
+              <Text style={styles.tokenItemUsd}>$0</Text>
+            </View>
+          </View>
+
+          {/* Add more tokens as needed */}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
