@@ -117,6 +117,7 @@ function HomeTab() {
 
 function WalletTab() {
   const { user } = useAuth();
+  const insets = useSafeAreaInsets();
   const [hezBalance, setHezBalance] = useState('Loading...');
   const [pezBalance, setPezBalance] = useState('Loading...');
   const [loading, setLoading] = useState(true);
