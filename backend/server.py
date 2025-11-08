@@ -19,8 +19,8 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# Polkadot RPC endpoint (Beta Network)
-POLKADOT_RPC = "wss://beta.pezkuwichain.io"
+# Polkadot RPC endpoint (Local Development Node)
+POLKADOT_RPC = "ws://127.0.0.1:9944"
 
 # Create the main app without a prefix
 app = FastAPI()
