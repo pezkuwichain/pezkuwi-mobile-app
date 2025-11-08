@@ -27,8 +27,8 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# Polkadot RPC endpoint (Local Development Node)
-POLKADOT_RPC = "ws://127.0.0.1:9944"
+# Polkadot RPC endpoint (Tunneled Local Node)
+POLKADOT_RPC = "wss://tired-candies-sniff.loca.lt"
 
 # Initialize Substrate connection
 substrate = None
