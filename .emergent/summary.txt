@@ -1,0 +1,92 @@
+<analysis>
+The AI engineer was initially tasked with cloning and enhancing the  repository. The conversation quickly shifted to understanding the existing  project, a comprehensive digital citizenship platform. Early attempts focused on making the existing app run, which exposed dependency and Polkadot.js compatibility issues, leading to a temporary mock for blockchain services on the web platform. The user then introduced , a fully integrated blockchain web application, and requested a roadmap to integrate its functionality and real-time data into the mobile app, prioritizing user-friendliness.
+
+The AI engineer proposed a multi-phase roadmap, emphasizing mobile-first UX and leveraging DKSweb's blockchain infrastructure. However, the implementation faced challenges with Polkadot.js compatibility on React Native and a misunderstanding of the user's local setup (confusing AI's  with user's). This led to several iterations, including an attempt at WalletConnect integration and then a backend proxy approach for blockchain data. The user expressed frustration over repeated errors and lack of progress, leading to a complete re-evaluation and a request to rebuild the mobile app from scratch with a specific focus on design, user authentication, and leveraging a *live* DKSweb backend. The latest work involves recreating the frontend with the specified design and integrating a backend with Supabase and real-time blockchain data via a localtunnel connection to the user's machine. The primary immediate issue is the Continue button on the Language Selection screen being non-functional.
+</analysis>
+
+<product_requirements>
+The user initially provided a GitHub repository () for an Expo mobile app to be developed. This app, called **PezkuwiChain Mobile App**, aims to be a Kurdish Digital Citizenship Platform with core features: Dual-Token Wallet (HEZ, PEZ), Governance (Welati - Voting), Digital Identity (KYC-based Hemwelatî citizenship), Education Certificates (on Blockchain), Trust Score, Parliament NFT’s, Referral Program, Business Hub, and Token Exchange. It supports 6 languages (English, Kurdish Sorani/Kurmanji, Arabic, Turkish, Farsi). The technology stack is React Native + Expo, TypeScript, Polkadot.js API, and React Navigation.
+
+Later, the user provided another repository, , a fully functional web application integrating with blockchain, intended as a reference for the mobile app's backend and data integration. The mobile app must leverage DKSweb's functionality and real data, focusing on user-friendliness (mobile-first UX) rather than complex administration. Key requirements include:
+-   **Complete rebuild from scratch.**
+-   **Multi-network connectivity:** Connect to  mainnet/beta, if unavailable, connect to user's local node via tunnel, else show error.
+-   **User-centric UI/UX:** Thumb-friendly, gesture-driven, progressive, accessible, responsive, predictable, and delightful.
+-   **Localized experience:** Language selection with consistent language across the app (no hardcoded language).
+-   **Kurdish design:** Welcome page with Kurdish colors (red, green, yellow, white) and sun logo.
+-   **User Authentication:** Human verification, Sign In/Sign Up flow (name, surname, email, phone number, optional referral code). Email verification is mandatory; phone verification is optional for the first 1000 users.
+-   **Home Screen:** User profile picture (uploadable), Tiki count, Trust Score, QR code, Notifications, Settings. Dynamic widget area for announcements/ads (blockchain-independent). Fixed bottom navigation (Home, Wallet, Citizens, Referral, Profile).
+-   **Wallet Screen:** Display balances, transaction history (reference from DKSweb).
+-   **Quick Actions:** 30 quick action buttons on the wallet screen.
+-   **Image handling:** All images must be base-64. Logos provided for Kurdistan Sun (dark/light), HEZ, PEZ, USDT(hez).
+-   **Backend:** Use the existing FastAPI backend, extending it for authentication and utilizing the same Supabase project as DKSweb for user data.
+
+The project is structured into phases, with Phase 1 focusing on initial setup and core wallet features.
+</product_requirements>
+
+<key_technical_concepts>
+-   **React Native & Expo:** Core mobile development framework.
+-   **Expo Router:** File-based navigation.
+-   **FastAPI & MongoDB:** Backend framework and database.
+-   **Supabase:** User authentication (email/password) and off-chain data storage, used by DKSweb.
+-   **Polkadot.js:** Blockchain interaction library (originally intended for direct frontend use, later for backend proxy).
+-   ** (Python):** Backend library for Polkadot blockchain interaction.
+-   ** / :** Exposing local development servers to the internet for remote access.
+-   **i18n:** Internationalization for multi-language support.
+-   **Base64 Images:** Mandatory format for image storage and display.
+</key_technical_concepts>
+
+<code_architecture>
+The application has a monorepo-like structure with  (Expo React Native) and  (FastAPI).
+
+**Directory Structure (Simplified):**
+
+
+
+-   :
+    -   **Summary:** FastAPI backend. Initially had mock balance data, now modified to connect to the user's local Polkadot node via a  URL. It exposes  to fetch real HEZ/PEZ balances. Future updates will include Supabase-backed authentication endpoints.
+    -   **Changes:**
+        -   Installation of  and .
+        -   Configuration to connect to  (user's localtunnel for RPC).
+        -    endpoint now fetches real data from the blockchain.
+        -   Supabase credentials were added to  and  for authentication endpoints (though endpoints themselves are not fully implemented yet).
+-   :
+    -   **Summary:** Frontend service for API calls to the FastAPI backend. Configured to use .
+    -   **Changes:** Adjusted to call the backend endpoints .
+-   :
+    -   **Summary:** Root component of the Expo app. Manages global providers and navigators.
+    -   **Changes:** Underwent multiple rewrites. The latest version sets up the initial navigation structure for , , and . It applies a global Kurdistan-themed gradient.
+-   :
+    -   **Summary:** The initial screen where users select their preferred language.
+    -   **Changes:** Completely rewritten for a professional, elegant Kurdish-themed design (red, green, yellow, white gradient, Kurdistan sun logo, refined typography). The navigation logic for the Get Started button was fixed to proceed to .
+-   :
+    -   **Summary:** Manages the primary navigation stack using Expo Router.
+    -   **Changes:** Updated to include the new , , and  in the navigation flow, removing deprecated WalletSetup screens.
+-   :
+    -   **Summary:** Babel configuration for the React Native project.
+    -   **Changes:** Created to address  and other transformation errors related to Polkadot.js and WalletConnect libraries, by adding  and  plugins.
+</code_architecture>
+
+<pending_tasks>
+-   Implement the Human Verification screen logic.
+-   Develop the Sign In/Sign Up screen with email/phone verification (first 1000 users exempt from phone verification) using Supabase.
+-   Design and implement the main Home screen as per user's visual reference (profile pic, Tiki/Trust Score, QR, Notifications, Settings, dynamic widget area, bottom navigation).
+-   Develop the Wallet screen with 30 Quick Action buttons.
+-   Implement referral code functionality.
+-   Integrate backend authentication with Supabase for user signup/login.
+-   Ensure all text is dynamically rendered based on selected language (i18n).
+</pending_tasks>
+
+<current_work>
+Immediately before this summary request, the AI engineer was in the process of a full rebuild of the frontend and integrating a new backend.
+The frontend has been completely rewritten to align with the user's detailed design requirements, specifically for the . This screen now features a professional, elegant Kurdish-themed design, including a red, green, yellow, and white gradient, the Kurdistan sun logo, refined typography, and language cards with specific emphasis on the selected language.
+
+The  has been updated to include the new navigation flow:  ->  ->  -> .
+
+The  was also extensively updated to connect to the user's local Polkadot node via a  URL () to fetch real blockchain data for balances. Supabase credentials have been added to the backend's  for future authentication implementation.
+
+The most recent issue reported by the user is that the Continue button on the  is still not navigating to the next screen (), despite previous attempts to fix it. This suggests a persistent issue with navigation or state management after the extensive rewrite. The AI engineer acknowledges this is likely an Expo cache problem and plans a restart.
+</current_work>
+
+<optional_next_step>
+Restart Expo and then fix the Continue button on the Language Selection screen to navigate to .
+</optional_next_step>
