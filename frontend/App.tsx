@@ -7,6 +7,9 @@ import LanguageScreen from './src/screens/LanguageScreen';
 import HumanVerificationScreen from './src/screens/HumanVerificationScreen';
 import AuthScreen from './src/screens/AuthScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import NotificationsScreen from './src/screens/NotificationsScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
+import QRScannerScreen from './src/screens/QRScannerScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +23,9 @@ export default function App() {
           <Stack.Screen name="HumanVerification" component={HumanVerificationScreen} />
           <Stack.Screen name="Auth" component={AuthScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Notifications" component={NotificationsScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="QRScanner" component={QRScannerScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
