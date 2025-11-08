@@ -263,7 +263,7 @@ function WalletTab() {
             <View style={styles.tokenItemLeft}>
               <View style={styles.tokenIconContainer}>
                 <Image
-                  source={{ uri: 'https://customer-assets.emergentagent.com/job_digital-kurdistan/artifacts/kjrxv1gd_USDT%28hez%29logo.png' }}
+                  source={{ uri: 'https://customer-assets.emergentagent.com/job_digital-kurdistan/artifacts/8lztwx8u_USDT%28hez%29.png' }}
                   style={styles.tokenIcon}
                 />
                 <Image
