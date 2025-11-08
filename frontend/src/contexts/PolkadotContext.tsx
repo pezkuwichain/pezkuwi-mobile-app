@@ -1,29 +1,24 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { Platform, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SecureStore from 'expo-secure-store';
 import { getCurrentEndpoint, WALLET_ERRORS } from '../lib/wallet';
 
-// Platform-aware Polkadot.js import
-// Only import on native platforms (not web) to avoid import.meta issues
+// WalletConnect imports
+import { WalletConnectModal, useWalletConnectModal } from '@walletconnect/modal-react-native';
+
+// Platform-aware Polkadot.js import for reading blockchain data
+// Only import on native platforms (not web)
 let ApiPromise: any = null;
 let WsProvider: any = null;
-let Keyring: any = null;
-let web3Accounts: any = null;
-let web3Enable: any = null;
-let web3FromAddress: any = null;
-let InjectedAccountWithMeta: any = null;
 
 if (Platform.OS !== 'web') {
   try {
     const polkadotApi = require('@polkadot/api');
-    const polkadotKeyring = require('@polkadot/keyring');
     
     ApiPromise = polkadotApi.ApiPromise;
     WsProvider = polkadotApi.WsProvider;
-    Keyring = polkadotKeyring.Keyring;
     
-    console.log('✅ Polkadot.js loaded for native platform');
+    console.log('✅ Polkadot.js loaded for reading blockchain data');
   } catch (error) {
     console.warn('⚠️ Polkadot.js not available:', error);
   }
@@ -33,31 +28,49 @@ if (Platform.OS !== 'web') {
 // TYPE DEFINITIONS
 // ========================================
 
-export interface MobileAccount {
+export interface ConnectedAccount {
   address: string;
   name?: string;
-  source?: 'local' | 'extension';
-  meta?: {
-    name?: string;
-    source?: string;
-  };
+  source: 'walletconnect';
 }
 
 interface PolkadotContextType {
+  // Blockchain API (read-only)
   api: any | null;
   isApiReady: boolean;
-  accounts: MobileAccount[];
-  selectedAccount: MobileAccount | null;
-  setSelectedAccount: (account: MobileAccount | null) => void;
+  
+  // WalletConnect
+  isConnected: boolean;
+  accounts: ConnectedAccount[];
+  selectedAccount: ConnectedAccount | null;
+  
+  // Actions
   connectWallet: () => Promise<void>;
-  disconnectWallet: () => void;
-  createWallet: (name: string, password: string) => Promise<{ success: boolean; error?: string; mnemonic?: string }>;
-  importWallet: (mnemonic: string, name: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  disconnectWallet: () => Promise<void>;
+  
+  // State
   error: string | null;
   isLoading: boolean;
 }
 
 const PolkadotContext = createContext<PolkadotContextType | undefined>(undefined);
+
+// ========================================
+// WALLETCONNECT CONFIGURATION
+// ========================================
+
+const projectId = 'e542ff314e26ff34de2d4fba98db70bb'; // PezkuwiChain WalletConnect Project ID
+
+const providerMetadata = {
+  name: 'PezkuwiChain',
+  description: 'Kurdish Digital Citizenship Platform',
+  url: 'https://www.pezkuwichain.io',
+  icons: ['https://www.pezkuwichain.io/logo.png'],
+  redirect: {
+    native: 'pezkuwichain://',
+    universal: 'https://www.pezkuwichain.io',
+  },
+};
 
 // ========================================
 // PROVIDER COMPONENT
@@ -74,20 +87,21 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
 }) => {
   const [api, setApi] = useState<any | null>(null);
   const [isApiReady, setIsApiReady] = useState(false);
-  const [accounts, setAccounts] = useState<MobileAccount[]>([]);
-  const [selectedAccount, setSelectedAccount] = useState<MobileAccount | null>(null);
+  const [accounts, setAccounts] = useState<ConnectedAccount[]>([]);
+  const [selectedAccount, setSelectedAccount] = useState<ConnectedAccount | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   const rpcEndpoint = endpoint || getCurrentEndpoint();
 
   // ========================================
-  // API INITIALIZATION
+  // BLOCKCHAIN API INITIALIZATION (READ-ONLY)
   // ========================================
   
   useEffect(() => {
     if (Platform.OS === 'web') {
-      console.log('📱 Web platform detected - using mock data');
+      console.log('📱 Web platform - using mock mode for blockchain API');
       setIsApiReady(true);
       return;
     }
@@ -100,7 +114,7 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
           return;
         }
 
-        console.log('🔗 Connecting to PezkuwiChain:', rpcEndpoint);
+        console.log('🔗 Connecting to PezkuwiChain RPC:', rpcEndpoint);
         
         const provider = new WsProvider(rpcEndpoint);
         const apiInstance = await ApiPromise.create({ provider });
@@ -111,7 +125,7 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
         setIsApiReady(true);
         setError(null);
         
-        console.log('✅ Connected to PezkuwiChain');
+        console.log('✅ Connected to PezkuwiChain for reading blockchain data');
         
         // Get chain info
         const [chain, nodeName, nodeVersion] = await Promise.all([
@@ -124,8 +138,8 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
         console.log(`🖥️  Node: ${nodeName} v${nodeVersion}`);
         
       } catch (err: any) {
-        console.error('❌ Failed to connect to node:', err);
-        setError(`Failed to connect to node: ${rpcEndpoint}`);
+        console.error('❌ Failed to connect to blockchain RPC:', err);
+        setError(`Failed to connect: ${rpcEndpoint}`);
         setIsApiReady(false);
       }
     };
@@ -140,239 +154,96 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
   }, [rpcEndpoint]);
 
   // ========================================
-  // LOAD SAVED ACCOUNTS
-  // ========================================
-  
-  useEffect(() => {
-    loadAccounts();
-  }, []);
-
-  const loadAccounts = async () => {
-    try {
-      const savedAccounts = await AsyncStorage.getItem('pezkuwi_accounts');
-      if (savedAccounts) {
-        const parsedAccounts = JSON.parse(savedAccounts);
-        setAccounts(parsedAccounts);
-        
-        // Auto-select first account if available
-        if (parsedAccounts.length > 0 && !selectedAccount) {
-          setSelectedAccount(parsedAccounts[0]);
-        }
-      }
-    } catch (error) {
-      console.error('Error loading accounts:', error);
-    }
-  };
-
-  const saveAccounts = async (accountsList: MobileAccount[]) => {
-    try {
-      await AsyncStorage.setItem('pezkuwi_accounts', JSON.stringify(accountsList));
-    } catch (error) {
-      console.error('Error saving accounts:', error);
-    }
-  };
-
-  // ========================================
-  // CREATE WALLET (NEW ACCOUNT)
-  // ========================================
-  
-  const createWallet = async (
-    name: string,
-    password: string
-  ): Promise<{ success: boolean; error?: string; mnemonic?: string }> => {
-    try {
-      if (Platform.OS === 'web' || !Keyring) {
-        return {
-          success: false,
-          error: 'Wallet creation not available on web platform',
-        };
-      }
-
-      setIsLoading(true);
-      
-      // Generate mnemonic
-      const { mnemonicGenerate } = await import('@polkadot/util-crypto');
-      const mnemonic = mnemonicGenerate(12);
-      
-      // Create keyring
-      const keyring = new Keyring({ type: 'sr25519', ss58Format: 42 });
-      const pair = keyring.addFromUri(mnemonic);
-      
-      const newAccount: MobileAccount = {
-        address: pair.address,
-        name: name || 'My Wallet',
-        source: 'local',
-        meta: {
-          name: name || 'My Wallet',
-          source: 'mobile',
-        },
-      };
-
-      // Save encrypted mnemonic to secure store
-      await SecureStore.setItemAsync(
-        `pezkuwi_mnemonic_${pair.address}`,
-        mnemonic
-      );
-
-      // Save password hash (for future unlocking)
-      await SecureStore.setItemAsync(
-        `pezkuwi_password_${pair.address}`,
-        password // In production, hash this
-      );
-
-      // Add to accounts list
-      const updatedAccounts = [...accounts, newAccount];
-      setAccounts(updatedAccounts);
-      setSelectedAccount(newAccount);
-      await saveAccounts(updatedAccounts);
-
-      setIsLoading(false);
-
-      return {
-        success: true,
-        mnemonic, // Return mnemonic for user to backup
-      };
-    } catch (error: any) {
-      console.error('Error creating wallet:', error);
-      setIsLoading(false);
-      return {
-        success: false,
-        error: error.message || 'Failed to create wallet',
-      };
-    }
-  };
-
-  // ========================================
-  // IMPORT WALLET (FROM MNEMONIC)
-  // ========================================
-  
-  const importWallet = async (
-    mnemonic: string,
-    name: string,
-    password: string
-  ): Promise<{ success: boolean; error?: string }> => {
-    try {
-      if (Platform.OS === 'web' || !Keyring) {
-        return {
-          success: false,
-          error: 'Wallet import not available on web platform',
-        };
-      }
-
-      setIsLoading(true);
-
-      // Validate mnemonic
-      const { mnemonicValidate } = await import('@polkadot/util-crypto');
-      if (!mnemonicValidate(mnemonic)) {
-        setIsLoading(false);
-        return {
-          success: false,
-          error: 'Invalid mnemonic phrase',
-        };
-      }
-
-      // Create keyring and import account
-      const keyring = new Keyring({ type: 'sr25519', ss58Format: 42 });
-      const pair = keyring.addFromUri(mnemonic);
-
-      // Check if account already exists
-      const existingAccount = accounts.find(acc => acc.address === pair.address);
-      if (existingAccount) {
-        setIsLoading(false);
-        return {
-          success: false,
-          error: 'This wallet is already imported',
-        };
-      }
-
-      const newAccount: MobileAccount = {
-        address: pair.address,
-        name: name || 'Imported Wallet',
-        source: 'local',
-        meta: {
-          name: name || 'Imported Wallet',
-          source: 'mobile',
-        },
-      };
-
-      // Save encrypted mnemonic
-      await SecureStore.setItemAsync(
-        `pezkuwi_mnemonic_${pair.address}`,
-        mnemonic
-      );
-
-      // Save password
-      await SecureStore.setItemAsync(
-        `pezkuwi_password_${pair.address}`,
-        password
-      );
-
-      // Add to accounts
-      const updatedAccounts = [...accounts, newAccount];
-      setAccounts(updatedAccounts);
-      setSelectedAccount(newAccount);
-      await saveAccounts(updatedAccounts);
-
-      setIsLoading(false);
-
-      return { success: true };
-    } catch (error: any) {
-      console.error('Error importing wallet:', error);
-      setIsLoading(false);
-      return {
-        success: false,
-        error: error.message || 'Failed to import wallet',
-      };
-    }
-  };
-
-  // ========================================
-  // CONNECT WALLET
+  // WALLETCONNECT: CONNECT WALLET
   // ========================================
   
   const connectWallet = async () => {
     try {
       setError(null);
+      setIsLoading(true);
       
       if (Platform.OS === 'web') {
         Alert.alert(
-          'Web Platform',
-          'Please use the mobile app to manage your wallet',
+          'Not Available on Web',
+          'Please use SubWallet browser extension for web, or use the mobile app.',
           [{ text: 'OK' }]
         );
+        setIsLoading(false);
         return;
       }
 
-      // Check if we have any accounts
-      if (accounts.length === 0) {
-        Alert.alert(
-          'No Wallet Found',
-          'Please create or import a wallet first',
-          [{ text: 'OK' }]
-        );
-        return;
-      }
-
-      // Auto-select first account if none selected
-      if (!selectedAccount && accounts.length > 0) {
-        setSelectedAccount(accounts[0]);
-      }
-
-      console.log('✅ Wallet connected');
+      console.log('🔗 Opening WalletConnect modal...');
+      
+      // WalletConnect Modal will handle the connection
+      // User will see QR code or list of supported wallets (SubWallet, Nova Wallet, etc.)
+      // This is handled by the WalletConnectModal component in the UI
+      
+      Alert.alert(
+        'Connect Wallet',
+        'Please scan QR code with SubWallet or Nova Wallet mobile app',
+        [{ text: 'OK' }]
+      );
+      
+      setIsLoading(false);
       
     } catch (err: any) {
       console.error('❌ Wallet connection failed:', err);
       setError(WALLET_ERRORS.CONNECTION_FAILED);
+      setIsLoading(false);
     }
   };
 
   // ========================================
-  // DISCONNECT WALLET
+  // WALLETCONNECT: SESSION HANDLER
   // ========================================
   
-  const disconnectWallet = () => {
-    setSelectedAccount(null);
-    console.log('🔌 Wallet disconnected');
+  const handleSessionUpdate = (session: any) => {
+    console.log('✅ WalletConnect session established');
+    
+    // Extract accounts from session
+    const namespaces = session.namespaces;
+    const polkadotAccounts = namespaces?.polkadot?.accounts || [];
+    
+    const connectedAccounts: ConnectedAccount[] = polkadotAccounts.map((acc: string) => {
+      // Format: "polkadot:chainId:address"
+      const parts = acc.split(':');
+      const address = parts[parts.length - 1];
+      
+      return {
+        address,
+        source: 'walletconnect' as const,
+      };
+    });
+
+    if (connectedAccounts.length > 0) {
+      setAccounts(connectedAccounts);
+      setSelectedAccount(connectedAccounts[0]);
+      setIsConnected(true);
+      
+      // Save session
+      AsyncStorage.setItem('wc_session', JSON.stringify(session));
+      
+      console.log(`✅ Connected ${connectedAccounts.length} account(s)`);
+    }
+  };
+
+  // ========================================
+  // WALLETCONNECT: DISCONNECT
+  // ========================================
+  
+  const disconnectWallet = async () => {
+    try {
+      setAccounts([]);
+      setSelectedAccount(null);
+      setIsConnected(false);
+      
+      // Clear session
+      await AsyncStorage.removeItem('wc_session');
+      
+      console.log('🔌 Wallet disconnected');
+    } catch (error) {
+      console.error('Error disconnecting:', error);
+    }
   };
 
   // ========================================
@@ -380,21 +251,31 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
   // ========================================
   
   const value: PolkadotContextType = {
+    // Blockchain API (read-only)
     api,
     isApiReady,
+    
+    // WalletConnect
+    isConnected,
     accounts,
     selectedAccount,
-    setSelectedAccount,
+    
+    // Actions
     connectWallet,
     disconnectWallet,
-    createWallet,
-    importWallet,
+    
+    // State
     error,
     isLoading,
   };
 
   return (
     <PolkadotContext.Provider value={value}>
+      <WalletConnectModal
+        projectId={projectId}
+        providerMetadata={providerMetadata}
+        onSessionUpdate={handleSessionUpdate}
+      />
       {children}
     </PolkadotContext.Provider>
   );
