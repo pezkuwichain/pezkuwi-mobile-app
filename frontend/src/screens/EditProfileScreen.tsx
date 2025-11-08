@@ -22,7 +22,6 @@ export default function EditProfileScreen({ navigation }: any) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
-  const [walletAddress, setWalletAddress] = useState('');
 
   useEffect(() => {
     loadUserData();
