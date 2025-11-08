@@ -264,10 +264,11 @@ test_plan:
   current_focus:
     - "Supabase Authentication - Sign Up"
     - "Supabase Authentication - Sign In"
-    - "Auth Screen (Sign In/Sign Up)"
-    - "Auth Context & AsyncStorage"
-    - "Home Screen - Profile & Navigation"
-  stuck_tasks: []
+    - "Get User Profile"
+  stuck_tasks: 
+    - "Supabase Authentication - Sign Up"
+    - "Supabase Authentication - Sign In"
+    - "Get User Profile"
   test_all: false
   test_priority: "high_first"
 
