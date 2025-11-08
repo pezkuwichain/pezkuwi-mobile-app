@@ -42,6 +42,9 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 # Cloudflare Turnstile
 TURNSTILE_SECRET_KEY = os.environ.get('TURNSTILE_SECRET_KEY')
 
+# Test Wallet Address (with funds)
+TEST_WALLET_ADDRESS = "5GgTgG9sRmPQAYU1RsTejZYnZRjwzKZKWD3awtuqjHioki45"
+
 def get_substrate():
     global substrate
     if substrate is None:
