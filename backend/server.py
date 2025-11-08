@@ -77,6 +77,28 @@ class WalletBalanceResponse(BaseModel):
     reserved: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
+# Auth Models
+class SignUpRequest(BaseModel):
+    email: EmailStr
+    password: str
+    first_name: str
+    last_name: str
+    phone: str
+    referral_code: Optional[str] = None
+    language: str = "en"
+
+class SignInRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+class AuthResponse(BaseModel):
+    user_id: str
+    email: str
+    access_token: str
+    refresh_token: str
+    first_name: str
+    last_name: str
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
