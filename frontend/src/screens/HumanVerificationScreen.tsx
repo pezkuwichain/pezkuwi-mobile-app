@@ -146,10 +146,20 @@ export default function HumanVerificationScreen({ navigation }: any) {
         ref={webViewRef}
         source={{ html: turnstileHTML }}
         onMessage={handleMessage}
-        onLoadEnd={() => setLoading(false)}
+        onLoadStart={() => console.log('WebView started loading')}
+        onLoadEnd={() => {
+          console.log('WebView finished loading');
+          setLoading(false);
+        }}
+        onError={(syntheticEvent) => {
+          const { nativeEvent } = syntheticEvent;
+          console.error('WebView error:', nativeEvent);
+          setError(`WebView Error: ${nativeEvent.description}`);
+        }}
         style={styles.webview}
         javaScriptEnabled={true}
         domStorageEnabled={true}
+        originWhitelist={['*']}
       />
       
       {loading && (
