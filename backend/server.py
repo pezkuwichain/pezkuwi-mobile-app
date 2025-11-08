@@ -99,6 +99,13 @@ class AuthResponse(BaseModel):
     first_name: str
     last_name: str
 
+class TurnstileVerifyRequest(BaseModel):
+    token: str
+
+class TurnstileVerifyResponse(BaseModel):
+    success: bool
+    message: str
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
