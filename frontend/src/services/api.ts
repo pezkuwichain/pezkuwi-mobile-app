@@ -1,13 +1,15 @@
 // PezkuwiChain API Service
-// Connects to DKSweb backend running on localhost:8080
+// Connects to our FastAPI backend (proxy to blockchain)
 
-const API_BASE_URL = 'http://localhost:8080';
+import Constants from 'expo-constants';
+
+const BACKEND_URL = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+const API_BASE = `${BACKEND_URL}/api`;
 
 interface WalletBalance {
   address: string;
   hez: string;
   pez: string;
-  usdt: string;
   transferrable: string;
   reserved: string;
 }
@@ -18,24 +20,33 @@ interface Transaction {
   to: string;
   amount: string;
   asset: string;
-  timestamp: number;
+  timestamp: string;
   status: string;
 }
 
 class PezkuwiAPI {
   private baseUrl: string;
 
-  constructor(baseUrl: string = API_BASE_URL) {
-    this.baseUrl = baseUrl;
+  constructor() {
+    this.baseUrl = API_BASE;
+    console.log('✅ PezkuwiAPI initialized:', this.baseUrl);
   }
 
   // Get wallet balance
   async getBalance(address: string): Promise<WalletBalance> {
     try {
-      const response = await fetch(`${this.baseUrl}/api/wallet/${address}/balance`);
+      const response = await fetch(`${this.baseUrl}/blockchain/balance`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ address }),
+      });
+      
       if (!response.ok) {
         throw new Error('Failed to fetch balance');
       }
+      
       return await response.json();
     } catch (error) {
       console.error('Error fetching balance:', error);
@@ -44,12 +55,14 @@ class PezkuwiAPI {
   }
 
   // Get transaction history
-  async getTransactions(address: string): Promise<Transaction[]> {
+  async getTransactions(address: string): Promise<{ address: string; transactions: Transaction[] }> {
     try {
-      const response = await fetch(`${this.baseUrl}/api/wallet/${address}/transactions`);
+      const response = await fetch(`${this.baseUrl}/blockchain/transactions/${address}`);
+      
       if (!response.ok) {
         throw new Error('Failed to fetch transactions');
       }
+      
       return await response.json();
     } catch (error) {
       console.error('Error fetching transactions:', error);
@@ -60,10 +73,12 @@ class PezkuwiAPI {
   // Get citizenship status
   async getCitizenshipStatus(address: string) {
     try {
-      const response = await fetch(`${this.baseUrl}/api/citizenship/${address}/status`);
+      const response = await fetch(`${this.baseUrl}/citizenship/status/${address}`);
+      
       if (!response.ok) {
         throw new Error('Failed to fetch citizenship status');
       }
+      
       return await response.json();
     } catch (error) {
       console.error('Error fetching citizenship status:', error);
@@ -71,74 +86,18 @@ class PezkuwiAPI {
     }
   }
 
-  // Submit citizenship application
-  async submitCitizenshipApplication(data: any) {
-    try {
-      const response = await fetch(`${this.baseUrl}/api/citizenship/apply`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to submit application');
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Error submitting application:', error);
-      throw error;
-    }
-  }
-
   // Get governance proposals
   async getProposals() {
     try {
-      const response = await fetch(`${this.baseUrl}/api/governance/proposals`);
+      const response = await fetch(`${this.baseUrl}/governance/proposals`);
+      
       if (!response.ok) {
         throw new Error('Failed to fetch proposals');
       }
+      
       return await response.json();
     } catch (error) {
       console.error('Error fetching proposals:', error);
-      throw error;
-    }
-  }
-
-  // Vote on proposal
-  async voteProposal(proposalId: string, vote: 'yes' | 'no', address: string) {
-    try {
-      const response = await fetch(`${this.baseUrl}/api/governance/vote`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          proposalId,
-          vote,
-          address,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to submit vote');
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Error voting:', error);
-      throw error;
-    }
-  }
-
-  // Get staking info
-  async getStakingInfo(address: string) {
-    try {
-      const response = await fetch(`${this.baseUrl}/api/staking/${address}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch staking info');
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Error fetching staking info:', error);
       throw error;
     }
   }
