@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,16 +6,56 @@ import {
   ScrollView,
   TouchableOpacity,
   Switch,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/AuthContext';
+import * as LocalAuthentication from 'expo-local-authentication';
+import * as SecureStore from 'expo-secure-store';
 
 export default function SettingsScreen({ navigation }: any) {
   const insets = useSafeAreaInsets();
   const { user, signOut } = useAuth();
   const [biometricsEnabled, setBiometricsEnabled] = React.useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
+  const [biometricAvailable, setBiometricAvailable] = React.useState(false);
+
+  useEffect(() => {
+    checkBiometricAvailability();
+    loadBiometricSetting();
+  }, []);
+
+  const checkBiometricAvailability = async () => {
+    const compatible = await LocalAuthentication.hasHardwareAsync();
+    const enrolled = await LocalAuthentication.isEnrolledAsync();
+    setBiometricAvailable(compatible && enrolled);
+  };
+
+  const loadBiometricSetting = async () => {
+    const enabled = await SecureStore.getItemAsync('biometricEnabled');
+    setBiometricsEnabled(enabled === 'true');
+  };
+
+  const toggleBiometrics = async (value: boolean) => {
+    if (value) {
+      const result = await LocalAuthentication.authenticateAsync({
+        promptMessage: 'Authenticate to enable biometrics',
+      });
+      
+      if (result.success) {
+        await SecureStore.setItemAsync('biometricEnabled', 'true');
+        setBiometricsEnabled(true);
+        Alert.alert('Success', 'Biometric authentication enabled');
+      } else {
+        Alert.alert('Failed', 'Biometric authentication failed');
+      }
+    } else {
+      await SecureStore.setItemAsync('biometricEnabled', 'false');
+      setBiometricsEnabled(false);
+      Alert.alert('Success', 'Biometric authentication disabled');
+    }
+  };
 
   const handleSignOut = async () => {
     await signOut();
