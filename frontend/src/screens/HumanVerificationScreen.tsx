@@ -9,6 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { API_ENDPOINTS } from '../config/api';
 
 const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
 
@@ -24,11 +25,8 @@ export default function HumanVerificationScreen({ navigation }: any) {
     setVerifying(true);
     
     try {
-      // Get backend URL from environment
-      const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
-      
       // Verify token with backend
-      const response = await fetch(`${backendUrl}/api/verify-turnstile`, {
+      const response = await fetch(API_ENDPOINTS.VERIFY_TURNSTILE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
