@@ -110,7 +110,7 @@ function HomeTab() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
