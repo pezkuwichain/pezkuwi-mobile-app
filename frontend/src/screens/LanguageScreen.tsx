@@ -22,6 +22,12 @@ const LANGUAGES = [
 export default function LanguageScreen({ navigation }: any) {
   const [selected, setSelected] = useState('en');
 
+  const handleContinue = () => {
+    // Save language preference
+    // TODO: Implement i18n
+    navigation.navigate('HumanVerification');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
