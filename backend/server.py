@@ -318,10 +318,17 @@ async def signup(request: SignUpRequest):
     Sign up a new user with Supabase
     """
     try:
-        # Sign up with Supabase Auth
+        # Sign up with Supabase Auth (auto-confirm for development)
         auth_response = supabase.auth.sign_up({
             "email": request.email,
             "password": request.password,
+            "options": {
+                "email_redirect_to": None,
+                "data": {
+                    "first_name": request.first_name,
+                    "last_name": request.last_name,
+                }
+            }
         })
         
         if not auth_response.user:
