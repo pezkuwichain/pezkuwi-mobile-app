@@ -108,7 +108,7 @@ export default function SettingsScreen({ navigation }: any) {
             icon="wallet"
             title="Wallet Address"
             subtitle="5GgTgG9sRm...ioki45"
-            onPress={() => {}}
+            onPress={() => navigation.navigate('WalletAddress')}
           />
         </SettingSection>
 
