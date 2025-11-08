@@ -326,6 +326,16 @@ const styles = StyleSheet.create({
     color: Colors.textDark,
     marginBottom: Spacing.xs,
   },
+  loadingContainer: {
+    padding: Spacing.xxl,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingText: {
+    marginTop: Spacing.md,
+    fontSize: Typography.sizes.medium,
+    color: Colors.textGray,
+  },
   underline: {
     width: 80,
     height: 3,
