@@ -289,11 +289,21 @@ async def signup(request: SignUpRequest):
         
         logger.info(f"✅ User signed up: {request.email}")
         
+        # Check if session exists (may be None if email confirmation is required)
+        if auth_response.session:
+            access_token = auth_response.session.access_token
+            refresh_token = auth_response.session.refresh_token
+        else:
+            # If no session (email confirmation required), return empty tokens
+            access_token = ""
+            refresh_token = ""
+            logger.warning(f"No session created for {request.email} - email confirmation may be required")
+        
         return AuthResponse(
             user_id=auth_response.user.id,
             email=request.email,
-            access_token=auth_response.session.access_token,
-            refresh_token=auth_response.session.refresh_token,
+            access_token=access_token,
+            refresh_token=refresh_token,
             first_name=request.first_name,
             last_name=request.last_name
         )
