@@ -336,6 +336,7 @@ async def signup(request: SignUpRequest):
             "phone": request.phone,
             "referral_code": request.referral_code,
             "language": request.language,
+            "wallet_address": TEST_WALLET_ADDRESS,  # Assign test wallet to new users
             "created_at": datetime.utcnow().isoformat(),
             "tiki_count": 0,
             "trust_score": 0
