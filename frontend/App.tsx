@@ -15,6 +15,8 @@ import ChangePasswordScreen from './src/screens/ChangePasswordScreen';
 import TermsScreen from './src/screens/TermsScreen';
 import PrivacyScreen from './src/screens/PrivacyScreen';
 import HelpScreen from './src/screens/HelpScreen';
+import WalletAddressScreen from './src/screens/WalletAddressScreen';
+import LanguageSettingsScreen from './src/screens/LanguageSettingsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +38,8 @@ export default function App() {
           <Stack.Screen name="Terms" component={TermsScreen} />
           <Stack.Screen name="Privacy" component={PrivacyScreen} />
           <Stack.Screen name="Help" component={HelpScreen} />
+          <Stack.Screen name="WalletAddress" component={WalletAddressScreen} />
+          <Stack.Screen name="LanguageSettings" component={LanguageSettingsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
