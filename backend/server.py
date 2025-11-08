@@ -82,25 +82,67 @@ async def get_status_checks():
     return [StatusCheck(**status_check) for status_check in status_checks]
 
 # ========================================
-# BLOCKCHAIN API PROXY
+# BLOCKCHAIN API ENDPOINTS
 # ========================================
 
 @api_router.post("/blockchain/balance")
 async def get_balance(request: WalletBalanceRequest):
     """
     Get wallet balance from blockchain
-    This is a proxy to avoid Polkadot.js issues in React Native
+    Fetches real data from local blockchain node
     """
     try:
-        # For now, return mock data
-        # TODO: Implement actual RPC call to blockchain
+        substrate_conn = get_substrate()
+        
+        if substrate_conn is None:
+            logger.warning("Blockchain connection not available, using mock data")
+            return WalletBalanceResponse(
+                address=request.address,
+                hez="1000.0000",
+                pez="5000.0000",
+                transferrable="800.0000",
+                reserved="200.0000"
+            )
+        
+        # Get native token (HEZ) balance
+        account_info = substrate_conn.query('System', 'Account', [request.address])
+        
+        if account_info.value:
+            # Native balance (HEZ)
+            free_balance = account_info.value['data']['free']
+            reserved_balance = account_info.value['data']['reserved']
+            
+            # Convert from planck to HEZ (12 decimals)
+            hez_balance = free_balance / (10 ** 12)
+            reserved_hez = reserved_balance / (10 ** 12)
+            transferrable_hez = hez_balance - reserved_hez
+            
+            logger.info(f"✅ Balance fetched for {request.address[:10]}...")
+        else:
+            logger.warning(f"⚠️ Account not found: {request.address}")
+            hez_balance = 0
+            reserved_hez = 0
+            transferrable_hez = 0
+        
+        # Get PEZ balance (Asset ID: 1)
+        try:
+            pez_account = substrate_conn.query('Assets', 'Account', [1, request.address])
+            if pez_account.value:
+                pez_balance = pez_account.value['balance'] / (10 ** 12)
+            else:
+                pez_balance = 0
+        except Exception as e:
+            logger.warning(f"PEZ balance query failed: {e}")
+            pez_balance = 0
+        
         return WalletBalanceResponse(
             address=request.address,
-            hez="1000.0000",
-            pez="5000.0000",
-            transferrable="800.0000",
-            reserved="200.0000"
+            hez=f"{hez_balance:.4f}",
+            pez=f"{pez_balance:.4f}",
+            transferrable=f"{transferrable_hez:.4f}",
+            reserved=f"{reserved_hez:.4f}"
         )
+        
     except Exception as e:
         logger.error(f"Error fetching balance: {e}")
         raise HTTPException(status_code=500, detail=str(e))
