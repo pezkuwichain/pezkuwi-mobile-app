@@ -4,12 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Auth Screens
 import LanguageSelectionScreen from '../screens/Auth/LanguageSelectionScreen';
-import SignUpScreen from '../screens/Auth/SignUpScreen';
 
 // Wallet Screens
 import WalletSetupScreen from '../screens/Wallet/WalletSetupScreen';
-import CreateWalletScreen from '../screens/Wallet/CreateWalletScreen';
-import ImportWalletScreen from '../screens/Wallet/ImportWalletScreen';
 
 // Main App
 import BottomTabNavigator from './BottomTabNavigator';
@@ -37,12 +34,9 @@ export default function RootNavigator() {
       >
         {/* Auth Flow */}
         <Stack.Screen name="LanguageSelection" component={LanguageSelectionScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
 
-        {/* Wallet Setup Flow */}
+        {/* Wallet Setup Flow - WalletConnect */}
         <Stack.Screen name="WalletSetup" component={WalletSetupScreen} />
-        <Stack.Screen name="CreateWallet" component={CreateWalletScreen} />
-        <Stack.Screen name="ImportWallet" component={ImportWalletScreen} />
 
         {/* Main App */}
         <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
