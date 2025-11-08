@@ -105,6 +105,23 @@ class AuthResponse(BaseModel):
     first_name: str
     last_name: str
 
+class UpdateProfileRequest(BaseModel):
+    user_id: str
+    email: Optional[str] = None
+    wallet_address: Optional[str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    phone: Optional[str] = None
+
+class ChangePasswordRequest(BaseModel):
+    user_id: str
+    current_password: str
+    new_password: str
+
+class Enable2FARequest(BaseModel):
+    user_id: str
+    enable: bool
+
 class TurnstileVerifyRequest(BaseModel):
     token: str
 
