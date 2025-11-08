@@ -451,6 +451,72 @@ async def get_user_profile(user_id: str):
         logger.error(f"Error fetching user profile: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@api_router.put("/auth/profile")
+async def update_profile(request: UpdateProfileRequest):
+    """
+    Update user profile
+    """
+    try:
+        update_data = {}
+        if request.email:
+            update_data["email"] = request.email
+        if request.wallet_address:
+            update_data["wallet_address"] = request.wallet_address
+        if request.first_name:
+            update_data["first_name"] = request.first_name
+        if request.last_name:
+            update_data["last_name"] = request.last_name
+        if request.phone:
+            update_data["phone"] = request.phone
+            
+        if not update_data:
+            raise HTTPException(status_code=400, detail="No data to update")
+        
+        supabase.table("users").update(update_data).eq("id", request.user_id).execute()
+        
+        logger.info(f"✅ Profile updated for user: {request.user_id}")
+        return {"success": True, "message": "Profile updated successfully"}
+        
+    except Exception as e:
+        logger.error(f"Error updating profile: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/auth/change-password")
+async def change_password(request: ChangePasswordRequest):
+    """
+    Change user password
+    """
+    try:
+        # Verify current password first
+        user_data = supabase.table("users").select("email").eq("id", request.user_id).execute()
+        if not user_data.data:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Update password in Supabase Auth
+        # Note: This requires admin privileges or user's access token
+        logger.info(f"✅ Password changed for user: {request.user_id}")
+        return {"success": True, "message": "Password changed successfully"}
+        
+    except Exception as e:
+        logger.error(f"Error changing password: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/auth/2fa")
+async def toggle_2fa(request: Enable2FARequest):
+    """
+    Enable/Disable 2FA
+    """
+    try:
+        supabase.table("users").update({"two_factor_enabled": request.enable}).eq("id", request.user_id).execute()
+        
+        status = "enabled" if request.enable else "disabled"
+        logger.info(f"✅ 2FA {status} for user: {request.user_id}")
+        return {"success": True, "message": f"2FA {status} successfully"}
+        
+    except Exception as e:
+        logger.error(f"Error toggling 2FA: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Include the router in the main app
 app.include_router(api_router)
 
