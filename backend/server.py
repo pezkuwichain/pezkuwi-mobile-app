@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime
+from substrateinterface import SubstrateInterface
 
 
 ROOT_DIR = Path(__file__).parent
@@ -21,6 +22,20 @@ db = client[os.environ['DB_NAME']]
 
 # Polkadot RPC endpoint (Local Development Node)
 POLKADOT_RPC = "ws://127.0.0.1:9944"
+
+# Initialize Substrate connection
+substrate = None
+
+def get_substrate():
+    global substrate
+    if substrate is None:
+        try:
+            substrate = SubstrateInterface(url=POLKADOT_RPC)
+            logger.info(f"✅ Connected to blockchain: {substrate.chain}, {substrate.name}")
+        except Exception as e:
+            logger.error(f"❌ Failed to connect to blockchain: {e}")
+            substrate = None
+    return substrate
 
 # Create the main app without a prefix
 app = FastAPI()
