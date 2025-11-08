@@ -243,7 +243,20 @@ function WalletTab() {
 
         {/* Tokens List */}
         <View style={styles.tokensContainer}>
-          <Text style={styles.tokensTitle}>Tokens</Text>
+          <View style={styles.tokensHeader}>
+            <Text style={styles.tokensTitle}>Tokens</Text>
+            <View style={styles.tokensHeaderActions}>
+              <TouchableOpacity style={styles.tokenHeaderButton}>
+                <Ionicons name="search" size={20} color="#6B7280" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.tokenHeaderButton}>
+                <Ionicons name="add-circle" size={20} color="#6B7280" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.tokenHeaderButton}>
+                <Ionicons name="settings" size={20} color="#6B7280" />
+              </TouchableOpacity>
+            </View>
+          </View>
           
           {/* USDT with PEZ badge */}
           <View style={styles.tokenItem}>
@@ -264,12 +277,118 @@ function WalletTab() {
               </View>
             </View>
             <View style={styles.tokenItemRight}>
-              <Text style={styles.tokenItemBalance}>0</Text>
-              <Text style={styles.tokenItemUsd}>$0</Text>
+              <Text style={styles.tokenItemBalance}>0.00</Text>
+              <Text style={styles.tokenItemUsd}>$0.00</Text>
             </View>
           </View>
 
-          {/* Add more tokens as needed */}
+          {/* DOT (Polkadot) */}
+          <View style={styles.tokenItem}>
+            <View style={styles.tokenItemLeft}>
+              <Image
+                source={{ uri: 'https://cryptologos.cc/logos/polkadot-new-dot-logo.png' }}
+                style={styles.tokenIcon}
+              />
+              <View>
+                <Text style={styles.tokenItemName}>DOT</Text>
+                <Text style={styles.tokenItemNetwork}>Polkadot</Text>
+              </View>
+            </View>
+            <View style={styles.tokenItemRight}>
+              <Text style={styles.tokenItemBalance}>0.00</Text>
+              <Text style={styles.tokenItemUsd}>$0.00</Text>
+            </View>
+          </View>
+
+          {/* BTC (Bitcoin) */}
+          <View style={styles.tokenItem}>
+            <View style={styles.tokenItemLeft}>
+              <Image
+                source={{ uri: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png' }}
+                style={styles.tokenIcon}
+              />
+              <View>
+                <Text style={styles.tokenItemName}>BTC</Text>
+                <Text style={styles.tokenItemNetwork}>Bitcoin</Text>
+              </View>
+            </View>
+            <View style={styles.tokenItemRight}>
+              <Text style={styles.tokenItemBalance}>0.00</Text>
+              <Text style={styles.tokenItemUsd}>$0.00</Text>
+            </View>
+          </View>
+
+          {/* ETH (Ethereum) */}
+          <View style={styles.tokenItem}>
+            <View style={styles.tokenItemLeft}>
+              <Image
+                source={{ uri: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' }}
+                style={styles.tokenIcon}
+              />
+              <View>
+                <Text style={styles.tokenItemName}>ETH</Text>
+                <Text style={styles.tokenItemNetwork}>Ethereum</Text>
+              </View>
+            </View>
+            <View style={styles.tokenItemRight}>
+              <Text style={styles.tokenItemBalance}>0.00</Text>
+              <Text style={styles.tokenItemUsd}>$0.00</Text>
+            </View>
+          </View>
+
+          {/* BNB (Binance Coin) */}
+          <View style={styles.tokenItem}>
+            <View style={styles.tokenItemLeft}>
+              <Image
+                source={{ uri: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' }}
+                style={styles.tokenIcon}
+              />
+              <View>
+                <Text style={styles.tokenItemName}>BNB</Text>
+                <Text style={styles.tokenItemNetwork}>Binance Smart Chain</Text>
+              </View>
+            </View>
+            <View style={styles.tokenItemRight}>
+              <Text style={styles.tokenItemBalance}>0.00</Text>
+              <Text style={styles.tokenItemUsd}>$0.00</Text>
+            </View>
+          </View>
+
+          {/* ADA (Cardano) */}
+          <View style={styles.tokenItem}>
+            <View style={styles.tokenItemLeft}>
+              <Image
+                source={{ uri: 'https://cryptologos.cc/logos/cardano-ada-logo.png' }}
+                style={styles.tokenIcon}
+              />
+              <View>
+                <Text style={styles.tokenItemName}>ADA</Text>
+                <Text style={styles.tokenItemNetwork}>Cardano</Text>
+              </View>
+            </View>
+            <View style={styles.tokenItemRight}>
+              <Text style={styles.tokenItemBalance}>0.00</Text>
+              <Text style={styles.tokenItemUsd}>$0.00</Text>
+            </View>
+          </View>
+
+          {/* SOL (Solana) */}
+          <View style={styles.tokenItem}>
+            <View style={styles.tokenItemLeft}>
+              <Image
+                source={{ uri: 'https://cryptologos.cc/logos/solana-sol-logo.png' }}
+                style={styles.tokenIcon}
+              />
+              <View>
+                <Text style={styles.tokenItemName}>SOL</Text>
+                <Text style={styles.tokenItemNetwork}>Solana</Text>
+              </View>
+            </View>
+            <View style={styles.tokenItemRight}>
+              <Text style={styles.tokenItemBalance}>0.00</Text>
+              <Text style={styles.tokenItemUsd}>$0.00</Text>
+            </View>
+          </View>
         </View>
       </ScrollView>
     </View>
