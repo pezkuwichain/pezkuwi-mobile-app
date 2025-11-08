@@ -164,66 +164,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8F9FA',
   },
-  content: {
+  webview: {
     flex: 1,
-    padding: 20,
+    backgroundColor: '#F8F9FA',
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#F8F9FA',
     justifyContent: 'center',
-  },
-  iconContainer: {
     alignItems: 'center',
-    marginBottom: 30,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#1F2937',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#6B7280',
-    textAlign: 'center',
-    marginBottom: 40,
-  },
-  questionBox: {
-    backgroundColor: '#FFF',
-    padding: 24,
-    borderRadius: 12,
-    marginBottom: 20,
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#00A651',
+    zIndex: 999,
   },
-  question: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#1F2937',
-  },
-  input: {
-    backgroundColor: '#FFF',
-    padding: 16,
-    borderRadius: 12,
+  verifyingText: {
+    marginTop: 16,
     fontSize: 16,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    marginBottom: 12,
-  },
-  error: {
-    color: '#EE2A35',
-    fontSize: 14,
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  verifyButton: {
-    backgroundColor: '#00A651',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  verifyText: {
+    fontWeight: '600',
     color: '#FFF',
-    fontSize: 16,
-    fontWeight: '600',
   },
 });
