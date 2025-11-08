@@ -396,6 +396,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8F9FA',
   },
+  scrollContent: {
+    paddingBottom: 80,
+  },
+  walletScrollContent: {
+    paddingBottom: 80,
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
