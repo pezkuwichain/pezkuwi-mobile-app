@@ -252,6 +252,111 @@ async def get_proposals():
         logger.error(f"Error fetching proposals: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# ========================================
+# AUTHENTICATION API ENDPOINTS
+# ========================================
+
+@api_router.post("/auth/signup", response_model=AuthResponse)
+async def signup(request: SignUpRequest):
+    """
+    Sign up a new user with Supabase
+    """
+    try:
+        # Sign up with Supabase Auth
+        auth_response = supabase.auth.sign_up({
+            "email": request.email,
+            "password": request.password,
+        })
+        
+        if not auth_response.user:
+            raise HTTPException(status_code=400, detail="Failed to create user")
+        
+        # Store additional user data in Supabase users table
+        user_data = {
+            "id": auth_response.user.id,
+            "email": request.email,
+            "first_name": request.first_name,
+            "last_name": request.last_name,
+            "phone": request.phone,
+            "referral_code": request.referral_code,
+            "language": request.language,
+            "created_at": datetime.utcnow().isoformat(),
+            "tiki_count": 0,
+            "trust_score": 0
+        }
+        
+        supabase.table("users").insert(user_data).execute()
+        
+        logger.info(f"✅ User signed up: {request.email}")
+        
+        return AuthResponse(
+            user_id=auth_response.user.id,
+            email=request.email,
+            access_token=auth_response.session.access_token,
+            refresh_token=auth_response.session.refresh_token,
+            first_name=request.first_name,
+            last_name=request.last_name
+        )
+        
+    except Exception as e:
+        logger.error(f"Error during signup: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/auth/signin", response_model=AuthResponse)
+async def signin(request: SignInRequest):
+    """
+    Sign in an existing user
+    """
+    try:
+        # Sign in with Supabase Auth
+        auth_response = supabase.auth.sign_in_with_password({
+            "email": request.email,
+            "password": request.password,
+        })
+        
+        if not auth_response.user:
+            raise HTTPException(status_code=401, detail="Invalid credentials")
+        
+        # Get user data from Supabase
+        user_data = supabase.table("users").select("*").eq("id", auth_response.user.id).execute()
+        
+        if not user_data.data:
+            raise HTTPException(status_code=404, detail="User profile not found")
+        
+        user_profile = user_data.data[0]
+        
+        logger.info(f"✅ User signed in: {request.email}")
+        
+        return AuthResponse(
+            user_id=auth_response.user.id,
+            email=request.email,
+            access_token=auth_response.session.access_token,
+            refresh_token=auth_response.session.refresh_token,
+            first_name=user_profile.get("first_name", ""),
+            last_name=user_profile.get("last_name", "")
+        )
+        
+    except Exception as e:
+        logger.error(f"Error during signin: {e}")
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+@api_router.get("/auth/user/{user_id}")
+async def get_user_profile(user_id: str):
+    """
+    Get user profile data
+    """
+    try:
+        user_data = supabase.table("users").select("*").eq("id", user_id).execute()
+        
+        if not user_data.data:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        return user_data.data[0]
+        
+    except Exception as e:
+        logger.error(f"Error fetching user profile: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Include the router in the main app
 app.include_router(api_router)
 
