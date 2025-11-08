@@ -19,6 +19,7 @@ const { width } = Dimensions.get('window');
 
 function HomeTab() {
   const { user } = useAuth();
+  const insets = useSafeAreaInsets();
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const pickImage = async () => {
