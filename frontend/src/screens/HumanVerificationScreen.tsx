@@ -1,29 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  TextInput,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { WebView } from 'react-native-webview';
 
-const CAPTCHA_QUESTION = {
-  question: 'What is 5 + 3?',
-  answer: '8',
-};
+const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
 
 export default function HumanVerificationScreen({ navigation }: any) {
-  const [answer, setAnswer] = useState('');
-  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [verifying, setVerifying] = useState(false);
+  const webViewRef = useRef<WebView>(null);
 
-  const handleVerify = () => {
-    if (answer.trim() === CAPTCHA_QUESTION.answer) {
-      navigation.navigate('Auth');
-    } else {
-      setError('Incorrect answer. Please try again.');
-      setAnswer('');
+  const handleTurnstileToken = async (token: string) => {
+    setVerifying(true);
+    
+    try {
+      // Verify token with backend
+      const response = await fetch('http://localhost:8001/api/verify-turnstile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        navigation.navigate('Auth');
+      } else {
+        Alert.alert('Verification Failed', 'Please try again');
+        // Reload Turnstile
+        webViewRef.current?.reload();
+      }
+    } catch (error) {
+      console.error('Verification error:', error);
+      Alert.alert('Error', 'Verification failed. Please try again.');
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const handleMessage = (event: any) => {
+    const data = JSON.parse(event.nativeEvent.data);
+    
+    if (data.type === 'turnstile-success') {
+      handleTurnstileToken(data.token);
+    } else if (data.type === 'turnstile-error') {
+      Alert.alert('Error', 'Verification failed. Please try again.');
+      setLoading(false);
     }
   };
 
