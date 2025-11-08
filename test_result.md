@@ -271,13 +271,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Supabase Authentication - Sign Up"
-    - "Supabase Authentication - Sign In"
-    - "Get User Profile"
-  stuck_tasks: 
-    - "Supabase Authentication - Sign Up"
-    - "Supabase Authentication - Sign In"
-    - "Get User Profile"
+    - "Human Verification Screen"
+    - "Auth Screen (Sign In/Sign Up)"
+    - "Auth Context & AsyncStorage"
+    - "Home Screen - Profile & Navigation"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
