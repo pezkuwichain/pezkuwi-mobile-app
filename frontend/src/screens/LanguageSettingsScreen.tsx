@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,9 +6,13 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAuth } from '../contexts/AuthContext';
+import i18n, { saveLanguage } from '../config/i18n';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LANGUAGES = [
   { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
@@ -21,21 +25,61 @@ const LANGUAGES = [
 
 export default function LanguageSettingsScreen({ navigation }: any) {
   const insets = useSafeAreaInsets();
+  const { user } = useAuth();
   const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const [loading, setLoading] = useState(false);
 
-  const handleLanguageChange = (languageCode: string) => {
-    setSelectedLanguage(languageCode);
-    // TODO: Save to backend and apply i18n
-    Alert.alert(
-      'Language Changed',
-      'Language preference has been saved. Full translation will be available in the next update.',
-      [
-        {
-          text: 'OK',
-          onPress: () => navigation.goBack(),
+  useEffect(() => {
+    loadCurrentLanguage();
+  }, []);
+
+  const loadCurrentLanguage = async () => {
+    try {
+      const savedLang = await AsyncStorage.getItem('appLanguage');
+      if (savedLang) {
+        setSelectedLanguage(savedLang);
+      }
+    } catch (error) {
+      console.error('Error loading language:', error);
+    }
+  };
+
+  const handleLanguageChange = async (languageCode: string) => {
+    setLoading(true);
+    try {
+      // Save to AsyncStorage and i18n
+      await saveLanguage(languageCode);
+      setSelectedLanguage(languageCode);
+
+      // Save to backend
+      const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+      await fetch(`${backendUrl}/api/auth/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      ]
-    );
+        body: JSON.stringify({
+          user_id: user?.user_id,
+          language: languageCode,
+        }),
+      });
+
+      Alert.alert(
+        'Language Changed',
+        `Language has been changed to ${LANGUAGES.find(l => l.code === languageCode)?.name}`,
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.goBack(),
+          },
+        ]
+      );
+    } catch (error) {
+      console.error('Error changing language:', error);
+      Alert.alert('Error', 'Failed to change language');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
