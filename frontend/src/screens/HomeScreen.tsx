@@ -112,11 +112,55 @@ function HomeTab() {
 }
 
 function WalletTab() {
+  const { user } = useAuth();
+  const [hezBalance, setHezBalance] = useState('Loading...');
+  const [pezBalance, setPezBalance] = useState('Loading...');
+  const [loading, setLoading] = useState(true);
+
+  const TEST_WALLET = '5GgTgG9sRmPQAYU1RsTejZYnZRjwzKZKWD3awtuqjHioki45';
+
+  useEffect(() => {
+    fetchBalance();
+  }, []);
+
+  const fetchBalance = async () => {
+    try {
+      const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+      const response = await fetch(`${backendUrl}/api/blockchain/balance`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          address: TEST_WALLET,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setHezBalance(parseFloat(data.hez).toFixed(2));
+        setPezBalance(parseFloat(data.pez).toFixed(2));
+      } else {
+        setHezBalance('Error');
+        setPezBalance('Error');
+      }
+    } catch (error) {
+      console.error('Balance fetch error:', error);
+      setHezBalance('Error');
+      setPezBalance('Error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.walletHeader}>
           <Text style={styles.walletTitle}>My Wallet</Text>
+          <TouchableOpacity onPress={fetchBalance} style={styles.refreshButton}>
+            <Ionicons name="refresh" size={20} color="#EE2A35" />
+          </TouchableOpacity>
         </View>
         
         {/* Balance Cards */}
@@ -129,8 +173,8 @@ function WalletTab() {
               />
               <Text style={styles.tokenSymbol}>HEZ</Text>
             </View>
-            <Text style={styles.balanceAmount}>5,000.00</Text>
-            <Text style={styles.balanceUsd}>≈ $50,000 USD</Text>
+            <Text style={styles.balanceAmount}>{hezBalance}</Text>
+            <Text style={styles.balanceUsd}>Hemwelatî Token</Text>
           </View>
 
           <View style={styles.balanceCard}>
@@ -141,8 +185,8 @@ function WalletTab() {
               />
               <Text style={styles.tokenSymbol}>PEZ</Text>
             </View>
-            <Text style={styles.balanceAmount}>1,000.00</Text>
-            <Text style={styles.balanceUsd}>≈ $1,000 USD</Text>
+            <Text style={styles.balanceAmount}>{pezBalance}</Text>
+            <Text style={styles.balanceUsd}>Pezkuwî Token</Text>
           </View>
         </View>
 
