@@ -3,12 +3,11 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   SafeAreaView,
   ActivityIndicator,
   Alert,
+  Platform,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { WebView } from 'react-native-webview';
 
 const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
