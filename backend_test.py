@@ -38,9 +38,9 @@ class BackendTester:
         """Test user signup endpoint"""
         print("\n🔐 Testing User Signup...")
         
-        # Generate unique test email
+        # Generate unique test email with standard format
         unique_id = str(uuid.uuid4())[:8]
-        test_email = f"test_{unique_id}@pezkuwi.com"
+        test_email = f"test{unique_id}@gmail.com"
         
         signup_data = {
             "email": test_email,
