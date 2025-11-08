@@ -485,12 +485,26 @@ const styles = StyleSheet.create({
   actionsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    justifyContent: 'space-between',
   },
   actionCard: {
     width: (width - 64) / 4,
+    backgroundColor: '#FFF',
+    padding: 12,
+    borderRadius: 12,
     alignItems: 'center',
-    padding: 8,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  actionCardFirst: {
+    marginRight: 'auto',
+  },
+  actionCardLast: {
+    marginLeft: 'auto',
   },
   actionIcon: {
     width: 50,
