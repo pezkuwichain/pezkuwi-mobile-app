@@ -165,6 +165,13 @@ export default function HumanVerificationScreen({ navigation }: any) {
       {loading && (
         <View style={styles.loadingOverlay}>
           <ActivityIndicator size="large" color="#EE2A35" />
+          <Text style={styles.loadingText}>Loading verification...</Text>
+        </View>
+      )}
+      
+      {error && (
+        <View style={styles.errorOverlay}>
+          <Text style={styles.errorText}>{error}</Text>
         </View>
       )}
     </SafeAreaView>
