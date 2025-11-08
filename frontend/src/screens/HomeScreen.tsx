@@ -94,7 +94,7 @@ function HomeTab() {
         {/* Header */}
         <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
           <View style={styles.headerLeft}>
-            <TouchableOpacity style={styles.profileImage} onPress={pickImage}>
+            <TouchableOpacity style={styles.profileImage} onPress={showImagePickerOptions}>
               {profileImage ? (
                 <Image source={{ uri: profileImage }} style={styles.profileImageSrc} />
               ) : (
