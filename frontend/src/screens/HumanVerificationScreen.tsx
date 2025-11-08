@@ -24,8 +24,11 @@ export default function HumanVerificationScreen({ navigation }: any) {
     setVerifying(true);
     
     try {
+      // Get backend URL from environment
+      const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+      
       // Verify token with backend
-      const response = await fetch('http://localhost:8001/api/verify-turnstile', {
+      const response = await fetch(`${backendUrl}/api/verify-turnstile`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
