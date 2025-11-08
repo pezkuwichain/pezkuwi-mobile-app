@@ -52,8 +52,7 @@ export default function LanguageSelectionScreen({ navigation }: any) {
           {/* Language Selection Grid */}
           <View style={styles.languagesContainer}>
             <Text style={styles.sectionTitle}>Select Your Language</Text>
-            
-            <View style={styles.languagesScrollView}>
+            <View style={styles.languagesGrid}>
             <View style={styles.languagesGrid}>
               {LANGUAGES.map((lang) => (
                 <TouchableOpacity
