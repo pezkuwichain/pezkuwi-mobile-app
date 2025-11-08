@@ -477,14 +477,15 @@ export default function HomeScreen({ navigation }: any) {
     >
       <Tab.Screen
         name="HomeTab"
-        component={HomeTab}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
         }}
-      />
+      >
+        {() => <HomeTab navigation={navigation} />}
+      </Tab.Screen>
       <Tab.Screen
         name="Wallet"
         component={WalletTab}
