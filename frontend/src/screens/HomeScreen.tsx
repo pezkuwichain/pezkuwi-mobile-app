@@ -49,8 +49,12 @@ function HomeTab() {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <TouchableOpacity style={styles.profileImage}>
-              <Ionicons name="person" size={24} color="#6B7280" />
+            <TouchableOpacity style={styles.profileImage} onPress={pickImage}>
+              {profileImage ? (
+                <Image source={{ uri: profileImage }} style={styles.profileImageSrc} />
+              ) : (
+                <Ionicons name="person" size={24} color="#6B7280" />
+              )}
             </TouchableOpacity>
             <View style={styles.profileBadge}>
               <Ionicons name="star" size={12} color="#FFD700" />
