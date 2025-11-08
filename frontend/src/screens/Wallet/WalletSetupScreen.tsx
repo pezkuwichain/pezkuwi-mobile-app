@@ -1,43 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  Dimensions,
-  Image,
+  TextInput,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useWalletConnectModal } from '@walletconnect/modal-react-native';
 import { usePolkadot } from '../../contexts/PolkadotContext';
 
-const { width } = Dimensions.get('window');
-
 export default function WalletSetupScreen({ navigation }: any) {
-  const { open, isConnected } = useWalletConnectModal();
-  const { accounts } = usePolkadot();
+  const { connectWallet, setSelectedAccount } = usePolkadot();
+  const [walletAddress, setWalletAddress] = useState('');
 
-  const handleConnectWallet = async () => {
-    try {
-      await open();
-      
-      // If connection succeeds, navigate to main app
-      if (isConnected && accounts.length > 0) {
-        navigation.navigate('MainTabs');
-      }
-    } catch (error) {
-      console.error('Connection error:', error);
+  const handleConnectWithAddress = () => {
+    if (!walletAddress.trim()) {
+      Alert.alert('Error', 'Please enter a valid wallet address');
+      return;
     }
+
+    // Set the account manually
+    setSelectedAccount({
+      address: walletAddress.trim(),
+      name: 'My Wallet',
+    });
+
+    navigation.navigate('MainTabs');
   };
 
-  // If already connected, go to main app
-  React.useEffect(() => {
-    if (isConnected && accounts.length > 0) {
-      navigation.navigate('MainTabs');
-    }
-  }, [isConnected, accounts]);
+  const handleConnectWithExtension = async () => {
+    await connectWallet();
+    // After successful connection, navigate to main app
+    navigation.navigate('MainTabs');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,78 +49,65 @@ export default function WalletSetupScreen({ navigation }: any) {
             <Ionicons name="wallet" size={80} color="#FFF" />
             <Text style={styles.title}>Connect Your Wallet</Text>
             <Text style={styles.subtitle}>
-              Connect with SubWallet, Nova Wallet, or any Polkadot compatible wallet
+              View your PezkuwiChain assets and transactions
             </Text>
           </View>
 
-          {/* Main Action Card */}
-          <View style={styles.mainCard}>
+          {/* Option 1: Enter Address */}
+          <View style={styles.card}>
+            <View style={styles.optionHeader}>
+              <Ionicons name="key" size={32} color="#F08080" />
+              <Text style={styles.optionTitle}>Enter Wallet Address</Text>
+            </View>
+            
+            <Text style={styles.optionDescription}>
+              Enter your wallet address to view balances and transactions
+            </Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="5GrwvaEF5zXb26Fz9rcQpDWS..."
+              value={walletAddress}
+              onChangeText={setWalletAddress}
+              placeholderTextColor="#999"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+
             <TouchableOpacity
-              style={styles.connectButton}
-              onPress={handleConnectWallet}
-              activeOpacity={0.8}
+              style={styles.primaryButton}
+              onPress={handleConnectWithAddress}
             >
-              <View style={styles.buttonContent}>
-                <Ionicons name="link" size={32} color="#FFF" />
-                <Text style={styles.buttonTitle}>Connect Wallet</Text>
-                <Text style={styles.buttonSubtitle}>
-                  via WalletConnect
-                </Text>
-              </View>
+              <Text style={styles.primaryButtonText}>Continue</Text>
+              <Ionicons name="arrow-forward" size={20} color="#FFF" />
             </TouchableOpacity>
 
-            {/* Supported Wallets */}
-            <View style={styles.walletsSection}>
-              <Text style={styles.walletsTitle}>Supported Wallets:</Text>
-              <View style={styles.walletsList}>
-                <View style={styles.walletItem}>
-                  <View style={styles.walletIcon}>
-                    <Ionicons name="wallet-outline" size={24} color="#F08080" />
-                  </View>
-                  <Text style={styles.walletName}>SubWallet</Text>
-                </View>
-                <View style={styles.walletItem}>
-                  <View style={styles.walletIcon}>
-                    <Ionicons name="wallet-outline" size={24} color="#7DD3C0" />
-                  </View>
-                  <Text style={styles.walletName}>Nova Wallet</Text>
-                </View>
-                <View style={styles.walletItem}>
-                  <View style={styles.walletIcon}>
-                    <Ionicons name="wallet-outline" size={24} color="#C8B6D6" />
-                  </View>
-                  <Text style={styles.walletName}>Talisman</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-
-          {/* Info Section */}
-          <View style={styles.infoSection}>
-            <View style={styles.infoItem}>
-              <Ionicons name="shield-checkmark" size={24} color="#FFF" />
+            <View style={styles.infoBox}>
+              <Ionicons name="information-circle" size={20} color="#7DD3C0" />
               <Text style={styles.infoText}>
-                Your keys stay in your wallet
-              </Text>
-            </View>
-            <View style={styles.infoItem}>
-              <Ionicons name="lock-closed" size={24} color="#FFF" />
-              <Text style={styles.infoText}>
-                We never access your private keys
+                Read-only mode. To send transactions, you'll be guided to SubWallet.
               </Text>
             </View>
           </View>
 
-          {/* How to Connect */}
-          <TouchableOpacity 
-            style={styles.helpButton}
-            onPress={() => {
-              // TODO: Show help modal
-            }}
+          {/* Option 2: Connect with Extension (Web only) */}
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={handleConnectWithExtension}
           >
-            <Ionicons name="help-circle-outline" size={20} color="#FFF" />
-            <Text style={styles.helpText}>How to connect?</Text>
+            <Ionicons name="extension-puzzle" size={24} color="#FFF" />
+            <Text style={styles.secondaryButtonText}>
+              Connect Polkadot.js Extension
+            </Text>
           </TouchableOpacity>
+
+          {/* Footer */}
+          <View style={styles.footer}>
+            <Ionicons name="shield-checkmark" size={20} color="#FFF" />
+            <Text style={styles.footerText}>
+              Your keys stay secure. We never access private keys.
+            </Text>
+          </View>
         </View>
       </LinearGradient>
     </SafeAreaView>
@@ -160,7 +145,7 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     paddingHorizontal: 20,
   },
-  mainCard: {
+  card: {
     backgroundColor: '#FFF',
     borderRadius: 24,
     padding: 24,
@@ -170,81 +155,87 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 8,
   },
-  connectButton: {
-    backgroundColor: '#F08080',
-    borderRadius: 16,
-    padding: 24,
+  optionHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 24,
+    gap: 12,
+    marginBottom: 12,
   },
-  buttonContent: {
-    alignItems: 'center',
-  },
-  buttonTitle: {
-    fontSize: 22,
+  optionTitle: {
+    fontSize: 20,
     fontWeight: '700',
-    color: '#FFF',
-    marginTop: 12,
+    color: '#333',
   },
-  buttonSubtitle: {
+  optionDescription: {
     fontSize: 14,
-    color: '#FFF',
-    opacity: 0.9,
-    marginTop: 4,
-  },
-  walletsSection: {
-    marginTop: 8,
-  },
-  walletsTitle: {
-    fontSize: 14,
-    fontWeight: '600',
     color: '#666',
     marginBottom: 16,
+    lineHeight: 20,
   },
-  walletsList: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  walletItem: {
-    alignItems: 'center',
-  },
-  walletIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+  input: {
     backgroundColor: '#F5F5F5',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 8,
-  },
-  walletName: {
-    fontSize: 12,
-    color: '#666',
-    fontWeight: '500',
-  },
-  infoSection: {
-    gap: 12,
-    marginBottom: 20,
-  },
-  infoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  infoText: {
+    borderRadius: 12,
+    padding: 16,
     fontSize: 14,
-    color: '#FFF',
-    opacity: 0.9,
+    color: '#333',
+    marginBottom: 16,
   },
-  helpButton: {
+  primaryButton: {
+    backgroundColor: '#F08080',
+    borderRadius: 12,
+    padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    paddingVertical: 12,
   },
-  helpText: {
-    fontSize: 14,
+  primaryButtonText: {
+    color: '#FFF',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  infoBox: {
+    backgroundColor: '#F0F9F7',
+    borderRadius: 12,
+    padding: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: '#D0F0E8',
+  },
+  infoText: {
+    flex: 1,
+    fontSize: 12,
+    color: '#5DBEA3',
+    lineHeight: 16,
+  },
+  secondaryButton: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 12,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.3)',
+  },
+  secondaryButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    marginBottom: 20,
+  },
+  footerText: {
+    fontSize: 12,
     color: '#FFF',
     opacity: 0.9,
   },
