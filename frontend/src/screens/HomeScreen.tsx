@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     marginRight: 12,
-    width: width - 64,
+    width: width - 32,
     borderLeftWidth: 4,
     borderLeftColor: '#EE2A35',
   },
