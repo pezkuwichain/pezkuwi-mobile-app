@@ -128,17 +128,6 @@ export default function EditProfileScreen({ navigation }: any) {
           />
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.label}>Wallet Address</Text>
-          <TextInput
-            style={styles.input}
-            value={walletAddress}
-            onChangeText={setWalletAddress}
-            placeholder="Enter wallet address"
-            autoCapitalize="none"
-          />
-        </View>
-
         <TouchableOpacity
           style={[styles.saveButton, loading && styles.saveButtonDisabled]}
           onPress={handleSave}
