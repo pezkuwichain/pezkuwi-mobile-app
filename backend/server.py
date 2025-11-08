@@ -363,6 +363,9 @@ async def get_user_profile(user_id: str):
         
         return user_data.data[0]
         
+    except HTTPException:
+        # Re-raise HTTP exceptions as-is
+        raise
     except Exception as e:
         logger.error(f"Error fetching user profile: {e}")
         raise HTTPException(status_code=500, detail=str(e))
