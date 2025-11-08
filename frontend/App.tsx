@@ -1,13 +1,18 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import RootNavigator from './src/navigation/RootNavigator';
-import { PolkadotProvider } from './src/contexts/PolkadotContext';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LanguageSelectionScreen from './src/screens/LanguageSelectionScreen';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <PolkadotProvider>
+    <NavigationContainer>
       <StatusBar style="auto" />
-      <RootNavigator />
-    </PolkadotProvider>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="LanguageSelection" component={LanguageSelectionScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
