@@ -313,6 +313,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F4F6',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  profileImageSrc: {
+    width: 50,
+    height: 50,
   },
   profileBadge: {
     position: 'absolute',
