@@ -6,13 +6,39 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useWalletConnectModal } from '@walletconnect/modal-react-native';
+import { usePolkadot } from '../../contexts/PolkadotContext';
 
 const { width } = Dimensions.get('window');
 
 export default function WalletSetupScreen({ navigation }: any) {
+  const { open, isConnected } = useWalletConnectModal();
+  const { accounts } = usePolkadot();
+
+  const handleConnectWallet = async () => {
+    try {
+      await open();
+      
+      // If connection succeeds, navigate to main app
+      if (isConnected && accounts.length > 0) {
+        navigation.navigate('MainTabs');
+      }
+    } catch (error) {
+      console.error('Connection error:', error);
+    }
+  };
+
+  // If already connected, go to main app
+  React.useEffect(() => {
+    if (isConnected && accounts.length > 0) {
+      navigation.navigate('MainTabs');
+    }
+  }, [isConnected, accounts]);
+
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
@@ -23,58 +49,80 @@ export default function WalletSetupScreen({ navigation }: any) {
           {/* Header */}
           <View style={styles.header}>
             <Ionicons name="wallet" size={80} color="#FFF" />
-            <Text style={styles.title}>Setup Your Wallet</Text>
+            <Text style={styles.title}>Connect Your Wallet</Text>
             <Text style={styles.subtitle}>
-              Create a new wallet or import an existing one to get started
+              Connect with SubWallet, Nova Wallet, or any Polkadot compatible wallet
             </Text>
           </View>
 
-          {/* Options */}
-          <View style={styles.optionsContainer}>
-            {/* Create New Wallet */}
+          {/* Main Action Card */}
+          <View style={styles.mainCard}>
             <TouchableOpacity
-              style={styles.optionCard}
-              onPress={() => navigation.navigate('CreateWallet')}
+              style={styles.connectButton}
+              onPress={handleConnectWallet}
               activeOpacity={0.8}
             >
-              <View style={styles.iconContainer}>
-                <Ionicons name="add-circle" size={48} color="#F08080" />
-              </View>
-              <Text style={styles.optionTitle}>Create New Wallet</Text>
-              <Text style={styles.optionDescription}>
-                Generate a new wallet with a secure seed phrase
-              </Text>
-              <View style={styles.arrow}>
-                <Ionicons name="arrow-forward" size={24} color="#F08080" />
+              <View style={styles.buttonContent}>
+                <Ionicons name="link" size={32} color="#FFF" />
+                <Text style={styles.buttonTitle}>Connect Wallet</Text>
+                <Text style={styles.buttonSubtitle}>
+                  via WalletConnect
+                </Text>
               </View>
             </TouchableOpacity>
 
-            {/* Import Wallet */}
-            <TouchableOpacity
-              style={styles.optionCard}
-              onPress={() => navigation.navigate('ImportWallet')}
-              activeOpacity={0.8}
-            >
-              <View style={styles.iconContainer}>
-                <Ionicons name="download" size={48} color="#7DD3C0" />
+            {/* Supported Wallets */}
+            <View style={styles.walletsSection}>
+              <Text style={styles.walletsTitle}>Supported Wallets:</Text>
+              <View style={styles.walletsList}>
+                <View style={styles.walletItem}>
+                  <View style={styles.walletIcon}>
+                    <Ionicons name="wallet-outline" size={24} color="#F08080" />
+                  </View>
+                  <Text style={styles.walletName}>SubWallet</Text>
+                </View>
+                <View style={styles.walletItem}>
+                  <View style={styles.walletIcon}>
+                    <Ionicons name="wallet-outline" size={24} color="#7DD3C0" />
+                  </View>
+                  <Text style={styles.walletName}>Nova Wallet</Text>
+                </View>
+                <View style={styles.walletItem}>
+                  <View style={styles.walletIcon}>
+                    <Ionicons name="wallet-outline" size={24} color="#C8B6D6" />
+                  </View>
+                  <Text style={styles.walletName}>Talisman</Text>
+                </View>
               </View>
-              <Text style={styles.optionTitle}>Import Wallet</Text>
-              <Text style={styles.optionDescription}>
-                Import an existing wallet using your seed phrase
-              </Text>
-              <View style={styles.arrow}>
-                <Ionicons name="arrow-forward" size={24} color="#7DD3C0" />
-              </View>
-            </TouchableOpacity>
+            </View>
           </View>
 
-          {/* Footer Info */}
-          <View style={styles.footer}>
-            <Ionicons name="shield-checkmark" size={20} color="#FFF" />
-            <Text style={styles.footerText}>
-              Your keys are stored securely on your device
-            </Text>
+          {/* Info Section */}
+          <View style={styles.infoSection}>
+            <View style={styles.infoItem}>
+              <Ionicons name="shield-checkmark" size={24} color="#FFF" />
+              <Text style={styles.infoText}>
+                Your keys stay in your wallet
+              </Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Ionicons name="lock-closed" size={24} color="#FFF" />
+              <Text style={styles.infoText}>
+                We never access your private keys
+              </Text>
+            </View>
           </View>
+
+          {/* How to Connect */}
+          <TouchableOpacity 
+            style={styles.helpButton}
+            onPress={() => {
+              // TODO: Show help modal
+            }}
+          >
+            <Ionicons name="help-circle-outline" size={20} color="#FFF" />
+            <Text style={styles.helpText}>How to connect?</Text>
+          </TouchableOpacity>
         </View>
       </LinearGradient>
     </SafeAreaView>
@@ -112,54 +160,90 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     paddingHorizontal: 20,
   },
-  optionsContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    gap: 20,
-  },
-  optionCard: {
+  mainCard: {
     backgroundColor: '#FFF',
-    borderRadius: 20,
+    borderRadius: 24,
     padding: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
   },
-  iconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+  connectButton: {
+    backgroundColor: '#F08080',
+    borderRadius: 16,
+    padding: 24,
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  buttonContent: {
+    alignItems: 'center',
+  },
+  buttonTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#FFF',
+    marginTop: 12,
+  },
+  buttonSubtitle: {
+    fontSize: 14,
+    color: '#FFF',
+    opacity: 0.9,
+    marginTop: 4,
+  },
+  walletsSection: {
+    marginTop: 8,
+  },
+  walletsTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
+    marginBottom: 16,
+  },
+  walletsList: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  walletItem: {
+    alignItems: 'center',
+  },
+  walletIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: '#F5F5F5',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
-  },
-  optionTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#333',
     marginBottom: 8,
   },
-  optionDescription: {
-    fontSize: 15,
+  walletName: {
+    fontSize: 12,
     color: '#666',
-    lineHeight: 22,
+    fontWeight: '500',
   },
-  arrow: {
-    position: 'absolute',
-    top: 24,
-    right: 24,
+  infoSection: {
+    gap: 12,
+    marginBottom: 20,
   },
-  footer: {
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#FFF',
+    opacity: 0.9,
+  },
+  helpButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    marginBottom: 20,
+    paddingVertical: 12,
   },
-  footerText: {
+  helpText: {
     fontSize: 14,
     color: '#FFF',
     opacity: 0.9,
