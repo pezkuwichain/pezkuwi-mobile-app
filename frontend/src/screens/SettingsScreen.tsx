@@ -162,7 +162,7 @@ export default function SettingsScreen({ navigation }: any) {
             icon="language"
             title="Language"
             subtitle="English"
-            onPress={() => navigation.navigate('Language')}
+            onPress={() => navigation.navigate('LanguageSettings')}
           />
           <SettingItem
             icon="moon"
