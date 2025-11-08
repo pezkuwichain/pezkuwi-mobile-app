@@ -57,7 +57,6 @@ export default function EditProfileScreen({ navigation }: any) {
           first_name: firstName,
           last_name: lastName,
           phone,
-          wallet_address: walletAddress,
         }),
       });
 
