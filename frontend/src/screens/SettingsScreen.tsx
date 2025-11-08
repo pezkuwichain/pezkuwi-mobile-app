@@ -102,7 +102,7 @@ export default function SettingsScreen({ navigation }: any) {
             icon="person"
             title="Edit Profile"
             subtitle={user?.email || 'Update your information'}
-            onPress={() => {}}
+            onPress={() => navigation.navigate('EditProfile')}
           />
           <SettingItem
             icon="wallet"
@@ -117,27 +117,29 @@ export default function SettingsScreen({ navigation }: any) {
           <SettingItem
             icon="finger-print"
             title="Biometric Authentication"
-            subtitle="Use fingerprint or Face ID"
+            subtitle={biometricAvailable ? 'Use fingerprint or Face ID' : 'Not available on this device'}
             rightElement={
-              <Switch
-                value={biometricsEnabled}
-                onValueChange={setBiometricsEnabled}
-                trackColor={{ false: '#E5E7EB', true: '#EE2A3580' }}
-                thumbColor={biometricsEnabled ? '#EE2A35' : '#F3F4F6'}
-              />
+              biometricAvailable ? (
+                <Switch
+                  value={biometricsEnabled}
+                  onValueChange={toggleBiometrics}
+                  trackColor={{ false: '#E5E7EB', true: '#EE2A3580' }}
+                  thumbColor={biometricsEnabled ? '#EE2A35' : '#F3F4F6'}
+                />
+              ) : undefined
             }
           />
           <SettingItem
             icon="key"
             title="Change Password"
             subtitle="Update your password"
-            onPress={() => {}}
+            onPress={() => navigation.navigate('ChangePassword')}
           />
           <SettingItem
             icon="shield-checkmark"
             title="Two-Factor Authentication"
             subtitle="Add extra security"
-            onPress={() => {}}
+            onPress={() => Alert.alert('Coming Soon', '2FA feature will be available in the next update')}
           />
         </SettingSection>
 
@@ -160,7 +162,7 @@ export default function SettingsScreen({ navigation }: any) {
             icon="language"
             title="Language"
             subtitle="English"
-            onPress={() => {}}
+            onPress={() => navigation.navigate('Language')}
           />
           <SettingItem
             icon="moon"
@@ -172,9 +174,9 @@ export default function SettingsScreen({ navigation }: any) {
         {/* About Section */}
         <SettingSection title="About">
           <SettingItem icon="information-circle" title="Version" subtitle="1.0.0" />
-          <SettingItem icon="document-text" title="Terms of Service" onPress={() => {}} />
-          <SettingItem icon="shield" title="Privacy Policy" onPress={() => {}} />
-          <SettingItem icon="help-circle" title="Help & Support" onPress={() => {}} />
+          <SettingItem icon="document-text" title="Terms of Service" onPress={() => navigation.navigate('Terms')} />
+          <SettingItem icon="shield" title="Privacy Policy" onPress={() => navigation.navigate('Privacy')} />
+          <SettingItem icon="help-circle" title="Help & Support" onPress={() => navigation.navigate('Help')} />
         </SettingSection>
 
         {/* Sign Out */}
