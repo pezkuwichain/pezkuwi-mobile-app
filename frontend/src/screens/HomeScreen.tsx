@@ -465,7 +465,7 @@ function ProfileTab() {
 
 const Tab = createBottomTabNavigator();
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }: any) {
   return (
     <Tab.Navigator
       screenOptions={{
