@@ -107,13 +107,13 @@ function HomeTab({ navigation }: any) {
             </View>
           </View>
           <View style={styles.headerRight}>
-            <TouchableOpacity style={styles.iconButton}>
+            <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('QRScanner')}>
               <Ionicons name="qr-code-outline" size={24} color="#1F2937" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton}>
+            <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Notifications')}>
               <Ionicons name="notifications-outline" size={24} color="#1F2937" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton}>
+            <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Settings')}>
               <Ionicons name="settings-outline" size={24} color="#1F2937" />
             </TouchableOpacity>
           </View>
