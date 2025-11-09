@@ -26,6 +26,7 @@ const LANGUAGES = [
 export default function LanguageSettingsScreen({ navigation }: any) {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
+  const { colors } = useTheme();
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [loading, setLoading] = useState(false);
 
