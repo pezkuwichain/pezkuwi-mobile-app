@@ -5,12 +5,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Create i18n instance with fallback enabled
 const i18n = new I18n({
   en: {
+    // Navigation
     welcome: 'Welcome',
     home: 'Home',
     wallet: 'Wallet',
     citizens: 'Citizens',
     referral: 'Referral',
     profile: 'Profile',
+    // Settings
     settings: 'Settings',
     notifications: 'Notifications',
     editProfile: 'Edit Profile',
@@ -29,6 +31,27 @@ const i18n = new I18n({
     privacy: 'Privacy Policy',
     help: 'Help & Support',
     walletAddress: 'Wallet Address',
+    // Language Selection
+    selectYourLanguage: 'Select Your Language',
+    digitalCitizenshipPlatform: 'Digital Citizenship Platform',
+    continue: 'Continue',
+    // Auth
+    signIn: 'Sign In',
+    signUp: 'Sign Up',
+    email: 'Email',
+    password: 'Password',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    phone: 'Phone',
+    referralCode: 'Referral Code (Optional)',
+    alreadyHaveAccount: 'Already have an account?',
+    dontHaveAccount: "Don't have an account?",
+    // Common
+    loading: 'Loading...',
+    submit: 'Submit',
+    cancel: 'Cancel',
+    save: 'Save',
+    back: 'Back',
   },
   'ku-sorani': {
     welcome: 'بەخێربێیت',
