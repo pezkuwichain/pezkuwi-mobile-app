@@ -159,7 +159,7 @@ export default function AuthScreen({ navigation }: any) {
             >
               <Text style={styles.switchText}>
                 {isSignIn ? "Don't have an account? " : 'Already have an account? '}
-                <Text style={styles.switchTextBold}>{isSignIn ? 'Sign Up' : 'Sign In'}</Text>
+                <Text style={styles.switchTextBold}>{isSignIn ? i18n.t('signUp') : i18n.t('signIn')}</Text>
               </Text>
             </TouchableOpacity>
           </View>
