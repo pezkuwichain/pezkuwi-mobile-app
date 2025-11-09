@@ -501,7 +501,7 @@ export default function HomeScreen({ navigation }: any) {
         name="Citizens"
         component={CitizensTab}
         options={{
-          tabBarLabel: 'Citizens',
+          tabBarLabel: i18n.t('citizens'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people" size={size} color={color} />
           ),
