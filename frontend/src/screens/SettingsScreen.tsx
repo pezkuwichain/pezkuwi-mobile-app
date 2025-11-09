@@ -134,23 +134,23 @@ export default function SettingsScreen({ navigation }: any) {
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Profile Section */}
-        <SettingSection title="Profile">
+        <SettingSection title={i18n.t('profile')}>
           <SettingItem
             icon="person"
-            title="Edit Profile"
+            title={i18n.t('editProfile')}
             subtitle={user?.email || 'Update your information'}
             onPress={() => navigation.navigate('EditProfile')}
           />
           <SettingItem
             icon="wallet"
-            title="Wallet Address"
+            title={i18n.t('walletAddress')}
             subtitle="5GgTgG9sRm...ioki45"
             onPress={() => navigation.navigate('WalletAddress')}
           />
         </SettingSection>
 
         {/* Security Section */}
-        <SettingSection title="Security">
+        <SettingSection title={i18n.t('security')}>
           <SettingItem
             icon="finger-print"
             title="Biometric Authentication"
