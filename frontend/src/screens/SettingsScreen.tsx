@@ -169,7 +169,15 @@ export default function SettingsScreen({ navigation }: any) {
           <SettingItem
             icon="moon"
             title="Dark Mode"
-            subtitle="Coming soon"
+            subtitle={isDarkMode ? "Dark theme enabled" : "Light theme enabled"}
+            rightElement={
+              <Switch
+                value={isDarkMode}
+                onValueChange={toggleTheme}
+                trackColor={{ false: '#E5E7EB', true: '#EE2A3580' }}
+                thumbColor={isDarkMode ? '#EE2A35' : '#F3F4F6'}
+              />
+            }
           />
         </SettingSection>
 
