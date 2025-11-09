@@ -194,9 +194,12 @@ export default function SettingsScreen({ navigation }: any) {
         </SettingSection>
 
         {/* Sign Out */}
-        <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
-          <Ionicons name="log-out-outline" size={20} color="#EF4444" />
-          <Text style={styles.signOutText}>Sign Out</Text>
+        <TouchableOpacity 
+          style={[styles.signOutButton, { backgroundColor: colors.error + '20' }]} 
+          onPress={handleSignOut}
+        >
+          <Ionicons name="log-out-outline" size={20} color={colors.error} />
+          <Text style={[styles.signOutText, { color: colors.error }]}>Sign Out</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
