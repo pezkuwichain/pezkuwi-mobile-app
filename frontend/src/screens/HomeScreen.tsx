@@ -491,7 +491,7 @@ export default function HomeScreen({ navigation }: any) {
         name="Wallet"
         component={WalletTab}
         options={{
-          tabBarLabel: 'Wallet',
+          tabBarLabel: i18n.t('wallet'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="wallet" size={size} color={color} />
           ),
