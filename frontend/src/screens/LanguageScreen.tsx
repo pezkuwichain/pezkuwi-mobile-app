@@ -9,6 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import i18n, { saveLanguage } from '../config/i18n';
 
 const LANGUAGES = [
   { code: 'en', name: 'English', nativeName: 'English' },
