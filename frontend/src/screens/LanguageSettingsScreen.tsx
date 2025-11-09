@@ -47,36 +47,30 @@ export default function LanguageSettingsScreen({ navigation }: any) {
   const handleLanguageChange = async (languageCode: string) => {
     setLoading(true);
     try {
-      // Save to AsyncStorage and i18n
+      // Save to AsyncStorage and i18n (silent update)
       await saveLanguage(languageCode);
       setSelectedLanguage(languageCode);
 
-      // Save to backend
-      const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
-      await fetch(`${backendUrl}/api/auth/profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: user?.user_id,
-          language: languageCode,
-        }),
-      });
-
-      Alert.alert(
-        'Language Changed',
-        `Language has been changed to ${LANGUAGES.find(l => l.code === languageCode)?.name}`,
-        [
-          {
-            text: 'OK',
-            onPress: () => navigation.goBack(),
+      // Save to backend (fire and forget - non-blocking)
+      if (user?.user_id) {
+        const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+        fetch(`${backendUrl}/api/auth/profile`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        ]
-      );
+          body: JSON.stringify({
+            user_id: user.user_id,
+            language: languageCode,
+          }),
+        }).catch(err => console.error('Error saving language to backend:', err));
+      }
+
+      // Silent update - no alert, no navigation reset
+      // Language will be applied on next screen render
     } catch (error) {
       console.error('Error changing language:', error);
-      Alert.alert('Error', 'Failed to change language');
+      // Even on error, we don't alert or redirect
     } finally {
       setLoading(false);
     }
