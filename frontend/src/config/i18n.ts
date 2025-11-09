@@ -97,23 +97,10 @@ const i18n = new I18n({
   },
 });
 
-// Set default locale
-i18n.enableFallback = true;
+// Configure i18n with safe defaults
 i18n.defaultLocale = 'en';
-
-// Get device locale safely (handle web platform where it might be undefined)
-const getDeviceLocale = () => {
-  try {
-    const locale = Localization.getLocales?.()?.[0]?.languageCode || 
-                   Localization.locale || 
-                   'en';
-    return typeof locale === 'string' ? locale.split('-')[0] : 'en';
-  } catch (error) {
-    return 'en';
-  }
-};
-
-i18n.locale = getDeviceLocale();
+i18n.locale = 'en'; // Start with safe default
+i18n.enableFallback = true;
 
 export const loadSavedLanguage = async () => {
   try {
