@@ -26,9 +26,8 @@ function AppContent() {
   const { isDarkMode } = useTheme();
 
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
         <StatusBar style={isDarkMode ? 'light' : 'dark'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Language" component={LanguageScreen} />
