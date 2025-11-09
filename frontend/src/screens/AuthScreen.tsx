@@ -129,7 +129,7 @@ export default function AuthScreen({ navigation }: any) {
 
             {!isSignIn && (
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Referral Code (Optional)</Text>
+                <Text style={styles.label}>{i18n.t('referralCode')}</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Enter referral code"
