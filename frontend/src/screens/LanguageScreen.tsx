@@ -67,7 +67,7 @@ export default function LanguageScreen({ navigation }: any) {
               styles.languageCard,
               selected === lang.code && styles.languageCardSelected,
             ]}
-            onPress={() => setSelected(lang.code)}
+            onPress={() => handleLanguageSelect(lang.code)}
             activeOpacity={0.7}
           >
             <View>
