@@ -295,10 +295,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Human Verification Screen"
-    - "Auth Screen (Sign In/Sign Up)"
-    - "Auth Context & AsyncStorage"
-    - "Home Screen - Profile & Navigation"
+    - "Language Settings - i18n Implementation"
+    - "Dark Mode / Theme System"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
