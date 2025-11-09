@@ -129,32 +129,32 @@ export default function SettingsScreen({ navigation }: any) {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>{i18n.t('settings')}</Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>{t('settings')}</Text>
         <View style={{ width: 40 }} />
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Profile Section */}
-        <SettingSection title={i18n.t('profile')}>
+        <SettingSection title={t('profile')}>
           <SettingItem
             icon="person"
-            title={i18n.t('editProfile')}
+            title={t('editProfile')}
             subtitle={user?.email || 'Update your information'}
             onPress={() => navigation.navigate('EditProfile')}
           />
           <SettingItem
             icon="wallet"
-            title={i18n.t('walletAddress')}
+            title={t('walletAddress')}
             subtitle="5GgTgG9sRm...ioki45"
             onPress={() => navigation.navigate('WalletAddress')}
           />
         </SettingSection>
 
         {/* Security Section */}
-        <SettingSection title={i18n.t('security')}>
+        <SettingSection title={t('security')}>
           <SettingItem
             icon="finger-print"
-            title={i18n.t('biometricAuth')}
+            title={t('biometricAuth')}
             subtitle={biometricAvailable ? 'Use fingerprint or Face ID' : 'Not available on this device'}
             rightElement={
               biometricAvailable ? (
@@ -169,23 +169,23 @@ export default function SettingsScreen({ navigation }: any) {
           />
           <SettingItem
             icon="key"
-            title={i18n.t('changePassword')}
+            title={t('changePassword')}
             subtitle="Update your password"
             onPress={() => navigation.navigate('ChangePassword')}
           />
           <SettingItem
             icon="shield-checkmark"
-            title={i18n.t('twoFactorAuth')}
+            title={t('twoFactorAuth')}
             subtitle="Add extra security"
             onPress={() => Alert.alert('Coming Soon', '2FA feature will be available in the next update')}
           />
         </SettingSection>
 
         {/* Preferences Section */}
-        <SettingSection title={i18n.t('preferences')}>
+        <SettingSection title={t('preferences')}>
           <SettingItem
             icon="notifications"
-            title={i18n.t('pushNotifications')}
+            title={t('pushNotifications')}
             subtitle="Receive alerts and updates"
             rightElement={
               <Switch
@@ -198,13 +198,13 @@ export default function SettingsScreen({ navigation }: any) {
           />
           <SettingItem
             icon="language"
-            title={i18n.t('language')}
+            title={t('language')}
             subtitle={currentLanguage}
             onPress={() => navigation.navigate('LanguageSettings')}
           />
           <SettingItem
             icon="moon"
-            title={i18n.t('darkMode')}
+            title={t('darkMode')}
             subtitle={isDarkMode ? "Dark theme enabled" : "Light theme enabled"}
             rightElement={
               <Switch
@@ -218,11 +218,11 @@ export default function SettingsScreen({ navigation }: any) {
         </SettingSection>
 
         {/* About Section */}
-        <SettingSection title={i18n.t('about')}>
-          <SettingItem icon="information-circle" title={i18n.t('version')} subtitle="1.0.0" />
-          <SettingItem icon="document-text" title={i18n.t('terms')} onPress={() => navigation.navigate('Terms')} />
-          <SettingItem icon="shield" title={i18n.t('privacy')} onPress={() => navigation.navigate('Privacy')} />
-          <SettingItem icon="help-circle" title={i18n.t('help')} onPress={() => navigation.navigate('Help')} />
+        <SettingSection title={t('about')}>
+          <SettingItem icon="information-circle" title={t('version')} subtitle="1.0.0" />
+          <SettingItem icon="document-text" title={t('terms')} onPress={() => navigation.navigate('Terms')} />
+          <SettingItem icon="shield" title={t('privacy')} onPress={() => navigation.navigate('Privacy')} />
+          <SettingItem icon="help-circle" title={t('help')} onPress={() => navigation.navigate('Help')} />
         </SettingSection>
 
         {/* Sign Out */}
@@ -231,7 +231,7 @@ export default function SettingsScreen({ navigation }: any) {
           onPress={handleSignOut}
         >
           <Ionicons name="log-out-outline" size={20} color={colors.error} />
-          <Text style={[styles.signOutText, { color: colors.error }]}>{i18n.t('signOut')}</Text>
+          <Text style={[styles.signOutText, { color: colors.error }]}>{t('signOut')}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
