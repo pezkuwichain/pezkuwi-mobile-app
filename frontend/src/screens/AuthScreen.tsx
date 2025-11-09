@@ -72,7 +72,7 @@ export default function AuthScreen({ navigation }: any) {
               <>
                 <View style={styles.row}>
                   <View style={[styles.inputGroup, { flex: 1, marginRight: 8 }]}>
-                    <Text style={styles.label}>First Name *</Text>
+                    <Text style={styles.label}>{i18n.t('firstName')} *</Text>
                     <TextInput
                       style={styles.input}
                       placeholder="John"
