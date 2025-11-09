@@ -1,180 +1,37 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
+  TouchableOpacity,
   SafeAreaView,
-  ActivityIndicator,
-  Alert,
-  Platform,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
-import { API_ENDPOINTS } from '../config/api';
+import { Ionicons } from '@expo/vector-icons';
 
-const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
+/* ============================================
+   PLACEHOLDER FOR DEVELOPMENT
+   TODO: Implement Cloudflare Turnstile verification
+   ============================================ */
 
 export default function HumanVerificationScreen({ navigation }: any) {
-  const [loading, setLoading] = useState(true);
-  const [verifying, setVerifying] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const webViewRef = useRef<WebView>(null);
-
-  console.log('HumanVerificationScreen mounted');
-
-  const handleTurnstileToken = async (token: string) => {
-    setVerifying(true);
-    
-    try {
-      // Verify token with backend
-      const response = await fetch(API_ENDPOINTS.VERIFY_TURNSTILE, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token }),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        navigation.navigate('Auth');
-      } else {
-        Alert.alert('Verification Failed', 'Please try again');
-        // Reload Turnstile
-        webViewRef.current?.reload();
-      }
-    } catch (error) {
-      console.error('Verification error:', error);
-      Alert.alert('Error', 'Verification failed. Please try again.');
-    } finally {
-      setVerifying(false);
-    }
+  const handleContinue = () => {
+    navigation.navigate('Auth');
   };
-
-  const handleMessage = (event: any) => {
-    const data = JSON.parse(event.nativeEvent.data);
-    
-    if (data.type === 'turnstile-success') {
-      handleTurnstileToken(data.token);
-    } else if (data.type === 'turnstile-error') {
-      Alert.alert('Error', 'Verification failed. Please try again.');
-      setLoading(false);
-    }
-  };
-
-  const turnstileHTML = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-      <style>
-        body {
-          margin: 0;
-          padding: 20px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100vh;
-          background: #F8F9FA;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        .container {
-          text-align: center;
-          width: 100%;
-          max-width: 400px;
-        }
-        .icon {
-          font-size: 60px;
-          margin-bottom: 20px;
-        }
-        h1 {
-          font-size: 24px;
-          font-weight: 700;
-          color: #1F2937;
-          margin-bottom: 8px;
-        }
-        p {
-          font-size: 14px;
-          color: #6B7280;
-          margin-bottom: 40px;
-        }
-        .cf-turnstile {
-          margin: 0 auto;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="icon">🛡️</div>
-        <h1>Human Verification</h1>
-        <p>Please complete the security check to continue</p>
-        <div class="cf-turnstile" 
-             data-sitekey="${TURNSTILE_SITE_KEY}"
-             data-callback="onSuccess"
-             data-error-callback="onError"
-             data-theme="light">
-        </div>
-      </div>
-      <script>
-        function onSuccess(token) {
-          window.ReactNativeWebView.postMessage(JSON.stringify({
-            type: 'turnstile-success',
-            token: token
-          }));
-        }
-        
-        function onError() {
-          window.ReactNativeWebView.postMessage(JSON.stringify({
-            type: 'turnstile-error'
-          }));
-        }
-      </script>
-    </body>
-    </html>
-  `;
 
   return (
     <SafeAreaView style={styles.container}>
-      {verifying && (
-        <View style={styles.overlay}>
-          <ActivityIndicator size="large" color="#EE2A35" />
-          <Text style={styles.verifyingText}>Verifying...</Text>
-        </View>
-      )}
-      
-      <WebView
-        ref={webViewRef}
-        source={{ html: turnstileHTML }}
-        onMessage={handleMessage}
-        onLoadStart={() => console.log('WebView started loading')}
-        onLoadEnd={() => {
-          console.log('WebView finished loading');
-          setLoading(false);
-        }}
-        onError={(syntheticEvent) => {
-          const { nativeEvent } = syntheticEvent;
-          console.error('WebView error:', nativeEvent);
-          setError(`WebView Error: ${nativeEvent.description}`);
-        }}
-        style={styles.webview}
-        javaScriptEnabled={true}
-        domStorageEnabled={true}
-        originWhitelist={['*']}
-      />
-      
-      {loading && (
-        <View style={styles.loadingOverlay}>
-          <ActivityIndicator size="large" color="#EE2A35" />
-          <Text style={styles.loadingText}>Loading verification...</Text>
-        </View>
-      )}
-      
-      {error && (
-        <View style={styles.errorOverlay}>
-          <Text style={styles.errorText}>{error}</Text>
-        </View>
-      )}
+      <View style={styles.content}>
+        <Ionicons name="shield-checkmark" size={80} color="#EE2A35" />
+        
+        <Text style={styles.title}>Human Verification</Text>
+        <Text style={styles.subtitle}>Development Placeholder</Text>
+
+        <TouchableOpacity style={styles.button} onPress={handleContinue}>
+          <Text style={styles.buttonText}>Continue to Auth</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.note}>🚧 Placeholder - Will be replaced with Turnstile</Text>
+      </View>
     </SafeAreaView>
   );
 }
@@ -184,47 +41,40 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8F9FA',
   },
-  webview: {
+  content: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
-  },
-  loadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#F8F9FA',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 32,
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 999,
+  title: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#1F2937',
+    marginTop: 24,
+    marginBottom: 8,
   },
-  verifyingText: {
-    marginTop: 16,
+  subtitle: {
+    fontSize: 16,
+    color: '#6B7280',
+    marginBottom: 48,
+  },
+  button: {
+    backgroundColor: '#EE2A35',
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+    borderRadius: 12,
+    marginBottom: 24,
+  },
+  buttonText: {
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
-    color: '#FFF',
   },
-  loadingText: {
-    marginTop: 16,
-    fontSize: 14,
-    color: '#6B7280',
-  },
-  errorOverlay: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
-    backgroundColor: '#FEE2E2',
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#EE2A35',
-  },
-  errorText: {
-    color: '#991B1B',
-    fontSize: 14,
+  note: {
+    fontSize: 12,
+    color: '#9CA3AF',
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 });
