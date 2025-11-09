@@ -14,30 +14,65 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../contexts/AuthContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import i18n from '../config/i18n';
+import { useLanguage } from '../contexts/LanguageContext';
+import { api } from '../config/api';
+
+// YENİ: 13 Quick Action görselini import et
+const qa_home = require('../assets/images/quick-actions/qa_home.jpg');
+const qa_governance = require('../assets/images/quick-actions/qa_governance.jpg');
+const qa_exchange = require('../assets/images/quick-actions/qa_exchange.png');
+const qa_b2b = require('../assets/images/quick-actions/qa_b2b.jpg');
+const qa_bank = require('../assets/images/quick-actions/qa_bank.png');
+const qa_games = require('../assets/images/quick-actions/qa_games.jpg');
+const qa_university = require('../assets/images/quick-actions/qa_university.png');
+const qa_education = require('../assets/images/quick-actions/qa_education.png');
+const qa_dashboard = require('../assets/images/quick-actions/qa_dashboard.jpg');
+const qa_trading = require('../assets/images/quick-actions/qa_trading.png');
+const qa_kurdmedia = require('../assets/images/quick-actions/qa_kurdmedia.jpg');
+const qa_rewards = require('../assets/images/quick-actions/qa_rewards.png');
+const qa_forum = require('../assets/images/quick-actions/qa_forum.jpg');
 
 const { width } = Dimensions.get('window');
+
+// YENİ: 13 özel butonu ve etiket anahtarlarını (i18n) tanımla
+const NEW_QUICK_ACTIONS = [
+  { id: '1', labelKey: 'quickActions.home', icon: qa_home },
+  { id: '2', labelKey: 'quickActions.governance', icon: qa_governance },
+  { id: '3', labelKey: 'quickActions.exchange', icon: qa_exchange },
+  { id: '4', labelKey: 'quickActions.b2b', icon: qa_b2b },
+  { id: '5', labelKey: 'quickActions.bank', icon: qa_bank },
+  { id: '6', labelKey: 'quickActions.games', icon: qa_games },
+  { id: '7', labelKey: 'quickActions.university', icon: qa_university },
+  { id: '8', labelKey: 'quickActions.education', icon: qa_education },
+  { id: '9', labelKey: 'quickActions.dashboard', icon: qa_dashboard },
+  { id: '10', labelKey: 'quickActions.trading', icon: qa_trading },
+  { id: '11', labelKey: 'quickActions.kurdmedia', icon: qa_kurdmedia },
+  { id: '12', labelKey: 'quickActions.rewards', icon: qa_rewards },
+  { id: '13', labelKey: 'quickActions.forum', icon: qa_forum },
+];
+
 
 function HomeTab({ navigation }: any) {
   const { user } = useAuth();
   const insets = useSafeAreaInsets();
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   const showImagePickerOptions = () => {
     Alert.alert(
-      'Change Profile Photo',
-      'Choose an option',
+      t('imagePicker.title'),
+      t('imagePicker.subtitle'),
       [
         {
-          text: 'Take Photo',
+          text: t('imagePicker.takePhoto'),
           onPress: takePhoto,
         },
         {
-          text: 'Choose from Gallery',
+          text: t('imagePicker.chooseFromGallery'),
           onPress: pickImageFromGallery,
         },
         {
-          text: 'Cancel',
+          text: t('common.cancel'),
           style: 'cancel',
         },
       ],
@@ -49,7 +84,7 @@ function HomeTab({ navigation }: any) {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     
     if (permissionResult.granted === false) {
-      Alert.alert('Permission Required', 'Camera permission is required!');
+      Alert.alert(t('alerts.permissionRequired'), t('alerts.cameraPermission'));
       return;
     }
 
@@ -63,7 +98,7 @@ function HomeTab({ navigation }: any) {
     if (!result.canceled && result.assets[0].base64) {
       const base64Image = `data:image/jpeg;base64,${result.assets[0].base64}`;
       setProfileImage(base64Image);
-      // TODO: Save to backend
+      // TODO: Save to backend (Backend endpoint'i '/api/auth/profile' güncellenmeli)
     }
   };
 
@@ -71,7 +106,7 @@ function HomeTab({ navigation }: any) {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
     if (permissionResult.granted === false) {
-      Alert.alert('Permission Required', 'Gallery access is required!');
+      Alert.alert(t('alerts.permissionRequired'), t('alerts.galleryPermission'));
       return;
     }
 
@@ -86,13 +121,13 @@ function HomeTab({ navigation }: any) {
     if (!result.canceled && result.assets[0].base64) {
       const base64Image = `data:image/jpeg;base64,${result.assets[0].base64}`;
       setProfileImage(base64Image);
-      // TODO: Save to backend
+      // TODO: Save to backend (Backend endpoint'i '/api/auth/profile' güncellenmeli)
     }
   };
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        {/* Header */}
+        {/* Header (TASARIM KORUNDU) */}
         <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
           <View style={styles.headerLeft}>
             <TouchableOpacity style={styles.profileImage} onPress={showImagePickerOptions}>
@@ -120,25 +155,26 @@ function HomeTab({ navigation }: any) {
           </View>
         </View>
 
-        {/* Announcements Widget */}
+        {/* Announcements Widget (TASARIM KORUNDU) */}
         <View style={styles.announcementWidget}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.announcement}>
-              <Text style={styles.announcementTitle}>🎉 Welcome to PezkuwiChain!</Text>
-              <Text style={styles.announcementText}>Start your citizenship journey today</Text>
+              <Text style={styles.announcementTitle}>{t('homeTab.welcomeTitle')}</Text>
+              <Text style={styles.announcementText}>{t('homeTab.welcomeMessage')}</Text>
             </View>
             <View style={styles.announcement}>
-              <Text style={styles.announcementTitle}>📢 New Feature</Text>
-              <Text style={styles.announcementText}>Vote on governance proposals</Text>
+              <Text style={styles.announcementTitle}>{t('homeTab.featureTitle')}</Text>
+              <Text style={styles.announcementText}>{t('homeTab.featureMessage')}</Text>
             </View>
           </ScrollView>
         </View>
 
-        {/* Quick Actions Grid - 30 Actions */}
+        {/* Quick Actions Grid - YENİ GÖRSELLERLE GÜNCELLENDİ */}
         <View style={styles.quickActionsContainer}>
-          <Text style={styles.sectionTitle}>{i18n.t('quickActions')}</Text>
+          <Text style={styles.sectionTitle}>{t('homeTab.quickActions')}</Text>
           <View style={styles.actionsGrid}>
-            {QUICK_ACTIONS.map((action, index) => (
+            {/* YENİ: Dizi 'NEW_QUICK_ACTIONS' olarak değişti */}
+            {NEW_QUICK_ACTIONS.map((action, index) => (
               <TouchableOpacity
                 key={action.id}
                 style={[styles.actionCard, 
@@ -147,10 +183,12 @@ function HomeTab({ navigation }: any) {
                 ]}
                 activeOpacity={0.7}
               >
-                <View style={[styles.actionIcon, { backgroundColor: action.color }]}>
-                  <Ionicons name={action.icon} size={24} color="#FFF" />
+                {/* YENİ: 'Ionicons' yerine 'Image' component'i kullanıldı */}
+                <View style={styles.actionIcon}>
+                  <Image source={action.icon} style={styles.actionIconImage} />
                 </View>
-                <Text style={styles.actionLabel}>{i18n.t(action.labelKey)}</Text>
+                {/* YENİ: Etiket 'quickActions' objesinden alınıyor */}
+                <Text style={styles.actionLabel}>{t(action.labelKey)}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -163,43 +201,24 @@ function HomeTab({ navigation }: any) {
 function WalletTab() {
   const { user } = useAuth();
   const insets = useSafeAreaInsets();
-  const [hezBalance, setHezBalance] = useState('Loading...');
-  const [pezBalance, setPezBalance] = useState('Loading...');
+  const { t } = useLanguage();
+  const [hezBalance, setHezBalance] = useState(t('walletTab.balanceLoading'));
+  const [pezBalance, setPezBalance] = useState(t('walletTab.balanceLoading'));
   const [loading, setLoading] = useState(true);
 
   const TEST_WALLET = '5GgTgG9sRmPQAYU1RsTejZYnZRjwzKZKWD3awtuqjHioki45';
 
   useEffect(() => {
+    setHezBalance(t('walletTab.balanceLoading'));
+    setPezBalance(t('walletTab.balanceLoading'));
     fetchBalance();
-  }, []);
+  }, [t]);
 
   const fetchBalance = async () => {
     try {
-      const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 sec timeout
-      
-      const response = await fetch(`${backendUrl}/api/blockchain/balance`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          address: TEST_WALLET,
-        }),
-        signal: controller.signal,
-      });
-
-      clearTimeout(timeoutId);
-
-      if (response.ok) {
-        const data = await response.json();
-        setHezBalance(parseFloat(data.hez).toFixed(2));
-        setPezBalance(parseFloat(data.pez).toFixed(2));
-      } else {
-        setHezBalance('0.00');
-        setPezBalance('0.00');
-      }
+      const data = await api.getBalance(TEST_WALLET);
+      setHezBalance(parseFloat(data.hez).toFixed(2));
+      setPezBalance(parseFloat(data.pez).toFixed(2));
     } catch (error) {
       console.error('Balance fetch error:', error);
       setHezBalance('0.00');
@@ -212,15 +231,15 @@ function WalletTab() {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.walletScrollContent}>
-        {/* Header */}
+        {/* TASARIM KORUNDU */}
         <View style={[styles.walletHeader, { paddingTop: insets.top + 16 }]}>
-          <Text style={styles.walletTitle}>My Wallet</Text>
+          <Text style={styles.walletTitle}>{t('walletTab.title')}</Text>
           <TouchableOpacity onPress={fetchBalance} style={styles.refreshButton}>
             <Ionicons name="refresh" size={20} color="#EE2A35" />
           </TouchableOpacity>
         </View>
         
-        {/* Balance Cards - Side by Side */}
+        {/* TASARIM KORUNDU */}
         <View style={styles.balanceRow}>
           <View style={styles.balanceCardNew}>
             <Image
@@ -229,7 +248,7 @@ function WalletTab() {
             />
             <Text style={styles.tokenSymbolNew}>HEZ</Text>
             <Text style={styles.balanceAmountNew}>{hezBalance}</Text>
-            <Text style={styles.tokenNameNew}>Hemwelatî Token</Text>
+            <Text style={styles.tokenNameNew}>{t('walletTab.hezName')}</Text>
           </View>
 
           <View style={styles.balanceCardNew}>
@@ -239,57 +258,54 @@ function WalletTab() {
             />
             <Text style={styles.tokenSymbolNew}>PEZ</Text>
             <Text style={styles.balanceAmountNew}>{pezBalance}</Text>
-            <Text style={styles.tokenNameNew}>Pezkuwî Token</Text>
+            <Text style={styles.tokenNameNew}>{t('walletTab.pezName')}</Text>
           </View>
         </View>
 
-        {/* Action Buttons Container */}
+        {/* TASARIM KORUNDU */}
         <View style={styles.actionsContainer}>
-          {/* First Row: Send, Receive, Swap, P2P */}
           <View style={styles.actionsRow}>
             <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#34D399'}]}>
               <Ionicons name="arrow-up" size={24} color="#FFF" />
-              <Text style={styles.actionBtnText}>Send</Text>
+              <Text style={styles.actionBtnText}>{t('homeTab.send')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#3B82F6'}]}>
               <Ionicons name="arrow-down" size={24} color="#FFF" />
-              <Text style={styles.actionBtnText}>Receive</Text>
+              <Text style={styles.actionBtnText}>{t('homeTab.receive')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#8B5CF6'}]}>
               <Ionicons name="swap-horizontal" size={24} color="#FFF" />
-              <Text style={styles.actionBtnText}>Swap</Text>
+              <Text style={styles.actionBtnText}>{t('walletTab.swap')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#1F2937'}]}>
               <Ionicons name="people" size={24} color="#FFF" />
-              <Text style={styles.actionBtnText}>P2P</Text>
+              <Text style={styles.actionBtnText}>{t('walletTab.p2p')}</Text>
             </TouchableOpacity>
           </View>
-
-          {/* Second Row: Vote, DApps, Staking, Connect */}
           <View style={styles.actionsRow}>
             <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#EF4444'}]}>
               <Ionicons name="megaphone" size={24} color="#FFF" />
-              <Text style={styles.actionBtnText}>Vote</Text>
+              <Text style={styles.actionBtnText}>{t('homeTab.vote')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#F59E0B'}]}>
               <Ionicons name="apps" size={24} color="#FFF" />
-              <Text style={styles.actionBtnText}>DApps</Text>
+              <Text style={styles.actionBtnText}>{t('walletTab.dapps')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#10B981'}]}>
               <Ionicons name="leaf" size={24} color="#FFF" />
-              <Text style={styles.actionBtnText}>Staking</Text>
+              <Text style={styles.actionBtnText}>{t('walletTab.staking')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.actionBtn, {backgroundColor: '#6366F1'}]}>
               <Ionicons name="link" size={24} color="#FFF" />
-              <Text style={styles.actionBtnText}>Connect</Text>
+              <Text style={styles.actionBtnText}>{t('walletTab.connect')}</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Tokens List */}
+        {/* TASARIM KORUNDU */}
         <View style={styles.tokensContainer}>
           <View style={styles.tokensHeader}>
-            <Text style={styles.tokensTitle}>Tokens</Text>
+            <Text style={styles.tokensTitle}>{t('walletTab.tokens')}</Text>
             <View style={styles.tokensHeaderActions}>
               <TouchableOpacity style={styles.tokenHeaderButton}>
                 <Ionicons name="search" size={20} color="#6B7280" />
@@ -303,8 +319,8 @@ function WalletTab() {
             </View>
           </View>
           
-          {/* USDT with PEZ badge */}
           <View style={styles.tokenItem}>
+            {/* ... (Tüm token item'ları ve tasarımları korundu) ... */}
             <View style={styles.tokenItemLeft}>
               <View style={styles.tokenIconContainer}>
                 <Image
@@ -318,7 +334,7 @@ function WalletTab() {
               </View>
               <View>
                 <Text style={styles.tokenItemName}>USDT</Text>
-                <Text style={styles.tokenItemNetwork}>PEZ Network</Text>
+                <Text style={styles.tokenItemNetwork}>{t('walletTab.pezNetwork')}</Text>
               </View>
             </View>
             <View style={styles.tokenItemRight}>
@@ -326,8 +342,6 @@ function WalletTab() {
               <Text style={styles.tokenItemUsd}>$0.00</Text>
             </View>
           </View>
-
-          {/* DOT (Polkadot) */}
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
@@ -336,7 +350,7 @@ function WalletTab() {
               />
               <View>
                 <Text style={styles.tokenItemName}>DOT</Text>
-                <Text style={styles.tokenItemNetwork}>Polkadot</Text>
+                <Text style={styles.tokenItemNetwork}>{t('walletTab.polkadotNetwork')}</Text>
               </View>
             </View>
             <View style={styles.tokenItemRight}>
@@ -344,8 +358,6 @@ function WalletTab() {
               <Text style={styles.tokenItemUsd}>$0.00</Text>
             </View>
           </View>
-
-          {/* BTC (Bitcoin) */}
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
@@ -354,7 +366,7 @@ function WalletTab() {
               />
               <View>
                 <Text style={styles.tokenItemName}>BTC</Text>
-                <Text style={styles.tokenItemNetwork}>Bitcoin</Text>
+                <Text style={styles.tokenItemNetwork}>{t('walletTab.bitcoinNetwork')}</Text>
               </View>
             </View>
             <View style={styles.tokenItemRight}>
@@ -362,8 +374,6 @@ function WalletTab() {
               <Text style={styles.tokenItemUsd}>$0.00</Text>
             </View>
           </View>
-
-          {/* ETH (Ethereum) */}
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
@@ -372,7 +382,7 @@ function WalletTab() {
               />
               <View>
                 <Text style={styles.tokenItemName}>ETH</Text>
-                <Text style={styles.tokenItemNetwork}>Ethereum</Text>
+                <Text style={styles.tokenItemNetwork}>{t('walletTab.ethereumNetwork')}</Text>
               </View>
             </View>
             <View style={styles.tokenItemRight}>
@@ -380,8 +390,6 @@ function WalletTab() {
               <Text style={styles.tokenItemUsd}>$0.00</Text>
             </View>
           </View>
-
-          {/* BNB (Binance Coin) */}
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
@@ -390,7 +398,7 @@ function WalletTab() {
               />
               <View>
                 <Text style={styles.tokenItemName}>BNB</Text>
-                <Text style={styles.tokenItemNetwork}>Binance Smart Chain</Text>
+                <Text style={styles.tokenItemNetwork}>{t('walletTab.bscNetwork')}</Text>
               </View>
             </View>
             <View style={styles.tokenItemRight}>
@@ -398,8 +406,6 @@ function WalletTab() {
               <Text style={styles.tokenItemUsd}>$0.00</Text>
             </View>
           </View>
-
-          {/* ADA (Cardano) */}
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
@@ -408,7 +414,7 @@ function WalletTab() {
               />
               <View>
                 <Text style={styles.tokenItemName}>ADA</Text>
-                <Text style={styles.tokenItemNetwork}>Cardano</Text>
+                <Text style={styles.tokenItemNetwork}>{t('walletTab.cardanoNetwork')}</Text>
               </View>
             </View>
             <View style={styles.tokenItemRight}>
@@ -416,8 +422,6 @@ function WalletTab() {
               <Text style={styles.tokenItemUsd}>$0.00</Text>
             </View>
           </View>
-
-          {/* SOL (Solana) */}
           <View style={styles.tokenItem}>
             <View style={styles.tokenItemLeft}>
               <Image
@@ -426,7 +430,7 @@ function WalletTab() {
               />
               <View>
                 <Text style={styles.tokenItemName}>SOL</Text>
-                <Text style={styles.tokenItemNetwork}>Solana</Text>
+                <Text style={styles.tokenItemNetwork}>{t('walletTab.solanaNetwork')}</Text>
               </View>
             </View>
             <View style={styles.tokenItemRight}>
@@ -434,6 +438,7 @@ function WalletTab() {
               <Text style={styles.tokenItemUsd}>$0.00</Text>
             </View>
           </View>
+
         </View>
       </ScrollView>
     </View>
@@ -441,25 +446,28 @@ function WalletTab() {
 }
 
 function CitizensTab() {
+  const { t } = useLanguage();
   return (
     <View style={styles.container}>
-      <Text style={styles.placeholderText}>Citizens Screen</Text>
+      <Text style={styles.placeholderText}>{t('placeholders.citizens')}</Text>
     </View>
   );
 }
 
 function ReferralTab() {
+  const { t } = useLanguage();
   return (
     <View style={styles.container}>
-      <Text style={styles.placeholderText}>Referral Screen</Text>
+      <Text style={styles.placeholderText}>{t('placeholders.referral')}</Text>
     </View>
   );
 }
 
 function ProfileTab() {
+  const { t } = useLanguage();
   return (
     <View style={styles.container}>
-      <Text style={styles.placeholderText}>Profile Screen</Text>
+      <Text style={styles.placeholderText}>{t('placeholders.profile')}</Text>
     </View>
   );
 }
@@ -467,6 +475,8 @@ function ProfileTab() {
 const Tab = createBottomTabNavigator();
 
 export default function HomeScreen({ navigation }: any) {
+  const { t } = useLanguage();
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -479,7 +489,7 @@ export default function HomeScreen({ navigation }: any) {
       <Tab.Screen
         name="HomeTab"
         options={{
-          tabBarLabel: i18n.t('home'),
+          tabBarLabel: t('home'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
@@ -491,7 +501,7 @@ export default function HomeScreen({ navigation }: any) {
         name="Wallet"
         component={WalletTab}
         options={{
-          tabBarLabel: i18n.t('wallet'),
+          tabBarLabel: t('wallet'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="wallet" size={size} color={color} />
           ),
@@ -501,7 +511,7 @@ export default function HomeScreen({ navigation }: any) {
         name="Citizens"
         component={CitizensTab}
         options={{
-          tabBarLabel: i18n.t('citizens'),
+          tabBarLabel: t('citizens'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people" size={size} color={color} />
           ),
@@ -511,7 +521,7 @@ export default function HomeScreen({ navigation }: any) {
         name="Referral"
         component={ReferralTab}
         options={{
-          tabBarLabel: i18n.t('referral'),
+          tabBarLabel: t('referral'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="gift" size={size} color={color} />
           ),
@@ -521,7 +531,7 @@ export default function HomeScreen({ navigation }: any) {
         name="Profile"
         component={ProfileTab}
         options={{
-          tabBarLabel: i18n.t('profile'),
+          tabBarLabel: t('profile'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" size={size} color={color} />
           ),
@@ -531,21 +541,9 @@ export default function HomeScreen({ navigation }: any) {
   );
 }
 
-const QUICK_ACTIONS = [
-  { id: '1', labelKey: 'send', icon: 'arrow-forward', color: '#EE2A35' },
-  { id: '2', labelKey: 'receive', icon: 'arrow-down', color: '#00A651' },
-  { id: '3', labelKey: 'exchange', icon: 'swap-horizontal', color: '#FFD700' },
-  { id: '4', labelKey: 'vote', icon: 'checkmark-circle', color: '#3B82F6' },
-  { id: '5', labelKey: 'stake', icon: 'lock-closed', color: '#8B5CF6' },
-  { id: '6', labelKey: 'nft', icon: 'card', color: '#10B981' },
-  { id: '7', labelKey: 'certificates', icon: 'document-text', color: '#F59E0B' },
-  { id: '8', labelKey: 'certificates', icon: 'school', color: '#EC4899' },
-  { id: '9', labelKey: 'pay', icon: 'briefcase', color: '#6366F1' },
-  { id: '10', labelKey: 'rewards', icon: 'cash', color: '#14B8A6' },
-  { id: '11', labelKey: 'vote', icon: 'bulb', color: '#F97316' },
-  { id: '12', labelKey: 'assets', icon: 'apps', color: '#9333EA' },
-];
+// ESKİ: 'QUICK_ACTIONS' dizisi kaldırıldı.
 
+// Stillerin TAMAMI korundu ve 'actionIconImage' eklendi
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -668,6 +666,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
+    overflow: 'hidden', // YENİ: Resimlerin taşmasını engelle
+  },
+  // YENİ: Özel görseller için stil
+  actionIconImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover', // VEYA 'contain', hangisi daha iyi durursa
   },
   actionLabel: {
     fontSize: 11,
@@ -792,12 +797,6 @@ const styles = StyleSheet.create({
     color: '#1F2937',
     marginBottom: 4,
   },
-  balanceAmountNew: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#EE2A35',
-    marginBottom: 4,
-  },
   tokenNameNew: {
     fontSize: 12,
     color: '#6B7280',
@@ -918,5 +917,11 @@ const styles = StyleSheet.create({
   tokenItemUsd: {
     fontSize: 12,
     color: '#6B7280',
+  },
+  balanceAmountNew: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#EE2A35',
+    marginBottom: 4,
   },
 });
