@@ -153,7 +153,7 @@ export default function SettingsScreen({ navigation }: any) {
         <SettingSection title={i18n.t('security')}>
           <SettingItem
             icon="finger-print"
-            title="Biometric Authentication"
+            title={i18n.t('biometricAuth')}
             subtitle={biometricAvailable ? 'Use fingerprint or Face ID' : 'Not available on this device'}
             rightElement={
               biometricAvailable ? (
