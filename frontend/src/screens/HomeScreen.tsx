@@ -521,7 +521,7 @@ export default function HomeScreen({ navigation }: any) {
         name="Profile"
         component={ProfileTab}
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: i18n.t('profile'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" size={size} color={color} />
           ),
