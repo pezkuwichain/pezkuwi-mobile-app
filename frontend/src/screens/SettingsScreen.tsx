@@ -197,13 +197,13 @@ export default function SettingsScreen({ navigation }: any) {
           />
           <SettingItem
             icon="language"
-            title="Language"
+            title={i18n.t('language')}
             subtitle={currentLanguage}
             onPress={() => navigation.navigate('LanguageSettings')}
           />
           <SettingItem
             icon="moon"
-            title="Dark Mode"
+            title={i18n.t('darkMode')}
             subtitle={isDarkMode ? "Dark theme enabled" : "Light theme enabled"}
             rightElement={
               <Switch
