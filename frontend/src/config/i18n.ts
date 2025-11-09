@@ -2,6 +2,7 @@ import { I18n } from 'i18n-js';
 import * as Localization from 'expo-localization';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Create i18n instance with fallback enabled
 const i18n = new I18n({
   en: {
     welcome: 'Welcome',
