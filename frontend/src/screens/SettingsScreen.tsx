@@ -30,6 +30,7 @@ export default function SettingsScreen({ navigation }: any) {
   const insets = useSafeAreaInsets();
   const { user, signOut } = useAuth();
   const { isDarkMode, toggleTheme, colors } = useTheme();
+  const { t } = useLanguage();
   const [biometricsEnabled, setBiometricsEnabled] = React.useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
   const [biometricAvailable, setBiometricAvailable] = React.useState(false);
