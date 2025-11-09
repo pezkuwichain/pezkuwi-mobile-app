@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { ThemeProvider, useTheme } from './src/contexts/ThemeContext';
-import { loadSavedLanguage } from './src/config/i18n';
+import { LanguageProvider } from './src/contexts/LanguageContext';
 import LanguageScreen from './src/screens/LanguageScreen';
 import HumanVerificationScreen from './src/screens/HumanVerificationScreen';
 import AuthScreen from './src/screens/AuthScreen';
