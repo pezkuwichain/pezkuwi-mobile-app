@@ -148,7 +148,7 @@ export default function AuthScreen({ navigation }: any) {
                 <ActivityIndicator color="#FFF" />
               ) : (
                 <Text style={styles.authButtonText}>
-                  {isSignIn ? 'Sign In' : 'Create Account'}
+                  {isSignIn ? i18n.t('signIn') : i18n.t('signUp')}
                 </Text>
               )}
             </TouchableOpacity>
