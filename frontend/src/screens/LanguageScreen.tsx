@@ -46,7 +46,7 @@ export default function LanguageScreen({ navigation }: any) {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.instruction}>{i18n.t('selectYourLanguage')}</Text>
+        <Text style={styles.instruction}>{t('selectYourLanguage')}</Text>
         
         {LANGUAGES.map((lang) => (
           <TouchableOpacity
