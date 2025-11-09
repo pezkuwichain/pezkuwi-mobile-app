@@ -22,6 +22,22 @@ const LANGUAGES = [
 
 export default function LanguageScreen({ navigation }: any) {
   const [selected, setSelected] = useState('en');
+  const [, forceUpdate] = useState({});
+
+  useEffect(() => {
+    const initializeLanguage = async () => {
+      await loadSavedLanguage();
+      setSelected(i18n.locale);
+      forceUpdate({});
+    };
+    initializeLanguage();
+  }, []);
+
+  const handleLanguageSelect = async (languageCode: string) => {
+    setSelected(languageCode);
+    await saveLanguage(languageCode);
+    forceUpdate({});
+  };
 
   const handleContinue = async () => {
     // Save language preference
