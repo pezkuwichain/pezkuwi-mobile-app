@@ -92,7 +92,7 @@ export default function AuthScreen({ navigation }: any) {
                 </View>
 
                 <View style={styles.inputGroup}>
-                  <Text style={styles.label}>Phone Number *</Text>
+                  <Text style={styles.label}>{i18n.t('phone')} *</Text>
                   <TextInput
                     style={styles.input}
                     placeholder="+1234567890"
