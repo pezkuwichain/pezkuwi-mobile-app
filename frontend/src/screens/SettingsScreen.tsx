@@ -230,7 +230,7 @@ export default function SettingsScreen({ navigation }: any) {
           onPress={handleSignOut}
         >
           <Ionicons name="log-out-outline" size={20} color={colors.error} />
-          <Text style={[styles.signOutText, { color: colors.error }]}>Sign Out</Text>
+          <Text style={[styles.signOutText, { color: colors.error }]}>{i18n.t('signOut')}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
