@@ -18,19 +18,21 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { api } from '../config/api';
 
 // YENİ: 13 Quick Action görselini import et
-const qa_home = require('../assets/images/quick-actions/qa_home.jpg');
-const qa_governance = require('../assets/images/quick-actions/qa_governance.jpg');
-const qa_exchange = require('../assets/images/quick-actions/qa_exchange.png');
-const qa_b2b = require('../assets/images/quick-actions/qa_b2b.jpg');
-const qa_bank = require('../assets/images/quick-actions/qa_bank.png');
-const qa_games = require('../assets/images/quick-actions/qa_games.jpg');
-const qa_university = require('../assets/images/quick-actions/qa_university.png');
-const qa_education = require('../assets/images/quick-actions/qa_education.png');
-const qa_dashboard = require('../assets/images/quick-actions/qa_dashboard.jpg');
-const qa_trading = require('../assets/images/quick-actions/qa_trading.png');
-const qa_kurdmedia = require('../assets/images/quick-actions/qa_kurdmedia.jpg');
-const qa_rewards = require('../assets/images/quick-actions/qa_rewards.png');
-const qa_forum = require('../assets/images/quick-actions/qa_forum.jpg');
+// (Dosya yolları ve adları Adım 34'teki talimata göredir)
+const qa_home = require('../src/assets/images/quick-actions/qa_home.jpg');
+const qa_governance = require('../src/assets/images/quick-actions/qa_governance.jpg'); // veya .png
+const qa_exchange = require('../src/assets/images/quick-actions/qa_exchange.png');
+const qa_b2b = require('../src/assets/images/quick-actions/qa_b2b.jpg'); // veya .png
+const qa_bank = require('../src/assets/images/quick-actions/qa_bank.png');
+const qa_games = require('../src/assets/images/quick-actions/qa_games.png'); // veya .jpg
+const qa_university = require('../src/assets/images/quick-actions/qa_university.png');
+const qa_education = require('../src/assets/images/quick-actions/qa_education.png');
+const qa_dashboard = require('../src/assets/images/quick-actions/qa_dashboard.jpg');
+const qa_trading = require('../src/assets/images/quick-actions/qa_trading.png'); // veya .jpg
+const qa_kurdmedia = require('../src/assets/images/quick-actions/qa_kurdmedia.jpg');
+const qa_rewards = require('../src/assets/images/quick-actions/qa_rewards.png');
+const qa_forum = require('../src/assets/images/quick-actions/qa_forum.jpg');
+
 
 const { width } = Dimensions.get('window');
 
@@ -206,13 +208,15 @@ function WalletTab() {
   const [pezBalance, setPezBalance] = useState(t('walletTab.balanceLoading'));
   const [loading, setLoading] = useState(true);
 
+  // YÖNETİCİ NOTU: Bu, backend (server.py) dosyasından gelen test cüzdanıdır.
   const TEST_WALLET = '5GgTgG9sRmPQAYU1RsTejZYnZRjwzKZKWD3awtuqjHioki45';
 
   useEffect(() => {
+    // Dil değiştiğinde 'Loading...' metnini de güncelle
     setHezBalance(t('walletTab.balanceLoading'));
     setPezBalance(t('walletTab.balanceLoading'));
     fetchBalance();
-  }, [t]);
+  }, [t]); // 't' fonksiyonu (ve dolayısıyla dil) değiştiğinde tetikle
 
   const fetchBalance = async () => {
     try {
@@ -320,7 +324,6 @@ function WalletTab() {
           </View>
           
           <View style={styles.tokenItem}>
-            {/* ... (Tüm token item'ları ve tasarımları korundu) ... */}
             <View style={styles.tokenItemLeft}>
               <View style={styles.tokenIconContainer}>
                 <Image
