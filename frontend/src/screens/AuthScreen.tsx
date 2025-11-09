@@ -105,7 +105,7 @@ export default function AuthScreen({ navigation }: any) {
             )}
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Email *</Text>
+              <Text style={styles.label}>{i18n.t('email')} *</Text>
               <TextInput
                 style={styles.input}
                 placeholder="your@email.com"
