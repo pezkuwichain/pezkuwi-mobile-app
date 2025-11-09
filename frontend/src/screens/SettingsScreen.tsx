@@ -168,13 +168,13 @@ export default function SettingsScreen({ navigation }: any) {
           />
           <SettingItem
             icon="key"
-            title="Change Password"
+            title={i18n.t('changePassword')}
             subtitle="Update your password"
             onPress={() => navigation.navigate('ChangePassword')}
           />
           <SettingItem
             icon="shield-checkmark"
-            title="Two-Factor Authentication"
+            title={i18n.t('twoFactorAuth')}
             subtitle="Add extra security"
             onPress={() => Alert.alert('Coming Soon', '2FA feature will be available in the next update')}
           />
