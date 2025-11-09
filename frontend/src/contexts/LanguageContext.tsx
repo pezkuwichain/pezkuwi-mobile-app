@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { translations, supportedLocales } from '../config/i18n';
 
@@ -32,16 +32,18 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const setLocale = async (newLocale: Locale) => {
+  const setLocale = useCallback(async (newLocale: Locale) => {
     try {
+      console.log('🌍 Setting locale to:', newLocale);
       await AsyncStorage.setItem(STORAGE_KEY, newLocale);
       setLocaleState(newLocale);
+      console.log('✅ Locale set successfully:', newLocale);
     } catch (error) {
       console.error('Error saving language:', error);
     }
-  };
+  }, []);
 
-  const t = (key: string, params?: Record<string, string>): string => {
+  const t = useCallback((key: string, params?: Record<string, string>): string => {
     const keys = key.split('.');
     let value: any = translations[locale];
 
@@ -71,10 +73,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
 
     return key;
-  };
+  }, [locale]);
+
+  const value = useMemo(() => ({
+    locale,
+    setLocale,
+    t
+  }), [locale, setLocale, t]);
 
   return (
-    <LanguageContext.Provider value={{ locale, setLocale, t }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );
