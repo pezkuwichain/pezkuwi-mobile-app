@@ -62,7 +62,7 @@ export default function AuthScreen({ navigation }: any) {
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.header}>
-            <Text style={styles.title}>{isSignIn ? 'Welcome Back' : 'Create Account'}</Text>
+            <Text style={styles.title}>{isSignIn ? t('signIn') : t('signUp')}</Text>
             <Text style={styles.subtitle}>
               {isSignIn ? t('signIn') : t('signUp')}
             </Text>
