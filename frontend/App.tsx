@@ -25,14 +25,10 @@ const Stack = createNativeStackNavigator();
 function AppContent() {
   const { isDarkMode } = useTheme();
 
-  useEffect(() => {
-    // Load saved language on app start
-    loadSavedLanguage();
-  }, []);
-
   return (
-    <AuthProvider>
-      <NavigationContainer>
+    <LanguageProvider>
+      <AuthProvider>
+        <NavigationContainer>
         <StatusBar style={isDarkMode ? 'light' : 'dark'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Language" component={LanguageScreen} />
