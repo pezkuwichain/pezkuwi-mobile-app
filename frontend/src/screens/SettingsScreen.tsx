@@ -197,7 +197,7 @@ export default function SettingsScreen({ navigation }: any) {
           <SettingItem
             icon="language"
             title="Language"
-            subtitle="English"
+            subtitle={currentLanguage}
             onPress={() => navigation.navigate('LanguageSettings')}
           />
           <SettingItem
