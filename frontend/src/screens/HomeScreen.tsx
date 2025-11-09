@@ -532,18 +532,18 @@ export default function HomeScreen({ navigation }: any) {
 }
 
 const QUICK_ACTIONS = [
-  { id: '1', label: 'Send', icon: 'arrow-forward', color: '#EE2A35' },
-  { id: '2', label: 'Receive', icon: 'arrow-down', color: '#00A651' },
-  { id: '3', label: 'Swap', icon: 'swap-horizontal', color: '#FFD700' },
-  { id: '4', label: 'Vote', icon: 'checkmark-circle', color: '#3B82F6' },
-  { id: '5', label: 'Stake', icon: 'lock-closed', color: '#8B5CF6' },
-  { id: '6', label: 'Identity', icon: 'card', color: '#10B981' },
-  { id: '7', label: 'Passport', icon: 'document-text', color: '#F59E0B' },
-  { id: '8', label: 'Education', icon: 'school', color: '#EC4899' },
-  { id: '9', label: 'Business', icon: 'briefcase', color: '#6366F1' },
-  { id: '10', label: 'Treasury', icon: 'cash', color: '#14B8A6' },
-  { id: '11', label: 'Proposals', icon: 'bulb', color: '#F97316' },
-  { id: '12', label: 'More', icon: 'apps', color: '#9333EA' },
+  { id: '1', labelKey: 'send', icon: 'arrow-forward', color: '#EE2A35' },
+  { id: '2', labelKey: 'receive', icon: 'arrow-down', color: '#00A651' },
+  { id: '3', labelKey: 'exchange', icon: 'swap-horizontal', color: '#FFD700' },
+  { id: '4', labelKey: 'vote', icon: 'checkmark-circle', color: '#3B82F6' },
+  { id: '5', labelKey: 'stake', icon: 'lock-closed', color: '#8B5CF6' },
+  { id: '6', labelKey: 'nft', icon: 'card', color: '#10B981' },
+  { id: '7', labelKey: 'certificates', icon: 'document-text', color: '#F59E0B' },
+  { id: '8', labelKey: 'certificates', icon: 'school', color: '#EC4899' },
+  { id: '9', labelKey: 'pay', icon: 'briefcase', color: '#6366F1' },
+  { id: '10', labelKey: 'rewards', icon: 'cash', color: '#14B8A6' },
+  { id: '11', labelKey: 'vote', icon: 'bulb', color: '#F97316' },
+  { id: '12', labelKey: 'assets', icon: 'apps', color: '#9333EA' },
 ];
 
 const styles = StyleSheet.create({
