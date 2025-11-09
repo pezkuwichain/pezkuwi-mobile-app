@@ -22,43 +22,43 @@ import LanguageSettingsScreen from './src/screens/LanguageSettingsScreen';
 
 const Stack = createNativeStackNavigator();
 
-function AppNavigator() {
+function AppContent() {
   const { isDarkMode } = useTheme();
 
-  return (
-    <NavigationContainer>
-      <StatusBar style={isDarkMode ? 'light' : 'dark'} />
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Language" component={LanguageScreen} />
-        <Stack.Screen name="HumanVerification" component={HumanVerificationScreen} />
-        <Stack.Screen name="Auth" component={AuthScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Notifications" component={NotificationsScreen} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="QRScanner" component={QRScannerScreen} />
-        <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-        <Stack.Screen name="Terms" component={TermsScreen} />
-        <Stack.Screen name="Privacy" component={PrivacyScreen} />
-        <Stack.Screen name="Help" component={HelpScreen} />
-        <Stack.Screen name="WalletAddress" component={WalletAddressScreen} />
-        <Stack.Screen name="LanguageSettings" component={LanguageSettingsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
-export default function App() {
   useEffect(() => {
     // Load saved language on app start
     loadSavedLanguage();
   }, []);
 
   return (
+    <AuthProvider>
+      <NavigationContainer>
+        <StatusBar style={isDarkMode ? 'light' : 'dark'} />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Language" component={LanguageScreen} />
+          <Stack.Screen name="HumanVerification" component={HumanVerificationScreen} />
+          <Stack.Screen name="Auth" component={AuthScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Notifications" component={NotificationsScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="QRScanner" component={QRScannerScreen} />
+          <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+          <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+          <Stack.Screen name="Terms" component={TermsScreen} />
+          <Stack.Screen name="Privacy" component={PrivacyScreen} />
+          <Stack.Screen name="Help" component={HelpScreen} />
+          <Stack.Screen name="WalletAddress" component={WalletAddressScreen} />
+          <Stack.Screen name="LanguageSettings" component={LanguageSettingsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthProvider>
+  );
+}
+
+export default function App() {
+  return (
     <ThemeProvider>
-      <AuthProvider>
-        <AppNavigator />
-      </AuthProvider>
+      <AppContent />
     </ThemeProvider>
   );
 }
