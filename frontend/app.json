@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "extra": {
-      "backendUrl": "https://digital-kurdistan.preview.emergentagent.com"
+      "backendUrl": "https://kurdish-id.preview.emergentagent.com"
     },
     "splash": {
       "image": "./assets/splash-icon.png",

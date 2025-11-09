@@ -9,7 +9,7 @@ import json
 import time
 from datetime import datetime
 
-BACKEND_URL = "https://digital-kurdistan.preview.emergentagent.com/api"
+BACKEND_URL = "https://kurdish-id.preview.emergentagent.com/api"
 
 def test_auth_flow():
     """Test complete authentication flow"""

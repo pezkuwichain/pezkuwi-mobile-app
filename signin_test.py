@@ -6,7 +6,7 @@ Test signin and profile retrieval with existing user
 import requests
 import json
 
-BACKEND_URL = "https://digital-kurdistan.preview.emergentagent.com/api"
+BACKEND_URL = "https://kurdish-id.preview.emergentagent.com/api"
 
 def test_existing_user_signin():
     """Test signin with existing user from logs"""

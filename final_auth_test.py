@@ -7,7 +7,7 @@ import requests
 import json
 from datetime import datetime
 
-BACKEND_URL = "https://digital-kurdistan.preview.emergentagent.com/api"
+BACKEND_URL = "https://kurdish-id.preview.emergentagent.com/api"
 
 def test_backend_health():
     """Test if backend is responding"""

@@ -1,92 +1,72 @@
 <analysis>
-The AI engineer was initially tasked with cloning and enhancing the  repository. The conversation quickly shifted to understanding the existing  project, a comprehensive digital citizenship platform. Early attempts focused on making the existing app run, which exposed dependency and Polkadot.js compatibility issues, leading to a temporary mock for blockchain services on the web platform. The user then introduced , a fully integrated blockchain web application, and requested a roadmap to integrate its functionality and real-time data into the mobile app, prioritizing user-friendliness.
+The AI engineer began by inheriting an Expo mobile app () and  as a reference. Initial efforts to run the existing app exposed Polkadot.js compatibility issues, leading to a shift towards a backend proxy for blockchain data. User frustration over repeated errors and lack of progress necessitated a complete rebuild from scratch, focusing on design, authentication via Supabase, and real-time blockchain data.
 
-The AI engineer proposed a multi-phase roadmap, emphasizing mobile-first UX and leveraging DKSweb's blockchain infrastructure. However, the implementation faced challenges with Polkadot.js compatibility on React Native and a misunderstanding of the user's local setup (confusing AI's  with user's). This led to several iterations, including an attempt at WalletConnect integration and then a backend proxy approach for blockchain data. The user expressed frustration over repeated errors and lack of progress, leading to a complete re-evaluation and a request to rebuild the mobile app from scratch with a specific focus on design, user authentication, and leveraging a *live* DKSweb backend. The latest work involves recreating the frontend with the specified design and integrating a backend with Supabase and real-time blockchain data via a localtunnel connection to the user's machine. The primary immediate issue is the Continue button on the Language Selection screen being non-functional.
+The rebuild progressed through several phases. Key challenges included fixing  hardcoding issues for mobile, correctly configuring network security (), handling Supabase setup (service role key,  table, email confirmation), and addressing UI/UX feedback (safe areas, widget sizing, wallet features, performance). The AI diligently integrated Cloudflare Turnstile for human verification (using test keys) and a test Polkadot wallet. The latest work focused on robust Settings functionality, including various sub-screens, and is currently addressing language localization and dark mode implementation, having just created the necessary i18n and ThemeContext files. The development process has been iterative, driven by continuous user feedback and troubleshooting, often involving  for complex environment issues.
 </analysis>
 
 <product_requirements>
-The user initially provided a GitHub repository () for an Expo mobile app to be developed. This app, called **PezkuwiChain Mobile App**, aims to be a Kurdish Digital Citizenship Platform with core features: Dual-Token Wallet (HEZ, PEZ), Governance (Welati - Voting), Digital Identity (KYC-based Hemwelatî citizenship), Education Certificates (on Blockchain), Trust Score, Parliament NFT’s, Referral Program, Business Hub, and Token Exchange. It supports 6 languages (English, Kurdish Sorani/Kurmanji, Arabic, Turkish, Farsi). The technology stack is React Native + Expo, TypeScript, Polkadot.js API, and React Navigation.
+The goal is to build the **PezkuwiChain Mobile App**, a Kurdish Digital Citizenship Platform. Key features include a Dual-Token Wallet (HEZ, PEZ), Governance (Welati - Voting), Digital Identity (KYC), Education Certificates, Trust Score, NFTs, Referral Program, Business Hub, and Token Exchange. It must support 6 languages (English, Kurdish Sorani/Kurmanji, Arabic, Turkish, Farsi). The technology uses React Native + Expo, TypeScript, Polkadot.js API (via backend proxy), and React Navigation.
 
-Later, the user provided another repository, , a fully functional web application integrating with blockchain, intended as a reference for the mobile app's backend and data integration. The mobile app must leverage DKSweb's functionality and real data, focusing on user-friendliness (mobile-first UX) rather than complex administration. Key requirements include:
--   **Complete rebuild from scratch.**
--   **Multi-network connectivity:** Connect to  mainnet/beta, if unavailable, connect to user's local node via tunnel, else show error.
--   **User-centric UI/UX:** Thumb-friendly, gesture-driven, progressive, accessible, responsive, predictable, and delightful.
--   **Localized experience:** Language selection with consistent language across the app (no hardcoded language).
--   **Kurdish design:** Welcome page with Kurdish colors (red, green, yellow, white) and sun logo.
--   **User Authentication:** Human verification, Sign In/Sign Up flow (name, surname, email, phone number, optional referral code). Email verification is mandatory; phone verification is optional for the first 1000 users.
--   **Home Screen:** User profile picture (uploadable), Tiki count, Trust Score, QR code, Notifications, Settings. Dynamic widget area for announcements/ads (blockchain-independent). Fixed bottom navigation (Home, Wallet, Citizens, Referral, Profile).
--   **Wallet Screen:** Display balances, transaction history (reference from DKSweb).
--   **Quick Actions:** 30 quick action buttons on the wallet screen.
--   **Image handling:** All images must be base-64. Logos provided for Kurdistan Sun (dark/light), HEZ, PEZ, USDT(hez).
--   **Backend:** Use the existing FastAPI backend, extending it for authentication and utilizing the same Supabase project as DKSweb for user data.
-
-The project is structured into phases, with Phase 1 focusing on initial setup and core wallet features.
+The app is a complete rebuild, leveraging 's backend infrastructure. It requires multi-network connectivity, user-centric UI/UX (thumb-friendly, gesture-driven), and a localized, Kurdish-themed design (red, green, yellow, white gradient, Kurdistan sun logo). Core flows include Human Verification, Sign In/Sign Up with email verification (and optional phone for first 1000 users) via Supabase, and a Home Screen displaying user profile, Tiki count, Trust Score, QR code, Notifications, Settings, and a dynamic widget area. The Wallet Screen needs to show balances, transaction history, and 30 quick action buttons. All images must be Base64. The backend is FastAPI, extended for Supabase authentication. Phase 1 focused on initial setup and core wallet features, and subsequent phases are enriching settings, user experience, and functionality.
 </product_requirements>
 
 <key_technical_concepts>
--   **React Native & Expo:** Core mobile development framework.
+-   **React Native & Expo:** Core mobile development.
 -   **Expo Router:** File-based navigation.
--   **FastAPI & MongoDB:** Backend framework and database.
--   **Supabase:** User authentication (email/password) and off-chain data storage, used by DKSweb.
--   **Polkadot.js:** Blockchain interaction library (originally intended for direct frontend use, later for backend proxy).
--   ** (Python):** Backend library for Polkadot blockchain interaction.
--   ** / :** Exposing local development servers to the internet for remote access.
--   **i18n:** Internationalization for multi-language support.
--   **Base64 Images:** Mandatory format for image storage and display.
+-   **FastAPI & MongoDB:** Backend framework & database.
+-   **Supabase:** User authentication, off-chain data.
+-   **Polkadot.js & :** Blockchain interaction.
+-   **:** Exposing local dev to internet.
+-   **Cloudflare Turnstile:** Human verification.
+-   **i18n-js & expo-localization:** Internationalization.
+-   **, , :** Image/profile upload.
+-   **, :** Biometrics.
 </key_technical_concepts>
 
 <code_architecture>
-The application has a monorepo-like structure with  (Expo React Native) and  (FastAPI).
-
-**Directory Structure (Simplified):**
+The application utilizes a monorepo structure:  (Expo React Native) and  (FastAPI).
 
 
 
--   :
-    -   **Summary:** FastAPI backend. Initially had mock balance data, now modified to connect to the user's local Polkadot node via a  URL. It exposes  to fetch real HEZ/PEZ balances. Future updates will include Supabase-backed authentication endpoints.
-    -   **Changes:**
-        -   Installation of  and .
-        -   Configuration to connect to  (user's localtunnel for RPC).
-        -    endpoint now fetches real data from the blockchain.
-        -   Supabase credentials were added to  and  for authentication endpoints (though endpoints themselves are not fully implemented yet).
--   :
-    -   **Summary:** Frontend service for API calls to the FastAPI backend. Configured to use .
-    -   **Changes:** Adjusted to call the backend endpoints .
--   :
-    -   **Summary:** Root component of the Expo app. Manages global providers and navigators.
-    -   **Changes:** Underwent multiple rewrites. The latest version sets up the initial navigation structure for , , and . It applies a global Kurdistan-themed gradient.
--   :
-    -   **Summary:** The initial screen where users select their preferred language.
-    -   **Changes:** Completely rewritten for a professional, elegant Kurdish-themed design (red, green, yellow, white gradient, Kurdistan sun logo, refined typography). The navigation logic for the Get Started button was fixed to proceed to .
--   :
-    -   **Summary:** Manages the primary navigation stack using Expo Router.
-    -   **Changes:** Updated to include the new , , and  in the navigation flow, removing deprecated WalletSetup screens.
--   :
-    -   **Summary:** Babel configuration for the React Native project.
-    -   **Changes:** Created to address  and other transformation errors related to Polkadot.js and WalletConnect libraries, by adding  and  plugins.
+-   : FastAPI backend, configured to connect to a local Polkadot node via localtunnel () for real HEZ/PEZ balances. Supabase integration added for authentication (signup/login) and profile updates (email, wallet, 2FA settings). Includes an endpoint for Cloudflare Turnstile verification.
+-   : Stores , , , , , , . Critical for backend service configuration.
+-   : Expo application configuration. Crucially updated to include network security configurations ( for Android,  for iOS) to resolve Network request failed errors on mobile.
+-   : Manages frontend dependencies. Numerous packages added for UI/UX, authentication, image handling, biometrics, and internationalization.
+-   : Root component. Manages global providers (, ), and integrates the main navigation stack. Updated to include new screens for settings, notifications, QR scanning.
+-   : **New file.** Centralizes API URL () to prevent hardcoding , resolving Network request failed issues.
+-   : **New file.** Created to manage internationalization (i18n) for multi-language support across the app.
+-   : **New file.** Manages user authentication state, login, logout, and signup using the FastAPI backend and Supabase. Initially hardcoded , later fixed to use the centralized API URL.
+-   : **New file.** Created to manage theme (dark/light mode) state globally.
+-   : Initial screen for language selection. Redesigned with Kurdish theme. Navigation to  was initially faulty, then fixed.
+-   : Integrates Cloudflare Turnstile for bot protection using a WebView. Faced multiple network issues due to  and  misconfiguration, which were debugged and fixed.
+-   : Handles user Sign In/Sign Up. Uses  for calls to the backend. Also had  issues, which were resolved.
+-   : Main dashboard. Features profile picture, Tiki/Trust Score, QR, Notifications, Settings, dynamic widget. Includes  for displaying real HEZ/PEZ balances (from test wallet), 12 quick action buttons (down from 30 for performance), and token list with images. Extensively modified for safe area padding and responsive design. Updated for profile pic upload via camera/gallery, navigation to QR, Notifications, Settings.
+-   : Central hub for settings. Now includes navigation to , , , , , , , , and Sign Out. Biometric authentication toggle added.
+-   Various new screens (, , , , , , , , , ) have been created to support the detailed settings functionality, mostly with placeholder/basic implementations, awaiting full logic integration.
 </code_architecture>
 
 <pending_tasks>
--   Implement the Human Verification screen logic.
--   Develop the Sign In/Sign Up screen with email/phone verification (first 1000 users exempt from phone verification) using Supabase.
--   Design and implement the main Home screen as per user's visual reference (profile pic, Tiki/Trust Score, QR, Notifications, Settings, dynamic widget area, bottom navigation).
--   Develop the Wallet screen with 30 Quick Action buttons.
--   Implement referral code functionality.
--   Integrate backend authentication with Supabase for user signup/login.
--   Ensure all text is dynamically rendered based on selected language (i18n).
+-   Implement the logic for LanguageSettingsScreen to dynamically change the app's language, ensuring it doesn't redirect the user to the start.
+-   Implement the Dark Mode toggle functionality using  within SettingsScreen.
+-   Fully implement Two-Factor Authentication (currently a placeholder).
+-   Complete the logic for  (email update), , and .
+-   Develop comprehensive content and functionality for , , and  (including FAQs and linking to  support).
+-   Implement the full 30 quick action buttons on the Wallet screen with lazy loading/virtualized lists to avoid performance issues.
+-   Activate wallet notifications and QR reader.
 </pending_tasks>
 
 <current_work>
-Immediately before this summary request, the AI engineer was in the process of a full rebuild of the frontend and integrating a new backend.
-The frontend has been completely rewritten to align with the user's detailed design requirements, specifically for the . This screen now features a professional, elegant Kurdish-themed design, including a red, green, yellow, and white gradient, the Kurdistan sun logo, refined typography, and language cards with specific emphasis on the selected language.
+Immediately before this summary request, the AI engineer was addressing the user's latest deficiencies reported for Phase 2.1. Specifically, the user highlighted that:
+1.  The language selection in  was non-functional and stuck to English, also resetting the user's navigation flow to the beginning of the app upon selection.
+2.  The dark mode toggle was inactive.
 
-The  has been updated to include the new navigation flow:  ->  ->  -> .
+To address these issues, the AI engineer initiated the implementation of a proper internationalization (i18n) and theme management system. The very last action taken was the installation of necessary packages for i18n (, , , , , , ) and the creation of two new configuration/context files:
+-   : This file is intended to hold the configuration for handling multiple languages within the application, including language definitions and translation functions.
+-   : This file is designed to provide a React Context for managing the application's theme, specifically enabling dark/light mode functionality and making it accessible globally.
 
-The  was also extensively updated to connect to the user's local Polkadot node via a  URL () to fetch real blockchain data for balances. Supabase credentials have been added to the backend's  for future authentication implementation.
-
-The most recent issue reported by the user is that the Continue button on the  is still not navigating to the next screen (), despite previous attempts to fix it. This suggests a persistent issue with navigation or state management after the extensive rewrite. The AI engineer acknowledges this is likely an Expo cache problem and plans a restart.
+The engineer's immediate next step, as indicated by the last message, is to further develop  to be truly functional, integrate the dark mode toggle into , and update  to wrap the application with the new . The goal is to ensure language changes are silent and don't disrupt the user's flow, and dark mode can be toggled effectively.
 </current_work>
 
 <optional_next_step>
-Restart Expo and then fix the Continue button on the Language Selection screen to navigate to .
+Implement the language selection logic in  and the dark mode toggle in , then integrate  into .
 </optional_next_step>
