@@ -18,7 +18,17 @@ const i18n = new I18n({
     signOut: 'Sign Out',
     language: 'Language',
     darkMode: 'Dark Mode',
-    // Add more translations
+    security: 'Security',
+    preferences: 'Preferences',
+    about: 'About',
+    biometricAuth: 'Biometric Authentication',
+    twoFactorAuth: 'Two-Factor Authentication',
+    pushNotifications: 'Push Notifications',
+    version: 'Version',
+    terms: 'Terms of Service',
+    privacy: 'Privacy Policy',
+    help: 'Help & Support',
+    walletAddress: 'Wallet Address',
   },
   'ku-sorani': {
     welcome: 'بەخێربێیت',
