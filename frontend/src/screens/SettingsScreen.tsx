@@ -66,23 +66,27 @@ export default function SettingsScreen({ navigation }: any) {
 
   const SettingSection = ({ title, children }: any) => (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>{title}</Text>
+      <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>{title}</Text>
       {children}
     </View>
   );
 
   const SettingItem = ({ icon, title, subtitle, onPress, rightElement }: any) => (
-    <TouchableOpacity style={styles.settingItem} onPress={onPress} disabled={!onPress}>
+    <TouchableOpacity 
+      style={[styles.settingItem, { backgroundColor: colors.card }]} 
+      onPress={onPress} 
+      disabled={!onPress}
+    >
       <View style={styles.settingItemLeft}>
-        <View style={styles.iconContainer}>
-          <Ionicons name={icon} size={20} color="#EE2A35" />
+        <View style={[styles.iconContainer, { backgroundColor: colors.primary + '20' }]}>
+          <Ionicons name={icon} size={20} color={colors.primary} />
         </View>
         <View style={styles.settingItemContent}>
-          <Text style={styles.settingItemTitle}>{title}</Text>
-          {subtitle && <Text style={styles.settingItemSubtitle}>{subtitle}</Text>}
+          <Text style={[styles.settingItemTitle, { color: colors.text }]}>{title}</Text>
+          {subtitle && <Text style={[styles.settingItemSubtitle, { color: colors.textSecondary }]}>{subtitle}</Text>}
         </View>
       </View>
-      {rightElement || <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />}
+      {rightElement || <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />}
     </TouchableOpacity>
   );
 
