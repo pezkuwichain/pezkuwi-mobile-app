@@ -13,8 +13,8 @@ import i18n, { saveLanguage } from '../config/i18n';
 
 const LANGUAGES = [
   { code: 'en', name: 'English', nativeName: 'English' },
-  { code: 'ku', name: 'Kurdish (Kurmanji)', nativeName: 'Kurdî (Kurmancî)' },
-  { code: 'ckb', name: 'Kurdish (Sorani)', nativeName: 'کوردی (سۆرانی)' },
+  { code: 'ku-kurmanji', name: 'Kurdish (Kurmanji)', nativeName: 'Kurdî (Kurmancî)' },
+  { code: 'ku-sorani', name: 'Kurdish (Sorani)', nativeName: 'کوردی (سۆرانی)' },
   { code: 'tr', name: 'Turkish', nativeName: 'Türkçe' },
   { code: 'ar', name: 'Arabic', nativeName: 'العربية' },
   { code: 'fa', name: 'Persian', nativeName: 'فارسی' },
