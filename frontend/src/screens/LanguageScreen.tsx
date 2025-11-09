@@ -21,27 +21,15 @@ const LANGUAGES = [
 ];
 
 export default function LanguageScreen({ navigation }: any) {
-  const [selected, setSelected] = useState('en');
-  const [, forceUpdate] = useState({});
-
-  useEffect(() => {
-    const initializeLanguage = async () => {
-      await loadSavedLanguage();
-      setSelected(i18n.locale);
-      forceUpdate({});
-    };
-    initializeLanguage();
-  }, []);
+  const { locale, setLocale, t } = useLanguage();
+  const [selected, setSelected] = useState(locale);
 
   const handleLanguageSelect = async (languageCode: string) => {
     setSelected(languageCode);
-    await saveLanguage(languageCode);
-    forceUpdate({});
+    await setLocale(languageCode as any);
   };
 
-  const handleContinue = async () => {
-    // Save language preference
-    await saveLanguage(selected);
+  const handleContinue = () => {
     navigation.navigate('HumanVerification');
   };
 
