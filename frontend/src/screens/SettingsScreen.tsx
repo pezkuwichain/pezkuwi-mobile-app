@@ -37,7 +37,26 @@ export default function SettingsScreen({ navigation }: any) {
   useEffect(() => {
     checkBiometricAvailability();
     loadBiometricSetting();
+    loadCurrentLanguage();
   }, []);
+
+  useEffect(() => {
+    // Reload language when screen gains focus
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadCurrentLanguage();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  const loadCurrentLanguage = async () => {
+    try {
+      const savedLang = await AsyncStorage.getItem('appLanguage');
+      const langName = savedLang ? LANGUAGE_NAMES[savedLang] || 'English' : 'English';
+      setCurrentLanguage(langName);
+    } catch (error) {
+      console.error('Error loading language:', error);
+    }
+  };
 
   const checkBiometricAvailability = async () => {
     const compatible = await LocalAuthentication.hasHardwareAsync();
