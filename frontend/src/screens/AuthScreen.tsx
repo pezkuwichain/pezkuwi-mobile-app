@@ -18,6 +18,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 export default function AuthScreen({ navigation }: any) {
   const { signIn, signUp } = useAuth();
+  const { t } = useLanguage();
   const [isSignIn, setIsSignIn] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
