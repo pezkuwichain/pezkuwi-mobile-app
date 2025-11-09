@@ -48,6 +48,7 @@ function AppContent() {
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
+    </LanguageProvider>
   );
 }
 
