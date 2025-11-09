@@ -136,7 +136,7 @@ function HomeTab({ navigation }: any) {
 
         {/* Quick Actions Grid - 30 Actions */}
         <View style={styles.quickActionsContainer}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <Text style={styles.sectionTitle}>{i18n.t('quickActions')}</Text>
           <View style={styles.actionsGrid}>
             {QUICK_ACTIONS.map((action, index) => (
               <TouchableOpacity
