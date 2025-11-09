@@ -217,11 +217,11 @@ export default function SettingsScreen({ navigation }: any) {
         </SettingSection>
 
         {/* About Section */}
-        <SettingSection title="About">
-          <SettingItem icon="information-circle" title="Version" subtitle="1.0.0" />
-          <SettingItem icon="document-text" title="Terms of Service" onPress={() => navigation.navigate('Terms')} />
-          <SettingItem icon="shield" title="Privacy Policy" onPress={() => navigation.navigate('Privacy')} />
-          <SettingItem icon="help-circle" title="Help & Support" onPress={() => navigation.navigate('Help')} />
+        <SettingSection title={i18n.t('about')}>
+          <SettingItem icon="information-circle" title={i18n.t('version')} subtitle="1.0.0" />
+          <SettingItem icon="document-text" title={i18n.t('terms')} onPress={() => navigation.navigate('Terms')} />
+          <SettingItem icon="shield" title={i18n.t('privacy')} onPress={() => navigation.navigate('Privacy')} />
+          <SettingItem icon="help-circle" title={i18n.t('help')} onPress={() => navigation.navigate('Help')} />
         </SettingSection>
 
         {/* Sign Out */}
