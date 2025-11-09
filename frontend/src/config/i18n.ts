@@ -148,6 +148,17 @@ const i18n = new I18n({
     signOut: 'خروج',
     language: 'زبان',
     darkMode: 'حالت تاریک',
+    security: 'امنیت',
+    preferences: 'ترجیحات',
+    about: 'درباره',
+    biometricAuth: 'احراز هویت بیومتریک',
+    twoFactorAuth: 'احراز هویت دو مرحله‌ای',
+    pushNotifications: 'اعلان‌های فوری',
+    version: 'نسخه',
+    terms: 'شرایط خدمات',
+    privacy: 'سیاست حریم خصوصی',
+    help: 'کمک و پشتیبانی',
+    walletAddress: 'آدرس کیف پول',
   },
 });
 
