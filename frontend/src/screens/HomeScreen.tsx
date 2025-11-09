@@ -150,7 +150,7 @@ function HomeTab({ navigation }: any) {
                 <View style={[styles.actionIcon, { backgroundColor: action.color }]}>
                   <Ionicons name={action.icon} size={24} color="#FFF" />
                 </View>
-                <Text style={styles.actionLabel}>{action.label}</Text>
+                <Text style={styles.actionLabel}>{i18n.t(action.labelKey)}</Text>
               </TouchableOpacity>
             ))}
           </View>
