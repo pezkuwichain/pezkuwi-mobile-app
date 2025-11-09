@@ -38,7 +38,7 @@ export default function LanguageScreen({ navigation }: any) {
           </View>
         </View>
         <Text style={styles.title}>PezkuwiChain</Text>
-        <Text style={styles.subtitle}>Digital Citizenship Platform</Text>
+        <Text style={styles.subtitle}>{i18n.t('digitalCitizenshipPlatform')}</Text>
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
