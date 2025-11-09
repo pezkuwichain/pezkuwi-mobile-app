@@ -191,6 +191,30 @@ frontend:
         agent: "main"
         comment: "Kurdish-themed design with gradient, sun logo, 6 language options. Navigation to HumanVerification screen working."
 
+  - task: "Language Settings - i18n Implementation"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/screens/LanguageSettingsScreen.tsx, frontend/src/config/i18n.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Phase 2.1: Implemented full i18n system with i18n-js. Language changes are now SILENT (no alerts, no navigation reset). Supports 6 languages (en, ku-sorani, ku-kurmanji, ar, tr, fa). Language saved to AsyncStorage and synced with backend. Applied theme colors for dark mode support."
+
+  - task: "Dark Mode / Theme System"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/contexts/ThemeContext.tsx, frontend/src/screens/SettingsScreen.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Phase 2.1: Created ThemeContext with light/dark mode toggle. Theme persisted in AsyncStorage. Settings screen now has functional dark mode switch. All UI elements in Settings and LanguageSettings adapt to theme colors. StatusBar responds to theme changes."
+
   - task: "Human Verification Screen"
     implemented: true
     working: "NA"
