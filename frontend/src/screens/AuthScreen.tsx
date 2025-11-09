@@ -117,7 +117,7 @@ export default function AuthScreen({ navigation }: any) {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Password *</Text>
+              <Text style={styles.label}>{i18n.t('password')} *</Text>
               <TextInput
                 style={styles.input}
                 placeholder="••••••••"
