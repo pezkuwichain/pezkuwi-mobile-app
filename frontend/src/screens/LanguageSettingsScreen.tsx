@@ -48,11 +48,11 @@ export default function LanguageSettingsScreen({ navigation }: any) {
   const handleLanguageChange = async (languageCode: string) => {
     setLoading(true);
     try {
-      // Save to AsyncStorage and i18n (silent update)
+      // Save to AsyncStorage and i18n
       await saveLanguage(languageCode);
       setSelectedLanguage(languageCode);
 
-      // Save to backend (fire and forget - non-blocking)
+      // Save to backend
       if (user?.user_id) {
         const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
         fetch(`${backendUrl}/api/auth/profile`, {
@@ -67,11 +67,15 @@ export default function LanguageSettingsScreen({ navigation }: any) {
         }).catch(err => console.error('Error saving language to backend:', err));
       }
 
-      // Silent update - no alert, no navigation reset
-      // Language will be applied on next screen render
+      // FORCE APP RELOAD - this is the key fix
+      setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Home' }],
+        });
+      }, 500);
     } catch (error) {
       console.error('Error changing language:', error);
-      // Even on error, we don't alert or redirect
     } finally {
       setLoading(false);
     }
