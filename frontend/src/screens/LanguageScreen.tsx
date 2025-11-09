@@ -74,7 +74,7 @@ export default function LanguageScreen({ navigation }: any) {
           style={styles.continueButton}
           onPress={handleContinue}
         >
-          <Text style={styles.continueText}>{i18n.t('continue')}</Text>
+          <Text style={styles.continueText}>{t('continue')}</Text>
           <Ionicons name="arrow-forward" size={20} color="#FFF" />
         </TouchableOpacity>
       </View>
