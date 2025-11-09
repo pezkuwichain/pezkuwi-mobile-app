@@ -100,19 +100,24 @@ export default function LanguageSettingsScreen({ navigation }: any) {
             key={language.code}
             style={[
               styles.languageCard,
-              selectedLanguage === language.code && styles.languageCardSelected,
+              { backgroundColor: colors.card, borderColor: colors.border },
+              selectedLanguage === language.code && { borderColor: colors.primary, backgroundColor: colors.primary + '20' },
             ]}
             onPress={() => handleLanguageChange(language.code)}
+            disabled={loading}
           >
             <View style={styles.languageCardLeft}>
               <Text style={styles.flag}>{language.flag}</Text>
               <View style={styles.languageInfo}>
-                <Text style={styles.languageName}>{language.name}</Text>
-                <Text style={styles.languageNative}>{language.nativeName}</Text>
+                <Text style={[styles.languageName, { color: colors.text }]}>{language.name}</Text>
+                <Text style={[styles.languageNative, { color: colors.textSecondary }]}>{language.nativeName}</Text>
               </View>
             </View>
             {selectedLanguage === language.code && (
-              <Ionicons name="checkmark-circle" size={24} color="#EE2A35" />
+              <Ionicons name="checkmark-circle" size={24} color={colors.primary} />
+            )}
+            {loading && selectedLanguage === language.code && (
+              <ActivityIndicator size="small" color={colors.primary} style={{ marginLeft: 8 }} />
             )}
           </TouchableOpacity>
         ))}
