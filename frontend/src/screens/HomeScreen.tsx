@@ -511,7 +511,7 @@ export default function HomeScreen({ navigation }: any) {
         name="Referral"
         component={ReferralTab}
         options={{
-          tabBarLabel: 'Referral',
+          tabBarLabel: i18n.t('referral'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="gift" size={size} color={color} />
           ),
