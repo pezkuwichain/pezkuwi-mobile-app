@@ -181,10 +181,10 @@ export default function SettingsScreen({ navigation }: any) {
         </SettingSection>
 
         {/* Preferences Section */}
-        <SettingSection title="Preferences">
+        <SettingSection title={i18n.t('preferences')}>
           <SettingItem
             icon="notifications"
-            title="Push Notifications"
+            title={i18n.t('pushNotifications')}
             subtitle="Receive alerts and updates"
             rightElement={
               <Switch
