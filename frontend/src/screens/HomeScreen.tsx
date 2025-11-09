@@ -479,7 +479,7 @@ export default function HomeScreen({ navigation }: any) {
       <Tab.Screen
         name="HomeTab"
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: i18n.t('home'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
