@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
-import i18n from '../config/i18n';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function AuthScreen({ navigation }: any) {
   const { signIn, signUp } = useAuth();
