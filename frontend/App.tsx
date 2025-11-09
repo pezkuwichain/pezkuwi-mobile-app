@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthProvider } from './src/contexts/AuthContext';
-import { ThemeProvider } from './src/contexts/ThemeContext';
+import { ThemeProvider, useTheme } from './src/contexts/ThemeContext';
 import { loadSavedLanguage } from './src/config/i18n';
 import LanguageScreen from './src/screens/LanguageScreen';
 import HumanVerificationScreen from './src/screens/HumanVerificationScreen';
@@ -22,6 +22,32 @@ import LanguageSettingsScreen from './src/screens/LanguageSettingsScreen';
 
 const Stack = createNativeStackNavigator();
 
+function AppNavigator() {
+  const { isDarkMode } = useTheme();
+
+  return (
+    <NavigationContainer>
+      <StatusBar style={isDarkMode ? 'light' : 'dark'} />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Language" component={LanguageScreen} />
+        <Stack.Screen name="HumanVerification" component={HumanVerificationScreen} />
+        <Stack.Screen name="Auth" component={AuthScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Notifications" component={NotificationsScreen} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="QRScanner" component={QRScannerScreen} />
+        <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+        <Stack.Screen name="Terms" component={TermsScreen} />
+        <Stack.Screen name="Privacy" component={PrivacyScreen} />
+        <Stack.Screen name="Help" component={HelpScreen} />
+        <Stack.Screen name="WalletAddress" component={WalletAddressScreen} />
+        <Stack.Screen name="LanguageSettings" component={LanguageSettingsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
 export default function App() {
   useEffect(() => {
     // Load saved language on app start
@@ -31,25 +57,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <NavigationContainer>
-          <StatusBar style="auto" />
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Language" component={LanguageScreen} />
-            <Stack.Screen name="HumanVerification" component={HumanVerificationScreen} />
-            <Stack.Screen name="Auth" component={AuthScreen} />
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Notifications" component={NotificationsScreen} />
-            <Stack.Screen name="Settings" component={SettingsScreen} />
-            <Stack.Screen name="QRScanner" component={QRScannerScreen} />
-            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-            <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-            <Stack.Screen name="Terms" component={TermsScreen} />
-            <Stack.Screen name="Privacy" component={PrivacyScreen} />
-            <Stack.Screen name="Help" component={HelpScreen} />
-            <Stack.Screen name="WalletAddress" component={WalletAddressScreen} />
-            <Stack.Screen name="LanguageSettings" component={LanguageSettingsScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <AppNavigator />
       </AuthProvider>
     </ThemeProvider>
   );
