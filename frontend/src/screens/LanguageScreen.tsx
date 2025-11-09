@@ -23,9 +23,9 @@ const LANGUAGES = [
 export default function LanguageScreen({ navigation }: any) {
   const [selected, setSelected] = useState('en');
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     // Save language preference
-    // TODO: Implement i18n
+    await saveLanguage(selected);
     navigation.navigate('HumanVerification');
   };
 
