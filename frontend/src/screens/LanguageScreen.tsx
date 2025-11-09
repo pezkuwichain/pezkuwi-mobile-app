@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import i18n, { saveLanguage, loadSavedLanguage } from '../config/i18n';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const LANGUAGES = [
   { code: 'en', name: 'English', nativeName: 'English' },
