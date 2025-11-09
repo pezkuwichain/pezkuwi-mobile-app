@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -12,8 +12,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as LocalAuthentication from 'expo-local-authentication';
 import * as SecureStore from 'expo-secure-store';
+
+const LANGUAGE_NAMES: { [key: string]: string } = {
+  'en': 'English',
+  'ku-sorani': 'کوردی سۆرانی',
+  'ku-kurmanji': 'Kurdî Kurmancî',
+  'ar': 'العربية',
+  'tr': 'Türkçe',
+  'fa': 'فارسی',
+};
 
 export default function SettingsScreen({ navigation }: any) {
   const insets = useSafeAreaInsets();
@@ -22,6 +32,7 @@ export default function SettingsScreen({ navigation }: any) {
   const [biometricsEnabled, setBiometricsEnabled] = React.useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
   const [biometricAvailable, setBiometricAvailable] = React.useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('English');
 
   useEffect(() => {
     checkBiometricAvailability();
