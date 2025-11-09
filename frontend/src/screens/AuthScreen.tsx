@@ -64,7 +64,7 @@ export default function AuthScreen({ navigation }: any) {
           <View style={styles.header}>
             <Text style={styles.title}>{isSignIn ? 'Welcome Back' : 'Create Account'}</Text>
             <Text style={styles.subtitle}>
-              {isSignIn ? i18n.t('signIn') : i18n.t('signUp')}
+              {isSignIn ? t('signIn') : t('signUp')}
             </Text>
           </View>
 
@@ -73,7 +73,7 @@ export default function AuthScreen({ navigation }: any) {
               <>
                 <View style={styles.row}>
                   <View style={[styles.inputGroup, { flex: 1, marginRight: 8 }]}>
-                    <Text style={styles.label}>{i18n.t('firstName')} *</Text>
+                    <Text style={styles.label}>{t('firstName')} *</Text>
                     <TextInput
                       style={styles.input}
                       placeholder="John"
@@ -82,7 +82,7 @@ export default function AuthScreen({ navigation }: any) {
                     />
                   </View>
                   <View style={[styles.inputGroup, { flex: 1, marginLeft: 8 }]}>
-                    <Text style={styles.label}>{i18n.t('lastName')} *</Text>
+                    <Text style={styles.label}>{t('lastName')} *</Text>
                     <TextInput
                       style={styles.input}
                       placeholder="Doe"
@@ -93,7 +93,7 @@ export default function AuthScreen({ navigation }: any) {
                 </View>
 
                 <View style={styles.inputGroup}>
-                  <Text style={styles.label}>{i18n.t('phone')} *</Text>
+                  <Text style={styles.label}>{t('phone')} *</Text>
                   <TextInput
                     style={styles.input}
                     placeholder="+1234567890"
@@ -106,7 +106,7 @@ export default function AuthScreen({ navigation }: any) {
             )}
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>{i18n.t('email')} *</Text>
+              <Text style={styles.label}>{t('email')} *</Text>
               <TextInput
                 style={styles.input}
                 placeholder="your@email.com"
@@ -118,7 +118,7 @@ export default function AuthScreen({ navigation }: any) {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>{i18n.t('password')} *</Text>
+              <Text style={styles.label}>{t('password')} *</Text>
               <TextInput
                 style={styles.input}
                 placeholder="••••••••"
@@ -130,7 +130,7 @@ export default function AuthScreen({ navigation }: any) {
 
             {!isSignIn && (
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>{i18n.t('referralCode')}</Text>
+                <Text style={styles.label}>{t('referralCode')}</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Enter referral code"
@@ -149,7 +149,7 @@ export default function AuthScreen({ navigation }: any) {
                 <ActivityIndicator color="#FFF" />
               ) : (
                 <Text style={styles.authButtonText}>
-                  {isSignIn ? i18n.t('signIn') : i18n.t('signUp')}
+                  {isSignIn ? t('signIn') : t('signUp')}
                 </Text>
               )}
             </TouchableOpacity>
@@ -160,7 +160,7 @@ export default function AuthScreen({ navigation }: any) {
             >
               <Text style={styles.switchText}>
                 {isSignIn ? "Don't have an account? " : 'Already have an account? '}
-                <Text style={styles.switchTextBold}>{isSignIn ? i18n.t('signUp') : i18n.t('signIn')}</Text>
+                <Text style={styles.switchTextBold}>{isSignIn ? t('signUp') : t('signIn')}</Text>
               </Text>
             </TouchableOpacity>
           </View>
