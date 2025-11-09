@@ -63,7 +63,7 @@ export default function AuthScreen({ navigation }: any) {
           <View style={styles.header}>
             <Text style={styles.title}>{isSignIn ? 'Welcome Back' : 'Create Account'}</Text>
             <Text style={styles.subtitle}>
-              {isSignIn ? 'Sign in to continue' : 'Join PezkuwiChain today'}
+              {isSignIn ? i18n.t('signIn') : i18n.t('signUp')}
             </Text>
           </View>
 
